@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 
 final kHintTextStyle = TextStyle(
   color: Colors.white54,
-  fontFamily: 'Bitter',
 );
 
 final kLabelStyle = TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
-  fontFamily: 'Bitter',
 );
 
 final kBoxDecorationStyle = BoxDecoration(
@@ -22,3 +20,12 @@ final kBoxDecorationStyle = BoxDecoration(
     ),
   ],
 );
+
+const kGreenColor = Color(0xff4b9100);
+
+class Global {
+  static const Color white = Color(0xffffffff);
+
+  // todo: corrigir vindo do banco?
+  static const List validEmail = ['test@gmail.com'];
+}
