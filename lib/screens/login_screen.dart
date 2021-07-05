@@ -1,5 +1,5 @@
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
-import 'package:agrofate_mobile_app/widgets/textfield_widget.dart';
+// import 'package:agrofate_mobile_app/widgets/textfield_widget.dart';
 import 'package:agrofate_mobile_app/widgets/wave_widget.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
@@ -13,7 +13,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   String password = '';
-  bool isPasswordVisible = false;
+  bool isPasswordVisible = true;
 
   @override
   void initState() {
