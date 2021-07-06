@@ -4,6 +4,7 @@ import 'package:agrofate_mobile_app/widgets/wave_widget.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
+import 'package:agrofate_mobile_app/screens/forecast_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -192,6 +193,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     onClicked: () {
                       print('Email: ${emailController.text}');
                       print('Password: ${password}');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ForecastScreen()),
+                      );
                     }),
                 SizedBox(
                   height: 10,
