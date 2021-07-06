@@ -29,16 +29,16 @@ class TextFieldWidget extends StatelessWidget {
       // onChanged: onChanged,
       obscureText: obscureText,
       style: TextStyle(
-        color: kGreenColor,
+        color: Color(0xff575c63),
         fontSize: 14.0,
       ),
-      cursorColor: kGreenColor,
+      cursorColor: Color(0xff575c63),
       decoration: InputDecoration(
         labelText: hintText,
         prefixIcon: Icon(
           prefixIconData,
           size: 18,
-          color: kGreenColor,
+          color: Color(0xff575c63),
         ),
         filled: true,
         enabledBorder: UnderlineInputBorder(
@@ -52,12 +52,12 @@ class TextFieldWidget extends StatelessWidget {
         suffixIcon: Icon(
           suffixIcondata,
           size: 18,
-          color: kGreenColor,
+          color: Color(0xff575c63),
         ),
         labelStyle: const TextStyle(
-          color: kGreenColor,
+          color: Color(0xff575c63),
         ),
-        focusColor: kGreenColor,
+        focusColor: Color(0xff575c63),
       ),
     );
   }

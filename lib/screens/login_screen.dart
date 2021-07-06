@@ -1,3 +1,4 @@
+import 'package:agrofate_mobile_app/screens/register_screen.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 // import 'package:agrofate_mobile_app/widgets/textfield_widget.dart';
 import 'package:agrofate_mobile_app/widgets/wave_widget.dart';
@@ -195,7 +196,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       print('Password: ${password}');
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ForecastScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => ForecastScreen()),
                       );
                     }),
                 SizedBox(
@@ -204,9 +206,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 ButtonWidget(
                   title: 'CADASTRAR',
                   hasBorder: true,
+                  onClicked: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RegisterScreen(),
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(
-                  height: 20,
+                  height: keyboardOpen ? 0.0 : size.height * 0.1,
                 ),
               ],
             ),
