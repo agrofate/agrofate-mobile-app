@@ -9,7 +9,6 @@ class ForecastScreen extends StatefulWidget {
 }
 
 class _ForecastScreenState extends State<ForecastScreen> {
-
   var temp;
   var description;
   var currently;
@@ -20,11 +19,12 @@ class _ForecastScreenState extends State<ForecastScreen> {
   var codigo;
   var nome_local;
 
-  Future getWeather () async {
-    this.lat = 0;
-    this.long = 0;
-    this.codigo = 0;
-    http.Response response = await http.get("https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&lang=pt_br&units=metric&appid=${codigo}");    
+  Future getWeather() async {
+    this.lat = -23.5638291;
+    this.long = -46.007628;
+    this.codigo = 'd34a8560ca9bb25f136577a590378db0';
+    http.Response response = await http.get(
+        "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&lang=pt_br&units=metric&appid=${codigo}");
     var results = jsonDecode(response.body);
     setState(() {
       this.temp = results['main']['temp'];
@@ -37,7 +37,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
   }
 
   @override
-  void initState () {
+  void initState() {
     super.initState();
     this.getWeather();
   }
@@ -45,94 +45,93 @@ class _ForecastScreenState extends State<ForecastScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height / 3,
-            width: MediaQuery.of(context).size.width,
-            //color: Colors.red,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  //Color(0xFFC8E6C9),
-                  Color(0xFFA5D6A7),
-                  Color(0xFF81C784),
-                  Color(0xFF66BB6A),
-                  Color(0xFF4CAF50),
-                ],
-                stops: [0.1, 0.4, 0.7, 0.9],
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10.0),
-                  child: Text(
-                    "Currently in " + nome_local,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w600
-                    ),
-                  ),
-                ),
-                Text(
-                  temp != null ? temp.toString() + "\u00B0" : "Loading",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40.0,
-                    fontWeight: FontWeight.w600
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    currently != null ? currently.toString() : "Loading",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w600
-                    ),
-                  ),
-                ),
+        body: Column(
+      children: <Widget>[
+        Container(
+          height: MediaQuery.of(context).size.height / 3,
+          width: MediaQuery.of(context).size.width,
+          //color: Colors.red,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                //Color(0xFFC8E6C9),
+                Color(0xFFA5D6A7),
+                Color(0xFF81C784),
+                Color(0xFF66BB6A),
+                Color(0xFF4CAF50),
               ],
+              stops: [0.1, 0.4, 0.7, 0.9],
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: ListView(
-                children: <Widget>[
-                  ListTile(
-                    leading: FaIcon(FontAwesomeIcons.thermometerHalf),
-                    title: Text("Temperatura"),
-                    trailing: Text(temp != null ? temp.toString() + "\u00B0" : "Loading"),
-                  ),
-                  ListTile(
-                    leading: FaIcon(FontAwesomeIcons.cloud),
-                    title: Text("Tempo"),
-                    trailing: Text(description != null ? description.toString() : "Loading"),
-                  ),
-                  ListTile(
-                    leading: FaIcon(FontAwesomeIcons.sun),
-                    title: Text("Umidade"),
-                    trailing: Text(humidity != null ? humidity.toString() : "Loading"),
-                  ),
-                  ListTile(
-                    leading: FaIcon(FontAwesomeIcons.wind),
-                    title: Text("Vento"),
-                    trailing: Text(windSpeed != null ? windSpeed.toString() : "Loading"),
-                  ),
-                ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(bottom: 10.0),
+                child: Text(
+                  "Currently in " + nome_local,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
-            )
-          )
-        ],
-      )
-    );
+              Text(
+                temp != null ? temp.toString() + "\u00B0" : "Loading",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.w600),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10.0),
+                child: Text(
+                  currently != null ? currently.toString() : "Loading",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+            child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: ListView(
+            children: <Widget>[
+              ListTile(
+                leading: FaIcon(FontAwesomeIcons.thermometerHalf),
+                title: Text("Temperatura"),
+                trailing:
+                    Text(temp != null ? temp.toString() + "\u00B0" : "Loading"),
+              ),
+              ListTile(
+                leading: FaIcon(FontAwesomeIcons.cloud),
+                title: Text("Tempo"),
+                trailing: Text(
+                    description != null ? description.toString() : "Loading"),
+              ),
+              ListTile(
+                leading: FaIcon(FontAwesomeIcons.sun),
+                title: Text("Umidade"),
+                trailing:
+                    Text(humidity != null ? humidity.toString() : "Loading"),
+              ),
+              ListTile(
+                leading: FaIcon(FontAwesomeIcons.wind),
+                title: Text("Vento"),
+                trailing:
+                    Text(windSpeed != null ? windSpeed.toString() : "Loading"),
+              ),
+            ],
+          ),
+        ))
+      ],
+    ));
   }
 }
