@@ -41,11 +41,11 @@ class CustomBottomNavBar extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => ForecastScreen(),
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => ForecastScreen(),
                   ),
                 );
-              }, // todo: NavigationPush
+              },
               icon: Icon(
                 Icons.cloud_outlined,
                 color: MenuState.forecast == selectedMenu
@@ -57,11 +57,11 @@ class CustomBottomNavBar extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => CanteirosScreen(),
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => CanteirosScreen(),
                   ),
                 );
-              }, // todo: NavigationPush
+              },
               icon: Icon(
                 Icons.format_list_bulleted_outlined,
                 color: MenuState.canteiros == selectedMenu

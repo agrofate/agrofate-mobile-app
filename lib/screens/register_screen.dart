@@ -1,4 +1,5 @@
 import 'package:agrofate_mobile_app/screens/forecast_screen.dart';
+import 'package:agrofate_mobile_app/screens/main_screens.dart';
 // import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/description_forms_widget.dart';
@@ -98,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ForecastScreen()),
+                                builder: (context) => MainScreens()),
                           );
                         }),
                   ],

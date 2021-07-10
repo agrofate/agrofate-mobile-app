@@ -136,8 +136,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
           ))
         ],
       ),
-      bottomNavigationBar:
-          const CustomBottomNavBar(selectedMenu: MenuState.forecast),
+      // bottomNavigationBar:
+      //     const CustomBottomNavBar(selectedMenu: MenuState.forecast),
     );
   }
 }

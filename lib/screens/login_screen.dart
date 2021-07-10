@@ -1,3 +1,4 @@
+import 'package:agrofate_mobile_app/screens/main_screens.dart';
 import 'package:agrofate_mobile_app/screens/register_screen.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 // import 'package:agrofate_mobile_app/widgets/textfield_widget.dart';
@@ -5,7 +6,6 @@ import 'package:agrofate_mobile_app/widgets/wave_widget.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
-import 'package:agrofate_mobile_app/screens/forecast_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -196,8 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       print('Password: ${password}');
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => ForecastScreen()),
+                        MaterialPageRoute(builder: (context) => MainScreens()),
                       );
                     }),
                 SizedBox(

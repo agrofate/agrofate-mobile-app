@@ -15,6 +15,8 @@ class MyApp extends StatelessWidget {
       title: 'Agrofate',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         primarySwatch: Colors.blue,
         appBarTheme: const AppBarTheme(
             color: Colors.white,
