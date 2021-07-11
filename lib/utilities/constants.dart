@@ -22,6 +22,7 @@ final kBoxDecorationStyle = BoxDecoration(
 );
 
 const kGreenColor = Color(0xff4b9100);
+const kGrayColor = Color(0xff575c63);
 
 class Global {
   static const Color white = Color(0xffffffff);
