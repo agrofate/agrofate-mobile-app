@@ -66,6 +66,8 @@ flutter:
    - assets/logos/google.jpg
    - assets/logos/agrofate_logo.jpg
    - assets/logos/agrofate_logo.png
+   - assets/images/
+   - assets/
 
 
   fonts:
