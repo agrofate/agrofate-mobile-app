@@ -1,11 +1,9 @@
-import 'package:agrofate_mobile_app/utilities/enums.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/utilities/forecast_json.dart';
-import 'package:agrofate_mobile_app/widgets/custom_bottom_nav_bar.dart';
+import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -177,6 +175,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                   ),
                                   child: Center(
                                     child: Image.asset(
+                                      // todo: trocar icone/img de acordo com previsao
                                       weather[0]['icon'],
                                       width: 30,
                                       height: 30,
@@ -194,7 +193,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        // todo: pegar da API
+                                        // todo: pegar 'seg' da API
                                         'Seg',
                                         style: TextStyle(
                                           fontSize: 15,
@@ -553,7 +552,18 @@ class _ForecastScreenState extends State<ForecastScreen> {
                 }),
               ),
             ),*/
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.all(30),
+              child: ButtonWidget(
+                title: 'NOVO LOCAL',
+                hasBorder: true,
+                onClicked: () {
+                  // todo: linkar nova tela
+                  print("tela de adc novo local");
+                },
+              ),
+            ),
           ],
         ),
       ),
