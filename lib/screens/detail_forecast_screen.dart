@@ -126,7 +126,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                         text: '24.1º',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 28,
+                                          fontSize: 20,
                                           color: kGreenColor,
                                         ),
                                       ),
@@ -134,7 +134,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                         text: '/14º',
                                         style: TextStyle(
                                           fontWeight: FontWeight.normal,
-                                          fontSize: 22,
+                                          fontSize: 19,
                                           color: Colors.black,
                                         ),
                                       ),
