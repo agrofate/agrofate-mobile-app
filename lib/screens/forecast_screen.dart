@@ -1,3 +1,4 @@
+import 'package:agrofate_mobile_app/screens/detail_forecast_screen.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/utilities/forecast_json.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
@@ -176,7 +177,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                   child: Center(
                                     child: Image.asset(
                                       // todo: trocar icone/img de acordo com previsao
-                                      weather[0]['icon'],
+                                      weather[1]['icon'],
                                       width: 30,
                                       height: 30,
                                     ),
@@ -343,14 +344,25 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                 Container(
                                   // decoration:
                                   //     const BoxDecoration(color: Colors.black38),
-                                  width: (size.width) * 0.1,
+                                  width: (size.width) * 0.12,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 18,
-                                        color: Colors.black.withOpacity(0.7),
+                                      IconButton(
+                                        onPressed: () {
+                                          // todo: página de detalhes
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => DetailForecastScreen(),
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 18,
+                                          color: Colors.black.withOpacity(0.7),
+                                        ),
                                       ),
                                     ],
                                   ),
