@@ -26,7 +26,4 @@ const kGrayColor = Color(0xff575c63);
 
 class Global {
   static const Color white = Color(0xffffffff);
-
-  // todo: corrigir vindo do banco?
-  static const List validEmail = ['test@gmail.com'];
 }

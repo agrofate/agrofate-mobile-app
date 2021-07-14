@@ -99,20 +99,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
               height: 20,
             ),
             Container(
-              height: MediaQuery.of(context).size.height / 5,
+              height: MediaQuery.of(context).size.height / 7,
               width: MediaQuery.of(context).size.width * 0.9,
-              // todo: personalizar box de acordo com previsao no momento
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 1.5,
-                    blurRadius: 5,
-                  )
-                ],
-              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -147,7 +135,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
               ),
             ),
             const SizedBox(
-              height: 24,
+              height: 10,
             ),
             Column(
               // todo: limitar a 5 dias da semana
@@ -187,7 +175,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                 Container(
                                   // decoration:
                                   //     const BoxDecoration(color: Colors.black26),
-                                  width: (size.width) * 0.12,
+                                  width: (size.width) * 0.1,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
@@ -344,13 +332,13 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                 Container(
                                   // decoration:
                                   //     const BoxDecoration(color: Colors.black38),
-                                  width: (size.width) * 0.12,
+                                  width: (size.width) * 0.13,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       IconButton(
                                         onPressed: () {
-                                          // todo: página de detalhes
+                                          // todo: enviar para página de detalhes do dia selecionado
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -571,7 +559,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                 title: 'NOVO LOCAL',
                 hasBorder: true,
                 onClicked: () {
-                  // todo: linkar nova tela
+                  // todo: linkar nova tela de adc novo local
                   print("tela de adc novo local");
                 },
               ),

@@ -70,7 +70,7 @@ class CustomBottomNavBar extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {}, // todo: NavigationPush
+              onPressed: () {}, // todo: NavigationPush pagina de dados
               icon: Icon(
                 Icons.sensors_outlined,
                 color: MenuState.dados == selectedMenu
@@ -79,7 +79,7 @@ class CustomBottomNavBar extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {}, // todo: NavigationPush
+              onPressed: () {}, // todo: NavigationPush pagina de perfil
               icon: Icon(
                 Icons.person_outline,
                 color: MenuState.profile == selectedMenu

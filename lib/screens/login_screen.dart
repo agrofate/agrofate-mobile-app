@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
       cursorColor: Color(0xff575c63),
       decoration: InputDecoration(
         labelText: 'Senha',
-        // errorText: 'E-mail ou senha incorretos', todo
+        // errorText: 'E-mail ou senha incorretos', todo: validação de erros form login
         prefixIcon: Icon(
           Icons.lock_outline,
           size: 18,
