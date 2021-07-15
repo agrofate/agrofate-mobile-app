@@ -87,7 +87,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
             tooltip: 'Show Snackbar',
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Isso é um SnackBar')));
+                  const SnackBar(content: Text('Em desenvolvimento')));
             },
           ),
         ],
