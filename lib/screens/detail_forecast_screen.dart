@@ -1,3 +1,4 @@
+import 'package:agrofate_mobile_app/services/forecast_by_hour.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/utilities/forecast_json.dart';
 import 'package:agrofate_mobile_app/widgets/description_forms_widget.dart';
@@ -5,6 +6,7 @@ import 'package:agrofate_mobile_app/widgets/title_forms_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 class DetailForecastScreen extends StatefulWidget {
@@ -17,6 +19,8 @@ class DetailForecastScreen extends StatefulWidget {
 class _DetailForecastScreenState extends State<DetailForecastScreen> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -46,7 +50,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                   ),
                   const DescriptionFormsWidget(
                     descriptionText:
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                        'Entenda o melhor momento para a produção de acordo com as previsões em sua localização.',
                   ),
                   const SizedBox(
                     height: 30,
@@ -201,6 +205,170 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                       ],
                     ),
                   ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.4,
+                    child: RawScrollbar(
+                      thumbColor: kGreenColor,
+                      thickness: 3,
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: forecastByHour.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            // decoration: const BoxDecoration(color: Colors.black12),
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: (size.width - 60) * 0.20,
+                                      child: Text(
+                                        forecastByHour[index].hour,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      // decoration: const BoxDecoration(
+                                      //     color: Colors.black12),
+                                      width: (size.width - 60) * 0.14,
+                                      child: Row(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Icon(
+                                                WeatherIcons.thermometer,
+                                                size: 14,
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            forecastByHour[index].temperature,
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: (size.width - 60) * 0.21,
+                                      child: Row(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Icon(
+                                                WeatherIcons.strong_wind,
+                                                size: 14,
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            width: 6,
+                                          ),
+                                          Text(
+                                            forecastByHour[index].windVelocity,
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      // decoration: const BoxDecoration(
+                                      //     color: Colors.black12),
+                                      width: (size.width - 60) * 0.15,
+                                      child: Row(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Icon(
+                                                WeatherIcons.rain,
+                                                size: 14,
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            forecastByHour[index].rainProbability,
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: (size.width - 60) * 0.17,
+                                      child: Row(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Icon(
+                                                WeatherIcons.raindrop,
+                                                size: 14,
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            forecastByHour[index].humidity,
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                const Divider(
+                                  thickness: 0.8,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -210,3 +378,83 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
     );
   }
 }
+
+List<ForecastByHour> forecastByHour = [
+  ForecastByHour(
+    hour: "13:00",
+    temperature: "20º",
+    windVelocity: "2 km/h",
+    rainProbability: "10%",
+    humidity: "50%",
+  ),
+  ForecastByHour(
+    hour: "14:00",
+    temperature: "20º",
+    windVelocity: "2 km/h",
+    rainProbability: "10%",
+    humidity: "50%",
+  ),
+  ForecastByHour(
+    hour: "15:00",
+    temperature: "20º",
+    windVelocity: "2 km/h",
+    rainProbability: "10%",
+    humidity: "50%",
+  ),
+  ForecastByHour(
+    hour: "16:00",
+    temperature: "20º",
+    windVelocity: "2 km/h",
+    rainProbability: "10%",
+    humidity: "50%",
+  ),
+  ForecastByHour(
+    hour: "17:00",
+    temperature: "20º",
+    windVelocity: "2 km/h",
+    rainProbability: "10%",
+    humidity: "50%",
+  ),
+  ForecastByHour(
+    hour: "18:00",
+    temperature: "20º",
+    windVelocity: "2 km/h",
+    rainProbability: "10%",
+    humidity: "50%",
+  ),
+  ForecastByHour(
+    hour: "19:00",
+    temperature: "20º",
+    windVelocity: "2 km/h",
+    rainProbability: "10%",
+    humidity: "50%",
+  ),
+  ForecastByHour(
+    hour: "20:00",
+    temperature: "20º",
+    windVelocity: "2 km/h",
+    rainProbability: "10%",
+    humidity: "50%",
+  ),
+  ForecastByHour(
+    hour: "21:00",
+    temperature: "20º",
+    windVelocity: "2 km/h",
+    rainProbability: "10%",
+    humidity: "50%",
+  ),
+  ForecastByHour(
+    hour: "22:00",
+    temperature: "20º",
+    windVelocity: "2 km/h",
+    rainProbability: "10%",
+    humidity: "50%",
+  ),
+  ForecastByHour(
+    hour: "23:00",
+    temperature: "20º",
+    windVelocity: "2 km/h",
+    rainProbability: "10%",
+    humidity: "50%",
+  ),
+];

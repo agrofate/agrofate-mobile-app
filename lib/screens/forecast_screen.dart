@@ -269,7 +269,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                           Column(
                                             children: [
                                               Icon(
-                                                WeatherIcons.humidity,
+                                                WeatherIcons.raindrop,
                                                 size: 14,
                                               ),
                                               const SizedBox(
