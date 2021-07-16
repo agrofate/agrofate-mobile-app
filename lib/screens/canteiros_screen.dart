@@ -73,8 +73,8 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                     height: 65,
                                     decoration: BoxDecoration(
                                       color: Colors.grey.withOpacity(0.1),
-                                      shape: BoxShape.circle,
-                                      // borderRadius: BorderRadius.circular(10),
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(10),
                                       image: DecorationImage(
                                         // todo: trocar img do canteiro de acordo com banco - se tiver
                                         image: AssetImage(
