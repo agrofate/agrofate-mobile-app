@@ -1,6 +1,8 @@
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 
+import 'new_canteiro_screen.dart';
+
 class CanteirosScreen extends StatefulWidget {
   const CanteirosScreen({Key? key}) : super(key: key);
 
@@ -44,8 +46,12 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
               title: 'NOVO CANTEIRO',
               hasBorder: true,
               onClicked: () {
-                // todo: linkar nova tela de adc novo canteiro
-                print("tela de adc novo canteiro");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NewCanteiroScreen(),
+                  ),
+                );
               },
             ),
           ),

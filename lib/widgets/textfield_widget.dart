@@ -9,6 +9,7 @@ class TextFieldWidget extends StatelessWidget {
   final Function? onChanged;
   final TextInputType? textInputType;
   final TextEditingController? textFieldController;
+  final VoidCallback? onTap;
 
   const TextFieldWidget({
     required this.hintText,
@@ -18,11 +19,13 @@ class TextFieldWidget extends StatelessWidget {
     this.onChanged,
     this.textInputType,
     this.textFieldController,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onTap: onTap,
       controller: textFieldController,
       keyboardType: textInputType,
       textInputAction: TextInputAction.done,

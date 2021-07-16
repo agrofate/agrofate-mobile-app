@@ -15,6 +15,7 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: Ink(
         decoration: BoxDecoration(
           color: hasBorder ? Colors.transparent : kGreenColor,
