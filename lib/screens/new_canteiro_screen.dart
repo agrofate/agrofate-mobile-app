@@ -128,7 +128,7 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
       child: Column(
         children: [
           Text(
-            "Escolha uma foto para o canteiro",
+            "Escolha uma imagem para o canteiro",
             style: TextStyle(
               fontSize: 15,
             ),
