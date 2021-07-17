@@ -69,8 +69,8 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Container(
-                                    width: 65,
-                                    height: 65,
+                                    width: 60,
+                                    height: 60,
                                     decoration: BoxDecoration(
                                       color: Colors.grey.withOpacity(0.1),
                                       shape: BoxShape.rectangle,
@@ -126,7 +126,7 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                 height: 2,
                               ),
                               const Padding(
-                                padding: EdgeInsets.only(left: 80, top: 6),
+                                padding: EdgeInsets.only(left: 75, top: 6),
                                 child: Divider(
                                   thickness: 0.8,
                                 ),
