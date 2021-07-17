@@ -109,9 +109,9 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset(
-                                  weather[2]['icon'],
-                                  width: 80,
-                                  height: 80,
+                                  weather[2]['icon_path'],
+                                  width: 78,
+                                  height: 78,
                                 ),
                               ],
                             ),
