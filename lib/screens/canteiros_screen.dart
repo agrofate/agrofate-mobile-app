@@ -1,3 +1,4 @@
+import 'package:agrofate_mobile_app/screens/detail_canteiro_screen.dart';
 import 'package:agrofate_mobile_app/services/canteiro.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,8 +55,13 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-                          // TODO: enviar para página de detalhes do canteiro
-                          print("página do cantero");
+                          // TODO: enviar para página de detalhes do canteiro selecionado
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailCanteiroScreen(),
+                            ),
+                          );
                         },
                         child: Container(
                           // decoration:
