@@ -1,3 +1,4 @@
+import 'package:agrofate_mobile_app/screens/edit_canteiro_screen.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +31,13 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen> {
             ),
             tooltip: 'Show Snackbar',
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Em desenvolvimento')));
+              // TODO: enviar com informações do canteiro para editar
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditCanteiroScreen(),
+                ),
+              );
             },
           ),
         ],
