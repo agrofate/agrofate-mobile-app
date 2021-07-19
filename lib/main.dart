@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:agrofate_mobile_app/screens/login_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,6 +33,11 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: LoginScreen(),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: [const Locale('pt', 'BR')],
     );
   }
 }

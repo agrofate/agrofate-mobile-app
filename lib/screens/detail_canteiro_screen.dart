@@ -1,4 +1,5 @@
 import 'package:agrofate_mobile_app/screens/edit_canteiro_screen.dart';
+import 'package:agrofate_mobile_app/screens/new_safra_screen.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +124,15 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen> {
                     ButtonWidget(
                       title: 'NOVA SAFRA',
                       hasBorder: false,
-                      onClicked: () {},
+                      onClicked: () {
+                        // TODO: enviar informação de qual canteiro terá uma nova safra
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewSafraScreen(),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(
                       height: 10,
