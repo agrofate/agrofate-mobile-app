@@ -19,6 +19,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        brightness: Brightness.dark,
         leading: IconButton(
           icon: const Icon(CupertinoIcons.back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),

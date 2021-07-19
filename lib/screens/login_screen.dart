@@ -1,9 +1,11 @@
 import 'package:agrofate_mobile_app/screens/main_screens.dart';
 import 'package:agrofate_mobile_app/screens/register_screen.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
+
 // import 'package:agrofate_mobile_app/widgets/textfield_widget.dart';
 import 'package:agrofate_mobile_app/widgets/wave_widget.dart';
 import 'package:flutter/material.dart';
+
 // import 'package:flutter/services.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
 
@@ -128,6 +130,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        brightness: Brightness.dark,
+        backgroundColor: Colors.transparent,
+      ),
       body: Stack(
         children: [
           Container(
