@@ -67,9 +67,16 @@ class _ForecastScreenState extends State<ForecastScreen> {
     ];
     final icon_weather_a = icon_weather.asMap();
     return Scaffold(
-      backgroundColor: Colors.grey.withOpacity(0.03),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        bottom: PreferredSize(
+          child: Container(
+            color: Colors.grey.withOpacity(0.1),
+            height: 1.0,
+          ),
+          preferredSize: Size.fromHeight(4.0),
+        ),
         title: const Text(
           'agrofate',
           style: TextStyle(
@@ -101,7 +108,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
               child: Column(
                 children: [
                   const SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height / 7,
@@ -144,7 +151,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
                   ),
                   Column(
                     // todo: limitar a 5 dias da semana
-                    children: List.generate(forecast_data["list"].length, (index) {
+                    children:
+                        List.generate(forecast_data["list"].length, (index) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         child: Column(
@@ -182,9 +190,10 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                         //     const BoxDecoration(color: Colors.black26),
                                         width: (size.width) * 0.1,
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               // todo: pegar 'seg' da API
@@ -197,19 +206,21 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                             ),
                                             const SizedBox(height: 5),
                                             Text(
-                                              forecast_data["list"][index]["dt_txt"]
-                                                  .split(" ")[0]
-                                                  .split("-")[2]
-                                                  .toString() +
+                                              forecast_data["list"][index]
+                                                          ["dt_txt"]
+                                                      .split(" ")[0]
+                                                      .split("-")[2]
+                                                      .toString() +
                                                   '/' +
                                                   forecast_data["list"][index]
-                                                  ["dt_txt"]
+                                                          ["dt_txt"]
                                                       .split(" ")[0]
                                                       .split("-")[1]
                                                       .toString(),
                                               style: TextStyle(
                                                 fontSize: 12,
-                                                color: Colors.black.withOpacity(0.5),
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
                                                 fontWeight: FontWeight.w400,
                                               ),
                                             ),
@@ -221,29 +232,38 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                         //     const BoxDecoration(color: Colors.black38),
                                         width: (size.width) * 0.26,
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             RichText(
                                               text: TextSpan(
-                                                style: DefaultTextStyle.of(context)
-                                                    .style,
+                                                style:
+                                                    DefaultTextStyle.of(context)
+                                                        .style,
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                    text: forecast_data["list"][index]
-                                                    ["main"]["temp_max"]
-                                                        .toStringAsFixed(1) +
+                                                    text: forecast_data["list"]
+                                                                        [index]
+                                                                    ["main"]
+                                                                ["temp_max"]
+                                                            .toStringAsFixed(
+                                                                1) +
                                                         'º',
                                                     style: TextStyle(
                                                       color: kGreenColor,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontSize: 17,
                                                     ),
                                                   ),
                                                   TextSpan(
                                                     text: "/" +
-                                                        forecast_data["list"][index]
-                                                        ["main"]["temp_min"]
-                                                            .toStringAsFixed(0) +
+                                                        forecast_data["list"]
+                                                                        [index]
+                                                                    ["main"]
+                                                                ["temp_min"]
+                                                            .toStringAsFixed(
+                                                                0) +
                                                         'º',
                                                     style: TextStyle(
                                                       fontSize: 16,
@@ -262,11 +282,12 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                         //     const BoxDecoration(color: Colors.black26),
                                         width: (size.width) * 0.24,
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                                  MainAxisAlignment.start,
                                               children: [
                                                 const SizedBox(
                                                   width: 9,
@@ -286,9 +307,10 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                                   width: 7,
                                                 ),
                                                 Text(
-                                                  forecast_data["list"][index]["main"]
-                                                  ["humidity"]
-                                                      .toString() +
+                                                  forecast_data["list"][index]
+                                                                  ["main"]
+                                                              ["humidity"]
+                                                          .toString() +
                                                       '%',
                                                   style: const TextStyle(
                                                     fontSize: 13,
@@ -299,7 +321,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                                  MainAxisAlignment.start,
                                               children: [
                                                 const SizedBox(
                                                   width: 9,
@@ -320,9 +342,10 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                                 ),
                                                 Text(
                                                   (forecast_data["list"][index]
-                                                  ["wind"]["speed"] *
-                                                      3.6)
-                                                      .toStringAsFixed(1) +
+                                                                      ["wind"]
+                                                                  ["speed"] *
+                                                              3.6)
+                                                          .toStringAsFixed(1) +
                                                       ' km/h',
                                                   style: const TextStyle(
                                                     fontSize: 13,
@@ -339,7 +362,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                         //     const BoxDecoration(color: Colors.black38),
                                         width: (size.width) * 0.13,
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             IconButton(
                                               onPressed: () {
@@ -347,14 +371,16 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                    builder: (context) => DetailForecastScreen(),
+                                                    builder: (context) =>
+                                                        DetailForecastScreen(),
                                                   ),
                                                 );
                                               },
                                               icon: Icon(
                                                 Icons.arrow_forward_ios,
                                                 size: 18,
-                                                color: Colors.black.withOpacity(0.7),
+                                                color: Colors.black
+                                                    .withOpacity(0.7),
                                               ),
                                             ),
                                           ],

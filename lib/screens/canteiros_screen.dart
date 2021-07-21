@@ -19,6 +19,13 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        bottom: PreferredSize(
+          child: Container(
+            color: Colors.grey.withOpacity(0.1),
+            height: 1.0,
+          ),
+          preferredSize: Size.fromHeight(4.0),
+        ),
         title: const Text(
           'Seus canteiros',
           style: TextStyle(
@@ -41,11 +48,12 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
           ),
         ],
       ),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(30),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               child: Column(
                 children: [
                   ListView.builder(

@@ -1,4 +1,5 @@
 import 'package:agrofate_mobile_app/screens/canteiros_screen.dart';
+import 'package:agrofate_mobile_app/screens/dados_screen.dart';
 import 'package:agrofate_mobile_app/screens/forecast_screen.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +18,9 @@ class _MainScreensState extends State<MainScreens> {
   Widget build(BuildContext context) {
     List<Widget> _telas = [
       ForecastScreen(),
-      const CanteirosScreen(),
-      Text('Dados'),
-      Text('Perfil'),
+      CanteirosScreen(),
+      DadosScreen(),
+      Text('Em desenvolvimento'),
     ];
 
     void _onItemTap(int index) {
