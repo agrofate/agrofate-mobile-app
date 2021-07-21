@@ -254,30 +254,31 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                     Divider(
                       thickness: 1,
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    // const SizedBox(
+                    //   height: 5,
+                    // ),
                     Column(
                       children: [
                         // give the tab bar a height [can change hheight to preferred height]
                         Container(
-                          height: 45,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(
-                              10.0,
-                            ),
-                          ),
+                          height: 35,
+                          // height: 45,
+                          // decoration: BoxDecoration(
+                          //   color: Colors.grey.withOpacity(0.1),
+                          //   borderRadius: BorderRadius.circular(
+                          //     10.0,
+                          //   ),
+                          // ),
                           child: TabBar(
                             controller: _tabController,
                             // give the indicator a decoration (color and border radius)
-                            indicator: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                10.0,
-                              ),
-                              color: kGreenColor,
-                            ),
-                            labelColor: Colors.white,
+                            // indicator: BoxDecoration(
+                            //   borderRadius: BorderRadius.circular(
+                            //     10.0,
+                            //   ),
+                            //   color: kGreenColor,
+                            // ),
+                            labelColor: Colors.black,
                             unselectedLabelColor: Colors.black,
                             tabs: [
                               // first tab [you can add an icon using the icon property]
@@ -294,7 +295,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                         ),
                         // tab bar view here
                         Container(
-                          height: size.height * 0.39,
+                          height: size.height * 0.42,
                           child: TabBarView(
                             controller: _tabController,
                             children: [
@@ -336,7 +337,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
     return Column(
       children: [
         Container(
-          height: (size.height * 0.39) - 70,
+          height: (size.height * 0.42) - 70,
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             padding: EdgeInsets.only(top: 10, left: 15, right: 15),
@@ -429,7 +430,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
     return Column(
       children: [
         Container(
-          height: (size.height * 0.39) - 70,
+          height: (size.height * 0.42) - 70,
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             padding: EdgeInsets.only(top: 10, left: 15, right: 15),
