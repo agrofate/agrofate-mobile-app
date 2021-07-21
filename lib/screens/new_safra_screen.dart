@@ -120,14 +120,6 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
                       text: getDateText(),
                       onTap: () {
                         pickDate(context);
-                        // showDataPicker(
-                        //   context: context,
-                        //   initialDate: DateTime.now(),
-                        //   firstDate: DateTime(2010),
-                        //   lastDate: DateTime(DateTime.now().year + 5)
-                        // ).then((date) {
-                        //
-                        // });
                       },
                     ),
                     const SizedBox(
