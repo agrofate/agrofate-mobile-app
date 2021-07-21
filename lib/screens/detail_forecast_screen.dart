@@ -60,15 +60,15 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     // todo: personalizar box de acordo com previsao no momento
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.grey.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1.5,
-                          blurRadius: 5,
-                        )
-                      ],
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //     color: Colors.grey.withOpacity(0.2),
+                      //     spreadRadius: 1.5,
+                      //     blurRadius: 5,
+                      //   )
+                      // ],
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -154,7 +154,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                     Column(
                                       children: [
                                         Icon(
-                                          WeatherIcons.humidity,
+                                          WeatherIcons.raindrop,
                                           size: 14,
                                         ),
                                         const SizedBox(
