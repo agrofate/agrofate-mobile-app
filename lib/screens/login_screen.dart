@@ -152,16 +152,36 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 110),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            padding: EdgeInsets.only(top: size.height * 0.14),
+            child: Column(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/logos/agrofate_logo_text.png",
+                      fit: BoxFit.cover,
+                      height: size.height * 0.07,
+                      color: Colors.white,
+                    ),
+                    // Text(
+                    //   'agrofate',
+                    //   style: TextStyle(
+                    //     color: Colors.white,
+                    //     fontSize: 40,
+                    //     fontWeight: FontWeight.w900,
+                    //   ),
+                    // ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Text(
-                  'agrofate',
+                  'Pensando um futuro mais consciente',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.w900,
+                    fontSize: 13,
                   ),
                 ),
               ],

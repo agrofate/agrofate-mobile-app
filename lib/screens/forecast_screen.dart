@@ -77,13 +77,10 @@ class _ForecastScreenState extends State<ForecastScreen> {
           ),
           preferredSize: Size.fromHeight(4.0),
         ),
-        title: const Text(
-          'agrofate',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 19,
-          ),
+        title: Image.asset(
+          "assets/logos/agrofate_logo_text.png",
+          fit: BoxFit.cover,
+          height: 25,
         ),
         actions: [
           IconButton(
