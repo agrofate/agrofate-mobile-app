@@ -72,8 +72,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
         automaticallyImplyLeading: false,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.grey.withOpacity(0.1),
-            height: 1.0,
+            color: Colors.grey.withOpacity(0.2),
+            height: 0.8,
           ),
           preferredSize: Size.fromHeight(4.0),
         ),
