@@ -1,4 +1,5 @@
 import 'package:agrofate_mobile_app/screens/edit_canteiro_screen.dart';
+import 'package:agrofate_mobile_app/screens/history_safra_screen.dart';
 import 'package:agrofate_mobile_app/screens/new_safra_screen.dart';
 import 'package:agrofate_mobile_app/services/defensivo.dart';
 import 'package:agrofate_mobile_app/services/fertilizante.dart';
@@ -161,7 +162,15 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                       hasBorder: true,
                       onClicked:
                           false //TODO: recuperar informação se existe histórico de safras
-                              ? () {}
+                              ? () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          HistorySafraScreen(),
+                                    ),
+                                  );
+                                }
                               : () {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
@@ -195,8 +204,12 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                         ),
                         IconButton(
                           onPressed: () {
-                            // todo: enviar para tela historico de safras
-                            print("historico safras");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HistorySafraScreen(),
+                              ),
+                            );
                           },
                           icon: Icon(Icons.history_outlined),
                           iconSize: 21,
