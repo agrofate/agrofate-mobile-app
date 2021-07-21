@@ -1,6 +1,8 @@
 import 'package:agrofate_mobile_app/screens/edit_canteiro_screen.dart';
+import 'package:agrofate_mobile_app/screens/edit_defensivo_screen.dart';
 import 'package:agrofate_mobile_app/screens/edit_fertilizante_screen.dart';
 import 'package:agrofate_mobile_app/screens/history_safra_screen.dart';
+import 'package:agrofate_mobile_app/screens/new_defensivo_screen.dart';
 import 'package:agrofate_mobile_app/screens/new_fertilizante_screen.dart';
 import 'package:agrofate_mobile_app/screens/new_safra_screen.dart';
 import 'package:agrofate_mobile_app/services/defensivo.dart';
@@ -509,7 +511,14 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                         ),
                         Center(
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditDefensivoScreen(),
+                                ),
+                              );
+                            },
                             icon: Icon(Icons.edit_outlined),
                           ),
                         ),
@@ -536,8 +545,12 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
             title: 'NOVO DEFENSIVO',
             hasBorder: true,
             onClicked: () {
-              // todo: botao novo defensivos
-              print("botao novo defensivos");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NewDefensivoScreen(),
+                ),
+              );
             },
           ),
         ),
