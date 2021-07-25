@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:agrofate_mobile_app/screens/edit_canteiro_screen.dart';
 import 'package:agrofate_mobile_app/screens/edit_defensivo_screen.dart';
 import 'package:agrofate_mobile_app/screens/edit_fertilizante_screen.dart';
@@ -11,6 +13,8 @@ import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class DetailCanteiroScreen extends StatefulWidget {
   const DetailCanteiroScreen({Key? key}) : super(key: key);
@@ -22,11 +26,51 @@ class DetailCanteiroScreen extends StatefulWidget {
 class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  String _id_canteiro_escolhido = '';
+  String _nome_canteiro_escolhido = '';
+  bool loading = true;
+  bool loading_safra = true;
+  bool loading_safra_detalhe = true;
+  var safra_data;
+  var nome_canteiro;
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
+    _procuraSafra();
+  }
+
+  Future _procuraSafra() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _id_canteiro_escolhido =  (prefs.getString('id_canteiro_escolhido') ?? '');
+      _nome_canteiro_escolhido =  (prefs.getString('nome_canteiro_escolhido') ?? '');
+    });  
+    print(_id_canteiro_escolhido);
+    print(_nome_canteiro_escolhido);
+
+    String parametros = "?id_canteiro="+_id_canteiro_escolhido;
+    http.Response url_teste = await http.get(
+        "https://future-snowfall-319523.uc.r.appspot.com/read-one-safra"+parametros);
+    var response_login = jsonDecode(url_teste.body).asMap();
+    safra_data = response_login;
+    print(response_login);
+    print(response_login.length);
+
+    if(response_login.length > 0){
+      if(response_login[0][0] == 0){
+        loading_safra = true;
+        loading_safra_detalhe = false;
+      }else{
+        loading_safra = false;
+        loading_safra_detalhe = true;
+      }
+    }
+
+    setState(() {
+      this.loading = false;
+    });
   }
 
   @override
@@ -67,285 +111,293 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: size.width,
-              // TODO: se tiver safra altura menor - se nao tiver safra altura maior / recuperar do BD
-              height: true ? (size.height) * 0.23 : (size.height) * 0.33,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    "assets/images/canteiro_padrao.jpg",
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+      body: SingleChildScrollView(        
+        child: 
+        FutureBuilder(
+          builder: (context, text){
+            if (loading) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              return Column(
+                children: [
+                  Container(
+                    width: size.width,
+                    // TODO: se tiver safra altura menor - se nao tiver safra altura maior / recuperar do BD
+                    height: true ? (size.height) * 0.23 : (size.height) * 0.33,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          "assets/images/canteiro_padrao.jpg",
+                        ),
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      spreadRadius: -15.0,
-                      offset: Offset(0, -15),
-                      blurRadius: 40.0,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            spreadRadius: -15.0,
+                            offset: Offset(0, -15),
+                            blurRadius: 40.0,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            "Canteiro Sul", // TODO: nome do canteiro
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 30),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _nome_canteiro_escolhido, // TODO: nome do canteiro
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Visibility(
-              //TODO: adicionar lógica de safra ativa ou inativa para exibir botão de nova safra e histórico
-              visible: false,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Adicione uma nova safra",
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
+                  ),
+                  Visibility(
+                    //TODO: adicionar lógica de safra ativa ou inativa para exibir botão de nova safra e histórico
+                    visible: loading_safra,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Adicione uma nova safra",
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    ButtonWidget(
-                      title: 'NOVA SAFRA',
-                      hasBorder: false,
-                      onClicked: () {
-                        // TODO: enviar informação de qual canteiro terá uma nova safra
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NewSafraScreen(),
+                          const SizedBox(
+                            height: 30,
                           ),
-                        );
-                      },
+                          ButtonWidget(
+                            title: 'NOVA SAFRA',
+                            hasBorder: false,
+                            onClicked: () {
+                              // TODO: enviar informação de qual canteiro terá uma nova safra
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NewSafraScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ButtonWidget(
+                            title: 'HISTÓRICO DE SAFRAS',
+                            hasBorder: true,
+                            onClicked:
+                                false //TODO: recuperar informação se existe histórico de safras
+                                    ? () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                HistorySafraScreen(),
+                                          ),
+                                        );
+                                      }
+                                    : () {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    'Não existe histórico de safras! Crie uma nova safra.')));
+                                      },
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ButtonWidget(
-                      title: 'HISTÓRICO DE SAFRAS',
-                      hasBorder: true,
-                      onClicked:
-                          false //TODO: recuperar informação se existe histórico de safras
-                              ? () {
+                  ),
+                  Visibility(
+                    //TODO: adicionar lógica de safra ativa para exibir fertilizantes e defensivos
+                    visible: loading_safra_detalhe,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Nome da safra",
+                                // TODO: recuperar nome da safra do BD
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          HistorySafraScreen(),
+                                      builder: (context) => HistorySafraScreen(),
                                     ),
                                   );
-                                }
-                              : () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              'Não existe histórico de safras! Crie uma nova safra.')));
                                 },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Visibility(
-              //TODO: adicionar lógica de safra ativa para exibir fertilizantes e defensivos
-              visible: true,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Nome da safra",
-                          // TODO: recuperar nome da safra do BD
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HistorySafraScreen(),
-                              ),
-                            );
-                          },
-                          icon: Icon(Icons.history_outlined),
-                          iconSize: 21,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Data de plantação: " + "26/06/21",
-                          // TODO: recuperar data de plantação da safra do BD
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Última atualização: " + "27/06/21",
-                          // TODO: recuperar data de última atualização da safra do BD
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Cultura: " + "Couve",
-                          // TODO: recuperar cultura da safra ativa do BD
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Divider(
-                      thickness: 1,
-                    ),
-                    // const SizedBox(
-                    //   height: 5,
-                    // ),
-                    Column(
-                      children: [
-                        // give the tab bar a height [can change hheight to preferred height]
-                        Container(
-                          height: 35,
-                          // height: 45,
-                          // decoration: BoxDecoration(
-                          //   color: Colors.grey.withOpacity(0.1),
-                          //   borderRadius: BorderRadius.circular(
-                          //     10.0,
-                          //   ),
-                          // ),
-                          child: TabBar(
-                            controller: _tabController,
-                            // give the indicator a decoration (color and border radius)
-                            // indicator: BoxDecoration(
-                            //   borderRadius: BorderRadius.circular(
-                            //     10.0,
-                            //   ),
-                            //   color: kGreenColor,
-                            // ),
-                            labelColor: Colors.black,
-                            unselectedLabelColor: Colors.black,
-                            tabs: [
-                              // first tab [you can add an icon using the icon property]
-                              Tab(
-                                text: 'Fertilizantes',
-                              ),
-
-                              // second tab [you can add an icon using the icon property]
-                              Tab(
-                                text: 'Defensivos',
+                                icon: Icon(Icons.history_outlined),
+                                iconSize: 21,
                               ),
                             ],
                           ),
-                        ),
-                        // tab bar view here
-                        Container(
-                          height: size.height * 0.42,
-                          child: TabBarView(
-                            controller: _tabController,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              // first tab bar view widget
-                              buildFertilizanteList(size),
-
-                              // second tab bar view widget
-                              buildDefensivoList(size),
+                              Text(
+                                "Data de plantação: " + "26/06/21",
+                                // TODO: recuperar data de plantação da safra do BD
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: ButtonWidget(
-                        title: 'FINALIZAR SAFRA',
-                        hasBorder: false,
-                        onClicked: () {
-                          // todo: finalizar safra botao
-                          print("finalizar safra botao");
-                        },
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Última atualização: " + "27/06/21",
+                                // TODO: recuperar data de última atualização da safra do BD
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Cultura: " + "Couve",
+                                // TODO: recuperar cultura da safra ativa do BD
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Divider(
+                            thickness: 1,
+                          ),
+                          // const SizedBox(
+                          //   height: 5,
+                          // ),
+                          Column(
+                            children: [
+                              // give the tab bar a height [can change hheight to preferred height]
+                              Container(
+                                height: 35,
+                                // height: 45,
+                                // decoration: BoxDecoration(
+                                //   color: Colors.grey.withOpacity(0.1),
+                                //   borderRadius: BorderRadius.circular(
+                                //     10.0,
+                                //   ),
+                                // ),
+                                child: TabBar(
+                                  controller: _tabController,
+                                  // give the indicator a decoration (color and border radius)
+                                  // indicator: BoxDecoration(
+                                  //   borderRadius: BorderRadius.circular(
+                                  //     10.0,
+                                  //   ),
+                                  //   color: kGreenColor,
+                                  // ),
+                                  labelColor: Colors.black,
+                                  unselectedLabelColor: Colors.black,
+                                  tabs: [
+                                    // first tab [you can add an icon using the icon property]
+                                    Tab(
+                                      text: 'Fertilizantes',
+                                    ),
+
+                                    // second tab [you can add an icon using the icon property]
+                                    Tab(
+                                      text: 'Defensivos',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // tab bar view here
+                              Container(
+                                height: size.height * 0.42,
+                                child: TabBarView(
+                                  controller: _tabController,
+                                  children: [
+                                    // first tab bar view widget
+                                    buildFertilizanteList(size),
+
+                                    // second tab bar view widget
+                                    buildDefensivoList(size),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: ButtonWidget(
+                              title: 'FINALIZAR SAFRA',
+                              hasBorder: false,
+                              onClicked: () {
+                                // todo: finalizar safra botao
+                                print("finalizar safra botao");
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+                  ),
+                ],
+              );
+            }
+          }),
       ),
     );
   }

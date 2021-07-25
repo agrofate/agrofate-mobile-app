@@ -112,6 +112,7 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
 
   void takePhoto(ImageSource source) async {
     final pickedFile = await _picker.getImage(source: source);
+    print(pickedFile.path);
     setState(() {
       _imageFile = pickedFile; // TODO: essa imagem irá subir para o servidor - var _imageFile declarada lá encima
     });

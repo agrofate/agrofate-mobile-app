@@ -33,9 +33,16 @@ dependencies:
     sdk: flutter
   font_awesome_flutter: ^8.7.0
   http: ^0.12.2
+  shared_preferences: 2.0.6
+  basic_utils: ^1.2.0
 
   # Format date time
   intl: ^0.17.0
+
+  #google cloud
+  gcloud: 0.7.2
+  googleapis_auth: ^0.2.12
+  mime: ^0.9.7
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -43,6 +50,7 @@ dependencies:
   provider: ^5.0.0
   weather_icons: ^3.0.0
   image_picker: ^0.6.7+22
+  camera: ^0.5.8+11
   flutter_launcher_icons: ^0.9.0
   icons_helper: ^1.0.4
 
@@ -82,6 +90,7 @@ flutter:
    - assets/images/
    - assets/
    - assets/images/weather/
+   - assets/cloud/credentials.json
 
 
   fonts:

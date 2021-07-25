@@ -24,9 +24,9 @@ class _ForecastScreenState extends State<ForecastScreen> {
   var nome_local;
 
   Future getWeather() async {
-    this.lat = -23.5638291;
-    this.long = -46.007628;
-    this.codigo = 'd34a8560ca9bb25f136577a590378db0';
+    this.lat = '';
+    this.long = '';
+    this.codigo = '';
     http.Response response = await http.get(
         "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&lang=pt_br&units=metric&appid=${codigo}");
     var results = jsonDecode(response.body);

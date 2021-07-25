@@ -1,13 +1,18 @@
+import 'dart:convert';
+
 import 'package:agrofate_mobile_app/screens/main_screens.dart';
 import 'package:agrofate_mobile_app/screens/register_screen.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
-
+import 'package:agrofate_mobile_app/screens/canteiros_screen.dart';
 // import 'package:agrofate_mobile_app/widgets/textfield_widget.dart';
 import 'package:agrofate_mobile_app/widgets/wave_widget.dart';
 import 'package:flutter/material.dart';
 
 // import 'package:flutter/services.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -23,6 +28,61 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     emailController.addListener(() => setState(() {}));
+  }
+
+  void _exibirDialogo(mensagem) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // retorna um objeto do tipo Dialog
+        return AlertDialog(
+          title: new Text("Erro ao logar"),
+          content: new Text(mensagem),
+          actions: <Widget>[
+            // define os botões na base do dialogo
+            new FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if(mensagem != "Senha incorreta"){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen()),
+                  );
+                }                
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  onClickedEntrar(email, senha) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();    
+    print(email);
+    print(senha);
+    String parametros = "?email="+email+"&senha="+senha;
+    http.Response url_teste = await http.get(
+        "https://future-snowfall-319523.uc.r.appspot.com/read-one"+parametros);
+    var response_login = jsonDecode(url_teste.body)[0].asMap();
+    print(response_login);
+    if(response_login.length > 0){
+      prefs.setString('id_user', response_login[0].toString());
+      prefs.setString('email', email);
+      prefs.setString('senha', senha);
+      Navigator.push(
+        context,
+        //MaterialPageRoute(builder: (context) => MainScreens()),
+        MaterialPageRoute(builder: (context) => CanteirosScreen()),
+      );
+    }else{
+      _exibirDialogo(response_login);
+    }
+    /*Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MainScreens()),
+    );*/
   }
 
   Widget buildEmail() {
@@ -218,13 +278,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 ButtonWidget(
                     title: 'ENTRAR',
                     hasBorder: false,
-                    onClicked: () {
-                      print('Email: ${emailController.text}');
+                    onClicked: () {                      
+                      onClickedEntrar(emailController.text, password);
+                      /*print('Email: ${emailController.text}');
                       print('Password: ${password}');
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => MainScreens()),
-                      );
+                      );*/
                     }),
                 SizedBox(
                   height: 10,

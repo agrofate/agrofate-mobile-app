@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:agrofate_mobile_app/services/forecast_by_hour.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/utilities/forecast_json.dart';
@@ -7,20 +9,81 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'package:http/http.dart' as http;
+
 
 class DetailForecastScreen extends StatefulWidget {
   const DetailForecastScreen({Key? key}) : super(key: key);
-
+  
   @override
   _DetailForecastScreenState createState() => _DetailForecastScreenState();
 }
 
-class _DetailForecastScreenState extends State<DetailForecastScreen> {
+class _DetailForecastScreenState extends State<DetailForecastScreen> {  
+
+  var lat;
+  var long;
+  var codigo;
+  var dia_total;
+  var dia_escolhido;
+  var temp_min, temp_max, humidity, wind;
+  var add_dia = [];
+  bool loading = true;
+
+  Future getWeatherHourly(data_atual) async {
+    this.lat = '';
+    this.long = '';
+    this.codigo = '';
+    http.Response response = await http.get(
+        "https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude={current,minutely,alerts}&appid=${codigo}&lang=pt_br&units=metric");
+    var results = jsonDecode(response.body);
+    var dia = [];
+    var dia_espec = [];
+    //print(data_atual);
+    for (var i = 0; i < results["hourly"].length; i++) {
+      if(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["hourly"][i]["dt"]*1000)).toString() == data_atual){
+        dia.add(results["hourly"][i]);
+      }
+    }
+
+    for (var i = 0; i < results["daily"].length; i++) {
+      if(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["hourly"][i]["dt"]*1000)).toString() == data_atual){
+        add_dia.add(results["daily"][i]["min"]);
+        add_dia.add(results["daily"][i]["max"]);
+        add_dia.add(results["daily"][i]["humidity"]);
+        add_dia.add(results["daily"][i]["wind_speed"]);
+      }
+    }
+
+    
+    //print(dia.length);
+
+    setState(() {
+      this.dia_total = dia;
+      this.dia_escolhido = data_atual;
+      this.loading = false;
+      this.temp_min = add_dia[0];
+      this.temp_max = add_dia[1];
+      this.humidity = add_dia[2];
+      this.wind = add_dia[3];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
+    final size = MediaQuery.of(context).size;    
+    final task = ModalRoute.of(context)?.settings.arguments;
+    final String agora  = '${task}';
+    this.getWeatherHourly(agora);
+    while(loading) return CircularProgressIndicator();
+    
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -77,13 +140,13 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                         RichText(
                           text: TextSpan(
                             style: Theme.of(context).textTheme.bodyText1,
-                            children: const <TextSpan>[
+                            children: <TextSpan>[
                               TextSpan(
                                 text: 'Segunda',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               TextSpan(
-                                text: ', 28/06',
+                                text: ", " + this.dia_escolhido,
                                 style: TextStyle(fontWeight: FontWeight.normal),
                               ),
                             ],
@@ -125,9 +188,10 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                   text: TextSpan(
                                     style:
                                         Theme.of(context).textTheme.bodyText1,
-                                    children: const <TextSpan>[
+                                    children: <TextSpan>[
                                       TextSpan(
-                                        text: '24.1º',
+                                        //text: '24.1º',
+                                        text: '' + this.temp_max + 'º',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
@@ -135,7 +199,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: '/14º',
+                                        text: '/' + this.temp_min + 'º',
                                         style: TextStyle(
                                           fontWeight: FontWeight.normal,
                                           fontSize: 19,
@@ -166,7 +230,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                       width: 2,
                                     ),
                                     Text(
-                                      "5%",
+                                      this.humidity+"%",
                                       style: const TextStyle(
                                         fontSize: 13,
                                         color: Colors.black,
@@ -190,7 +254,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                       width: 7,
                                     ),
                                     Text(
-                                      "2 km/h",
+                                      this.wind+" km/h",
                                       style: const TextStyle(
                                         fontSize: 13,
                                         color: Colors.black,
@@ -215,7 +279,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                       thickness: 3,
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,
-                        itemCount: forecastByHour.length,
+                        itemCount: dia_total.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
                             // decoration: const BoxDecoration(color: Colors.black12),
@@ -231,7 +295,8 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                     Container(
                                       width: (size.width - 60) * 0.20,
                                       child: Text(
-                                        forecastByHour[index].hour,
+                                        //forecastByHour[index].hour,
+                                        new DateFormat('HH:mm').format(new DateTime.fromMillisecondsSinceEpoch(dia_total[index]["dt"]*1000)).toString(),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 17,
@@ -259,7 +324,8 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                             width: 5,
                                           ),
                                           Text(
-                                            forecastByHour[index].temperature,
+                                            //forecastByHour[index].temperature,
+                                            dia_total[index]["temp"].toString()+'º',
                                             style: const TextStyle(
                                               fontSize: 13,
                                               color: Colors.black,
@@ -287,7 +353,8 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                             width: 6,
                                           ),
                                           Text(
-                                            forecastByHour[index].windVelocity,
+                                            //forecastByHour[index].windVelocity,
+                                            dia_total[index]["wind_speed"].toString()+' km/h',
                                             style: const TextStyle(
                                               fontSize: 13,
                                               color: Colors.black,
@@ -317,7 +384,8 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                             width: 5,
                                           ),
                                           Text(
-                                            forecastByHour[index].rainProbability,
+                                            //forecastByHour[index].rainProbability,
+                                            dia_total[index]["clouds"].toString(),
                                             style: const TextStyle(
                                               fontSize: 13,
                                               color: Colors.black,
@@ -345,7 +413,8 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                             width: 5,
                                           ),
                                           Text(
-                                            forecastByHour[index].humidity,
+                                            //forecastByHour[index].humidity,
+                                            dia_total[index]["humidity"].toString() + ' %',
                                             style: const TextStyle(
                                               fontSize: 13,
                                               color: Colors.black,
