@@ -186,7 +186,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                             child: Image.asset(
                                               // todo: trocar icone/img de acordo com  ao
                                               //weather[3]['icon_path'],
-                                              "/assets/images/weather/"+forecast_data["daily"][index]["weather"][0]["icon"]+".png",
+                                              "assets/images/weather/"+forecast_data["daily"][index]["weather"][0]["icon"]+".png",
                                               width: 30,
                                               height: 30,
                                             ),

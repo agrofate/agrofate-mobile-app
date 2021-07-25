@@ -73,8 +73,8 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString('senha', senha);
       Navigator.push(
         context,
-        //MaterialPageRoute(builder: (context) => MainScreens()),
-        MaterialPageRoute(builder: (context) => CanteirosScreen()),
+        MaterialPageRoute(builder: (context) => MainScreens()),
+        //MaterialPageRoute(builder: (context) => CanteirosScreen()),
       );
     }else{
       _exibirDialogo(response_login);
