@@ -12,7 +12,6 @@ import 'package:weather_icons/weather_icons.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class ForecastScreen extends StatefulWidget {
   @override
   _ForecastScreenState createState() => _ForecastScreenState();
@@ -36,18 +35,16 @@ class _ForecastScreenState extends State<ForecastScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       prefs.setString('data_escolhida', data_atual.toString());
-    });  
+    });
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-          new DetailForecastScreen(),
-          /*settings: RouteSettings(
+        builder: (context) => new DetailForecastScreen(),
+        /*settings: RouteSettings(
             arguments: new DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(forecast_data["daily"][index]["dt"]*1000)).toString(),
           ),*/
       ),
     );
-
   }
 
   Future getWeather() async {
@@ -64,7 +61,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
 
     http.Response forecast = await http.get(
         "https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude={current,minutely,hourly,alerts}&appid=${codigo}&lang=pt_br&units=metric");
-    forecast_data = jsonDecode(forecast.body);    
+    forecast_data = jsonDecode(forecast.body);
 
     setState(() {
       this.temp = results['main']['temp'];
@@ -85,7 +82,6 @@ class _ForecastScreenState extends State<ForecastScreen> {
 
   @override
   Widget build(BuildContext context) {
-    while(loading) return CircularProgressIndicator();
     final size = MediaQuery.of(context).size;
     List main_weather = ["Clear", "Clouds", "Rain"];
     final main_weather_a = main_weather.asMap();
@@ -126,115 +122,145 @@ class _ForecastScreenState extends State<ForecastScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Visibility(
-              // TODO: ativar visualização qdo tiver local adicionado - se n tiver local, desativa a vis. e deixa só o botão
-              visible: true,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height / 7,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // todo: trocar icon de acordo com dia/noite
-                        // ignore: prefer_const_constructors
-                        Icon(
-                          Icons.wb_sunny,
-                          size: 32,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          nome_local + ", São Paulo",
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14.0,
-                          ),
-                        ),
-                        Text(
-                          temp != null
-                              ? temp.toStringAsFixed(1) + "\u00B0"
-                              : "Carregando",
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 40.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Column(
-                    // todo: limitar a 5 dias da semana
-                    children:
-                      List.generate(forecast_data["daily"].length, (index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 6,
+        child: FutureBuilder(builder: (context, text) {
+          if (loading) {
+            return Container(
+              height: size.height * 0.8,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else {
+            return Column(
+              children: [
+                Visibility(
+                  // TODO: ativar visualização qdo tiver local adicionado - se n tiver local, desativa a vis. e deixa só o botão
+                  visible: true,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height / 7,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // todo: trocar icon de acordo com dia/noite
+                            // ignore: prefer_const_constructors
+                            Icon(
+                              Icons.wb_sunny,
+                              size: 32,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              nome_local + ", São Paulo",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0,
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    // decoration: const BoxDecoration(color: Colors.black12),
-                                    width: (size.width - 40),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 50,
-                                          height: 50,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.1),
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Center(
-                                            child: Image.asset(
-                                              // todo: trocar icone/img de acordo com  ao
-                                              //weather[3]['icon_path'],
-                                              "assets/images/weather/"+forecast_data["daily"][index]["weather"][0]["icon"]+".png",
-                                              width: 30,
-                                              height: 30,
+                            ),
+                            Text(
+                              temp != null
+                                  ? temp.toStringAsFixed(1) + "\u00B0"
+                                  : "Carregando",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 40.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Column(
+                        // todo: limitar a 5 dias da semana
+                        children: List.generate(forecast_data["daily"].length,
+                            (index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 6,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      // decoration: const BoxDecoration(color: Colors.black12),
+                                      width: (size.width - 40),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 50,
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Center(
+                                              child: Image.asset(
+                                                // todo: trocar icone/img de acordo com  ao
+                                                //weather[3]['icon_path'],
+                                                "assets/images/weather/" +
+                                                    forecast_data["daily"]
+                                                            [index]["weather"]
+                                                        [0]["icon"] +
+                                                    ".png",
+                                                width: 30,
+                                                height: 30,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 15),
-                                        Container(
-                                          // decoration:
-                                          //     const BoxDecoration(color: Colors.black26),
-                                          width: (size.width) * 0.1,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                // todo: pegar 'seg' da API
-                                                //'Seg',
-                                                StringUtils.capitalize(DateFormat('EEEE','pt_Br').format(DateTime.parse(new DateFormat('yyyy-MM-dd hh:mm:ss').format(new DateTime.fromMillisecondsSinceEpoch(forecast_data["daily"][index]["dt"]*1000)))).substring(0,3)),
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
+                                          const SizedBox(width: 15),
+                                          Container(
+                                            // decoration:
+                                            //     const BoxDecoration(color: Colors.black26),
+                                            width: (size.width) * 0.1,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  // todo: pegar 'seg' da API
+                                                  //'Seg',
+                                                  StringUtils.capitalize(DateFormat(
+                                                          'EEEE', 'pt_Br')
+                                                      .format(DateTime.parse(new DateFormat(
+                                                              'yyyy-MM-dd hh:mm:ss')
+                                                          .format(new DateTime
+                                                                  .fromMillisecondsSinceEpoch(
+                                                              forecast_data["daily"]
+                                                                          [index]
+                                                                      ["dt"] *
+                                                                  1000))))
+                                                      .substring(0, 3)),
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(height: 5),
-                                              Text(new DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(forecast_data["daily"][index]["dt"]*1000))),
-                                              /*Text(
+                                                const SizedBox(height: 5),
+                                                Text(new DateFormat('dd/MM')
+                                                    .format(new DateTime
+                                                            .fromMillisecondsSinceEpoch(
+                                                        forecast_data["daily"]
+                                                                [index]["dt"] *
+                                                            1000))),
+                                                /*Text(
                                                 forecast_data["list"][index]
                                                             ["dt_txt"]
                                                         .split(" ")[0]
@@ -253,150 +279,165 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                                   fontWeight: FontWeight.w400,
                                                 ),
                                               ),*/
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Container(
-                                          // decoration:
-                                          //     const BoxDecoration(color: Colors.black38),
-                                          width: (size.width) * 0.26,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              RichText(
-                                                text: TextSpan(
-                                                  style:
-                                                      DefaultTextStyle.of(context)
-                                                          .style,
-                                                  children: <TextSpan>[
-                                                    TextSpan(
-                                                      text: forecast_data["daily"]
-                                                                          [index]
-                                                                      ["temp"]
-                                                                  ["max"]
-                                                              .toStringAsFixed(
-                                                                  1) +
-                                                          'º',
-                                                      style: TextStyle(
-                                                        color: kGreenColor,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 17,
+                                          Container(
+                                            // decoration:
+                                            //     const BoxDecoration(color: Colors.black38),
+                                            width: (size.width) * 0.26,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                RichText(
+                                                  text: TextSpan(
+                                                    style: DefaultTextStyle.of(
+                                                            context)
+                                                        .style,
+                                                    children: <TextSpan>[
+                                                      TextSpan(
+                                                        text: forecast_data["daily"]
+                                                                            [
+                                                                            index]
+                                                                        ["temp"]
+                                                                    ["max"]
+                                                                .toStringAsFixed(
+                                                                    1) +
+                                                            'º',
+                                                        style: TextStyle(
+                                                          color: kGreenColor,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 17,
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: "/" +
+                                                            forecast_data["daily"]
+                                                                            [
+                                                                            index]
+                                                                        ["temp"]
+                                                                    ["min"]
+                                                                .toStringAsFixed(
+                                                                    0) +
+                                                            'º',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.black
+                                                              .withOpacity(0.6),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            // decoration:
+                                            //     const BoxDecoration(color: Colors.black26),
+                                            width: (size.width) * 0.24,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(
+                                                      width: 9,
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Icon(
+                                                          WeatherIcons.raindrop,
+                                                          size: 14,
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 7,
+                                                    ),
+                                                    Text(
+                                                      forecast_data["daily"]
+                                                                      [index]
+                                                                  ["humidity"]
+                                                              .toString() +
+                                                          '%',
+                                                      style: const TextStyle(
+                                                        fontSize: 13,
+                                                        color: Colors.black,
                                                       ),
                                                     ),
-                                                    TextSpan(
-                                                      text: "/" +
-                                                          forecast_data["daily"]
-                                                                          [index]
-                                                                      ["temp"]
-                                                                  ["min"]
-                                                              .toStringAsFixed(
-                                                                  0) +
-                                                          'º',
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.black
-                                                            .withOpacity(0.6),
-                                                      ),
-                                                    )
                                                   ],
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          // decoration:
-                                          //     const BoxDecoration(color: Colors.black26),
-                                          width: (size.width) * 0.24,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  const SizedBox(
-                                                    width: 9,
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      Icon(
-                                                        WeatherIcons.raindrop,
-                                                        size: 14,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 7,
-                                                  ),
-                                                  Text(
-                                                    forecast_data["daily"][index]
-                                                                ["humidity"]
-                                                            .toString() +
-                                                        '%',
-                                                    style: const TextStyle(
-                                                      fontSize: 13,
-                                                      color: Colors.black,
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(
+                                                      width: 9,
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  const SizedBox(
-                                                    width: 9,
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      Icon(
-                                                        WeatherIcons.strong_wind,
-                                                        size: 14,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 7,
-                                                  ),
-                                                  Text(
-                                                    (forecast_data["daily"][index]
-                                                                ["wind_speed"] *
-                                                                3.6)
-                                                            .toStringAsFixed(1) +
-                                                        ' km/h',
-                                                    style: const TextStyle(
-                                                      fontSize: 13,
-                                                      color: Colors.black,
+                                                    Column(
+                                                      children: [
+                                                        Icon(
+                                                          WeatherIcons
+                                                              .strong_wind,
+                                                          size: 14,
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                                    const SizedBox(
+                                                      width: 7,
+                                                    ),
+                                                    Text(
+                                                      (forecast_data["daily"][
+                                                                          index]
+                                                                      [
+                                                                      "wind_speed"] *
+                                                                  3.6)
+                                                              .toStringAsFixed(
+                                                                  1) +
+                                                          ' km/h',
+                                                      style: const TextStyle(
+                                                        fontSize: 13,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Container(
-                                          // decoration:
-                                          //     const BoxDecoration(color: Colors.black38),
-                                          width: (size.width) * 0.13,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              IconButton(
-                                                onPressed: () {
-                                                  // todo: enviar para página de detalhes do dia selecionado
-                                                  _dataEscolhida(new DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(forecast_data["daily"][index]["dt"]*1000)).toString());
-                                                  /*Navigator.push(
+                                          Container(
+                                            // decoration:
+                                            //     const BoxDecoration(color: Colors.black38),
+                                            width: (size.width) * 0.13,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                IconButton(
+                                                  onPressed: () {
+                                                    // todo: enviar para página de detalhes do dia selecionado
+                                                    _dataEscolhida(new DateFormat(
+                                                            'dd/MM')
+                                                        .format(new DateTime
+                                                                .fromMillisecondsSinceEpoch(
+                                                            forecast_data["daily"]
+                                                                        [index]
+                                                                    ["dt"] *
+                                                                1000))
+                                                        .toString());
+                                                    /*Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
@@ -406,34 +447,34 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                                         ),
                                                     ),
                                                   );*/
-                                                },
-                                                icon: Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  size: 18,
-                                                  color: Colors.black
-                                                      .withOpacity(0.7),
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.arrow_forward_ios,
+                                                    size: 18,
+                                                    color: Colors.black
+                                                        .withOpacity(0.7),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 65, top: 6),
-                                child: Divider(
-                                  thickness: 0.8,
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    ),
-                    /*Container(
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 65, top: 6),
+                                  child: Divider(
+                                    thickness: 0.8,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                        /*Container(
                 child: Column(
                   children: List.generate(forecast_data["list"].length, (index) {
                     return Padding(
@@ -615,23 +656,25 @@ class _ForecastScreenState extends State<ForecastScreen> {
                   }),
                 ),
               ),*/
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(30),
-              child: ButtonWidget(
-                title: 'NOVO LOCAL',
-                hasBorder: true,
-                onClicked: () {
-                  // todo: linkar nova tela de adc novo local
-                  print("tela de adc novo local");
-                },
-              ),
-            ),
-          ],
-        ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(30),
+                  child: ButtonWidget(
+                    title: 'NOVO LOCAL',
+                    hasBorder: true,
+                    onClicked: () {
+                      // todo: linkar nova tela de adc novo local
+                      print("tela de adc novo local");
+                    },
+                  ),
+                ),
+              ],
+            );
+          }
+        }),
       ),
     );
   }

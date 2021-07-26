@@ -15,16 +15,14 @@ import 'package:weather_icons/weather_icons.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class DetailForecastScreen extends StatefulWidget {
   const DetailForecastScreen({Key? key}) : super(key: key);
-  
+
   @override
   _DetailForecastScreenState createState() => _DetailForecastScreenState();
 }
 
-class _DetailForecastScreenState extends State<DetailForecastScreen> {  
-
+class _DetailForecastScreenState extends State<DetailForecastScreen> {
   var lat;
   var long;
   var codigo;
@@ -48,7 +46,11 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
     for (var i = 0; i < results["hourly"].length; i++) {
       //print(data_atual);
       //print(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["hourly"][i]["dt"]*1000)).toString());
-      if(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["hourly"][i]["dt"]*1000)).toString() == data_atual){
+      if (DateFormat('dd/MM')
+              .format(new DateTime.fromMillisecondsSinceEpoch(
+                  results["hourly"][i]["dt"] * 1000))
+              .toString() ==
+          data_atual) {
         dia.add(results["hourly"][i]);
       }
     }
@@ -56,7 +58,11 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
     for (var i = 0; i < results["daily"].length; i++) {
       //print(data_atual);
       //print(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["hourly"][i]["dt"]*1000)).toString());
-      if(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["daily"][i]["dt"]*1000)).toString() == data_atual){
+      if (DateFormat('dd/MM')
+              .format(new DateTime.fromMillisecondsSinceEpoch(
+                  results["daily"][i]["dt"] * 1000))
+              .toString() ==
+          data_atual) {
         add_dia.add(results["daily"][i]["temp"]["min"].toStringAsFixed(0));
         add_dia.add(results["daily"][i]["temp"]["max"].toStringAsFixed(0));
         add_dia.add(results["daily"][i]["humidity"].toString());
@@ -65,7 +71,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
         add_dia.add(results["daily"][i]["dt"]);
       }
     }
-    
+
     print(dia.length);
     print(add_dia);
     print(dia);
@@ -89,21 +95,21 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
     _procuraData();
   }
 
-  Future _procuraData() async{
+  Future _procuraData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       data_escolhida = (prefs.getString('data_escolhida') ?? '');
-    });  
+    });
     print(data_escolhida);
     this.getWeatherHourly(data_escolhida);
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;    
+    final size = MediaQuery.of(context).size;
     final task = ModalRoute.of(context)?.settings.arguments;
     //final String agora  = '${task}';
-        
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -116,33 +122,34 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            FutureBuilder(
-              builder: (context, text){
-                if (loading) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  return Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: Column(
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TitleFormsWidget(
+                        titleText: 'Previsão do tempo \ndetalhada',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const DescriptionFormsWidget(
+                    descriptionText:
+                    'Entenda o melhor momento para a produção de acordo com as previsões em sua localização.',
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  FutureBuilder(builder: (context, text) {
+                    if (loading) {
+                      return CircularProgressIndicator();
+                    } else {
+                      return Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              TitleFormsWidget(
-                                titleText: 'Previsão do tempo \ndetalhada',
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const DescriptionFormsWidget(
-                            descriptionText:
-                                'Entenda o melhor momento para a produção de acordo com as previsões em sua localização.',
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
                           Container(
                             height: MediaQuery.of(context).size.height / 5,
                             width: MediaQuery.of(context).size.width * 0.9,
@@ -167,12 +174,20 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                     style: Theme.of(context).textTheme.bodyText1,
                                     children: <TextSpan>[
                                       TextSpan(
-                                        text: StringUtils.capitalize(DateFormat('EEEE','pt_Br').format(DateTime.parse(new DateFormat('yyyy-MM-dd hh:mm:ss').format(new DateTime.fromMillisecondsSinceEpoch(this.data_completa*1000))))),
-                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                        text: StringUtils.capitalize(DateFormat(
+                                            'EEEE', 'pt_Br')
+                                            .format(DateTime.parse(new DateFormat(
+                                            'yyyy-MM-dd hh:mm:ss')
+                                            .format(new DateTime
+                                            .fromMillisecondsSinceEpoch(
+                                            this.data_completa * 1000))))),
+                                        style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                       ),
                                       TextSpan(
                                         text: ", " + this.dia_escolhido,
-                                        style: TextStyle(fontWeight: FontWeight.normal),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal),
                                       ),
                                     ],
                                   ),
@@ -198,7 +213,9 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                       children: [
                                         Image.asset(
                                           //weather[2]['icon_path'],
-                                          "assets/images/weather/"+this.icon+".png",
+                                          "assets/images/weather/" +
+                                              this.icon +
+                                              ".png",
                                           width: 78,
                                           height: 78,
                                         ),
@@ -212,8 +229,9 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                       children: [
                                         RichText(
                                           text: TextSpan(
-                                            style:
-                                                Theme.of(context).textTheme.bodyText1,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
                                             children: <TextSpan>[
                                               TextSpan(
                                                 //text: '24.1º',
@@ -239,7 +257,8 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                           height: 5,
                                         ),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                           children: [
                                             Column(
                                               children: [
@@ -256,7 +275,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                               width: 2,
                                             ),
                                             Text(
-                                              this.humidity+"%",
+                                              this.humidity + "%",
                                               style: const TextStyle(
                                                 fontSize: 13,
                                                 color: Colors.black,
@@ -280,7 +299,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                               width: 7,
                                             ),
                                             Text(
-                                              this.wind+" km/h",
+                                              this.wind + " km/h",
                                               style: const TextStyle(
                                                 fontSize: 13,
                                                 color: Colors.black,
@@ -316,13 +335,18 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Container(
-                                              width: (size.width - 60) * 0.20,
+                                              width: (size.width - 60) * 0.19,
                                               child: Text(
                                                 //forecastByHour[index].hour,
-                                                new DateFormat('HH:mm').format(new DateTime.fromMillisecondsSinceEpoch(dia_total[index]["dt"]*1000)).toString(),
+                                                new DateFormat('HH:mm')
+                                                    .format(new DateTime
+                                                    .fromMillisecondsSinceEpoch(
+                                                    dia_total[index]["dt"] *
+                                                        1000))
+                                                    .toString(),
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 17,
@@ -332,7 +356,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                             Container(
                                               // decoration: const BoxDecoration(
                                               //     color: Colors.black12),
-                                              width: (size.width - 60) * 0.14,
+                                              width: (size.width - 60) * 0.12,
                                               child: Row(
                                                 children: [
                                                   Column(
@@ -351,7 +375,9 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                                   ),
                                                   Text(
                                                     //forecastByHour[index].temperature,
-                                                    dia_total[index]["temp"].toStringAsFixed(0)+'º',
+                                                    dia_total[index]["temp"]
+                                                        .toStringAsFixed(0) +
+                                                        'º',
                                                     style: const TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.black,
@@ -361,7 +387,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                               ),
                                             ),
                                             Container(
-                                              width: (size.width - 60) * 0.21,
+                                              width: (size.width - 60) * 0.23,
                                               child: Row(
                                                 children: [
                                                   Column(
@@ -380,7 +406,9 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                                   ),
                                                   Text(
                                                     //forecastByHour[index].windVelocity,
-                                                    dia_total[index]["wind_speed"].toStringAsFixed(0)+' km/h',
+                                                    dia_total[index]["wind_speed"]
+                                                        .toStringAsFixed(1) +
+                                                        ' km/h',
                                                     style: const TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.black,
@@ -392,7 +420,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                             Container(
                                               // decoration: const BoxDecoration(
                                               //     color: Colors.black12),
-                                              width: (size.width - 60) * 0.15,
+                                              width: (size.width - 60) * 0.17,
                                               child: Row(
                                                 children: [
                                                   Column(
@@ -411,7 +439,9 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                                   ),
                                                   Text(
                                                     //forecastByHour[index].rainProbability,
-                                                    dia_total[index]["clouds"].toString() + " %",
+                                                    dia_total[index]["clouds"]
+                                                        .toString() +
+                                                        " %",
                                                     style: const TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.black,
@@ -421,7 +451,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                               ),
                                             ),
                                             Container(
-                                              width: (size.width - 60) * 0.17,
+                                              width: (size.width - 60) * 0.16,
                                               child: Row(
                                                 children: [
                                                   Column(
@@ -436,11 +466,13 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                                     ],
                                                   ),
                                                   const SizedBox(
-                                                    width: 5,
+                                                    width: 4,
                                                   ),
                                                   Text(
                                                     //forecastByHour[index].humidity,
-                                                    dia_total[index]["humidity"].toString() + ' %',
+                                                    dia_total[index]["humidity"]
+                                                        .toString() +
+                                                        ' %',
                                                     style: const TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.black,
@@ -465,10 +497,11 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                             ),
                           ),
                         ],
-                      ),
-                    );
-                }
-              }
+                      );
+                    }
+                  }),
+                ],
+              ),
             ),
           ],
         ),

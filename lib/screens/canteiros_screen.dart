@@ -10,8 +10,6 @@ import 'new_canteiro_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-
-
 class CanteirosScreen extends StatefulWidget {
   const CanteirosScreen({Key? key}) : super(key: key);
 
@@ -32,18 +30,19 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
     super.initState();
   }
 
-  Future _leContador() async{
+  Future _leContador() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _id_user =  (prefs.getString('id_user') ?? '');
-      _email =  (prefs.getString('email') ?? '');
-    });  
+      _id_user = (prefs.getString('id_user') ?? '');
+      _email = (prefs.getString('email') ?? '');
+    });
     print(_email);
     print(_id_user);
 
-    String parametros = "?id_usuario="+_id_user;
+    String parametros = "?id_usuario=" + _id_user;
     http.Response url_teste = await http.get(
-        "https://future-snowfall-319523.uc.r.appspot.com/read-one-canteiro"+parametros);
+        "https://future-snowfall-319523.uc.r.appspot.com/read-one-canteiro" +
+            parametros);
     var response_login = jsonDecode(url_teste.body).asMap();
     canteiro_data = response_login;
     print(response_login);
@@ -58,19 +57,19 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
     setState(() {
       prefs.setString('id_canteiro_escolhido', id_canteiro.toString());
       prefs.setString('nome_canteiro_escolhido', nome_canteiro.toString());
-    });  
+    });
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DetailCanteiroScreen(),
       ),
     );
-
   }
 
   @override
-  Widget build(BuildContext context) {    
-    //while(loading) return CircularProgressIndicator();
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -105,15 +104,20 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Column(          
-          children: [
-            FutureBuilder(
-              builder: (context, text){
-              if (loading) {
-                return Center(child: CircularProgressIndicator());
-              } else {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),              
+        child: FutureBuilder(builder: (context, text) {
+          if (loading) {
+            return Container(
+              height: size.height * 0.8,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else {
+            return Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                   child: Column(
                     children: [
                       ListView.builder(
@@ -124,7 +128,8 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                           return GestureDetector(
                             onTap: () {
                               // TODO: enviar para página de detalhes do canteiro selecionado
-                              _canteiroEscolhido(canteiro_data[index][0], canteiro_data[index][2]);
+                              _canteiroEscolhido(canteiro_data[index][0],
+                                  canteiro_data[index][2]);
                               /*Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -149,7 +154,8 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                         decoration: BoxDecoration(
                                           color: Colors.grey.withOpacity(0.1),
                                           shape: BoxShape.rectangle,
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           image: DecorationImage(
                                             // todo: trocar img do canteiro de acordo com banco - se tiver
                                             image: AssetImage(
@@ -162,8 +168,10 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                         width: 15,
                                       ),
                                       Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             canteiro_data[index][2],
@@ -208,7 +216,7 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                 ],
                               ),
                             ),
-                          );                                        
+                          );
                         },
                       ),
                       const SizedBox(
@@ -228,11 +236,11 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                       ),
                     ],
                   ),
-                );
-              }
-            })
-          ],
-        ),
+                ),
+              ],
+            );
+          }
+        }),
       ),
     );
   }
