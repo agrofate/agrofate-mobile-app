@@ -103,7 +103,7 @@ class _DadosScreenState extends State<DadosScreen> {
                       visible: true,
                       child: NotificationDadosWidget(
                         message:
-                        "O nível de pH está fora do intervalo recomendado.\nÉ indicado acrescentar mais fertilizante.",
+                        "O nível de pH está fora do intervalo recomendado. É indicado \nacrescentar mais fertilizante.",
                         // vermelho
                         colorNotification: 0xFFF44336,
                         iconNotification: Icons.warning,

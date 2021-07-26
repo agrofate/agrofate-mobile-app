@@ -57,11 +57,11 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
       //print(data_atual);
       //print(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["hourly"][i]["dt"]*1000)).toString());
       if(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["daily"][i]["dt"]*1000)).toString() == data_atual){
-        add_dia.add(results["daily"][i]["temp"]["min"].toString());
-        add_dia.add(results["daily"][i]["temp"]["max"].toString());
+        add_dia.add(results["daily"][i]["temp"]["min"].toStringAsFixed(0));
+        add_dia.add(results["daily"][i]["temp"]["max"].toStringAsFixed(0));
         add_dia.add(results["daily"][i]["humidity"].toString());
-        add_dia.add(results["daily"][i]["wind_speed"].toString());
-        add_dia.add(results["daily"][i]["weather"][0]["icon"].toString());        
+        add_dia.add(results["daily"][i]["wind_speed"].toStringAsFixed(1));
+        add_dia.add(results["daily"][i]["weather"][0]["icon"].toString());
         add_dia.add(results["daily"][i]["dt"]);
       }
     }
@@ -351,7 +351,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                                   ),
                                                   Text(
                                                     //forecastByHour[index].temperature,
-                                                    dia_total[index]["temp"].toString()+'º',
+                                                    dia_total[index]["temp"].toStringAsFixed(0)+'º',
                                                     style: const TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.black,
@@ -380,7 +380,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                                   ),
                                                   Text(
                                                     //forecastByHour[index].windVelocity,
-                                                    dia_total[index]["wind_speed"].toString()+' km/h',
+                                                    dia_total[index]["wind_speed"].toStringAsFixed(0)+' km/h',
                                                     style: const TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.black,
