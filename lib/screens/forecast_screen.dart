@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:weather_icons/weather_icons.dart';
 import 'package:basic_utils/basic_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class ForecastScreen extends StatefulWidget {
@@ -31,10 +32,28 @@ class _ForecastScreenState extends State<ForecastScreen> {
   var teste_link;
   bool loading = true;
 
+  _dataEscolhida(data_atual) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setString('data_escolhida', data_atual.toString());
+    });  
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+          new DetailForecastScreen(),
+          /*settings: RouteSettings(
+            arguments: new DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(forecast_data["daily"][index]["dt"]*1000)).toString(),
+          ),*/
+      ),
+    );
+
+  }
+
   Future getWeather() async {
-    this.lat = '';
-    this.long = '';
-    this.codigo = '';
+    this.lat = '-23.5638291';
+    this.long = '-46.007628';
+    this.codigo = '8508113bd018ec7a9708de6d57d2de9c';
     http.Response response = await http.get(
         "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&lang=pt_br&units=metric&appid=${codigo}");
     var results = jsonDecode(response.body);
@@ -376,7 +395,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                               IconButton(
                                                 onPressed: () {
                                                   // todo: enviar para página de detalhes do dia selecionado
-                                                  Navigator.push(
+                                                  _dataEscolhida(new DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(forecast_data["daily"][index]["dt"]*1000)).toString());
+                                                  /*Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
@@ -385,7 +405,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                                           arguments: new DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(forecast_data["daily"][index]["dt"]*1000)).toString(),
                                                         ),
                                                     ),
-                                                  );
+                                                  );*/
                                                 },
                                                 icon: Icon(
                                                   Icons.arrow_forward_ios,

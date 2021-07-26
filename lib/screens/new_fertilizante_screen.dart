@@ -7,6 +7,8 @@ import 'package:agrofate_mobile_app/widgets/title_forms_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class NewFertilizanteScreen extends StatefulWidget {
   const NewFertilizanteScreen({Key? key}) : super(key: key);
@@ -18,6 +20,7 @@ class NewFertilizanteScreen extends StatefulWidget {
 class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
   final _nameFertController = TextEditingController();
   final _marcaFertController = TextEditingController();
+  String _id_safra_escolhida = '';
 
   DateTime date = DateTime(DateTime.now().year - 500);
 
@@ -28,6 +31,41 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
     } else {
       return DateFormat('dd/MM/yyyy').format(date);
       // return '${date.day}/${date.month}/${date.year}';
+    }
+  }
+
+  adicionarFertilizante(nome_fert, marca_fert, data_fert) async{
+    if(nome_fert != ''){
+      if(marca_fert != ''){
+        if(data_fert.toString().split('-')[0] != '1521'){        
+          SharedPreferences prefs = await SharedPreferences.getInstance();   
+          _id_safra_escolhida = (prefs.getString('id_safra_atual') ?? ''); 
+          String parametros = "?id_safra="+_id_safra_escolhida+"&nome_fert="+nome_fert+"&data_fert="+data_fert.toString()+"&marca_fert="+marca_fert;
+          http.Response url_teste = await http.post(
+              "https://future-snowfall-319523.uc.r.appspot.com/insert-novo-fertilizante"+parametros);
+          var response_login = url_teste.body;
+          print(response_login);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  DetailCanteiroScreen(), // TODO: enviar para canteiro que a safra foi adc
+            ),
+          );
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Insira a data de aplicação'))
+          );
+        }
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Insira a marca do Fertilizante'))
+        );
+      }
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Insira o nome do Fertilizante'))
+      );
     }
   }
 
@@ -131,7 +169,8 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
                       hasBorder: false,
                       onClicked: () {
                         // TODO: subir informações da fertilizante (nome; marca; date)
-                        print('Nome fert: ${_nameFertController.text}');
+                        adicionarFertilizante(_nameFertController.text, _marcaFertController.text, date);
+                        /*print('Nome fert: ${_nameFertController.text}');
                         print('Marca fert: ${_marcaFertController.text}');
                         Navigator.push(
                           context,
@@ -139,7 +178,7 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
                             builder: (context) =>
                                 DetailCanteiroScreen(),
                           ),
-                        );
+                        );*/
                       },
                     ),
                   ],
