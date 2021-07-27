@@ -285,8 +285,9 @@ class _DadosScreenState extends State<DadosScreen> {
                     height: 10,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      // TODO: puxar dados de atualizacao dos sensores do BD
                       Text(
                         "Última atualização: " +
                             "22/07/2021" +
