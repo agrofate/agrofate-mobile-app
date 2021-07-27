@@ -338,7 +338,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                           MainAxisAlignment.spaceBetween,
                                           children: [
                                             Container(
-                                              width: (size.width - 60) * 0.19,
+                                              width: (size.width - 60) * 0.18,
                                               child: Text(
                                                 //forecastByHour[index].hour,
                                                 new DateFormat('HH:mm')
@@ -356,7 +356,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                             Container(
                                               // decoration: const BoxDecoration(
                                               //     color: Colors.black12),
-                                              width: (size.width - 60) * 0.12,
+                                              width: (size.width - 60) * 0.13,
                                               child: Row(
                                                 children: [
                                                   Column(
