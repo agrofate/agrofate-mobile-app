@@ -872,5 +872,9 @@ List<Fertilizante> fertilizantes = [
 ];
 
 List<Defensivo> defensivos = [
-
+  Defensivo(
+    nome: "Nome def 1",
+    marca: "XXX",
+    dataAplicacao: "26/06/21",
+  ),
 ];
