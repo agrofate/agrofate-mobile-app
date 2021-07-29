@@ -307,7 +307,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     
                 Padding(                  
                   padding: const EdgeInsets.all(0.0),                        
-                  child: new MaterialButton(                    
+                  child: new MaterialButton(
                     child: setUpButtonChild(),                    
                     onPressed: () {
                       setState(() {
@@ -319,7 +319,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     shape: new RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
                     ),
-                    elevation: 4.0,
+                    elevation: 0,
+                    hoverElevation: 0,
+                    focusElevation: 0,
+                    highlightElevation: 0,
                     minWidth: double.infinity,
                     height: 58.0,
                     color: kGreenColor,
