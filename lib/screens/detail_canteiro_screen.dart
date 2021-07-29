@@ -645,7 +645,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                         const EdgeInsets.symmetric(
                                                             horizontal: 15),
                                                     child: ButtonWidget(
-                                                      title: 'NOVO Defensivo',
+                                                      title: 'NOVO DEFENSIVO',
                                                       hasBorder: true,
                                                       onClicked: () {
                                                         Navigator.push(

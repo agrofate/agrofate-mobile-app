@@ -59,7 +59,7 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
                       children: [
                         DescriptionFormsWidget(
                           descriptionText:
-                              'Preencha os campos abaixo e crie um novo canteiro.',
+                              'Preencha os campos abaixo e crie um novo\ncanteiro.',
                         ),
                       ],
                     ),
