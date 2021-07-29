@@ -60,12 +60,12 @@ class _NewDefensivoScreenState extends State<NewDefensivoScreen> {
         }
       }else{
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Insira a marca do Fertilizante'))
+          const SnackBar(content: Text('Insira a marca do Defensivo'))
         );
       }
     }else{
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Insira o nome do Fertilizante'))
+        const SnackBar(content: Text('Insira o nome do Defensivo'))
       );
     }
   }

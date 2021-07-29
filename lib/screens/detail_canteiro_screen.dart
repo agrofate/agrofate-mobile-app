@@ -33,12 +33,15 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
   bool loading_safra_detalhe = true;
   bool loading_fertilizante = true;
   bool loading_fertilizante_detalhe = true;
+  bool loading_defensivo = true;
+  bool loading_defensivo_detalhe = true;
   var safra_data;
   var nome_canteiro;
   var nome_safra;
   var data_plantacao;
   var nome_cultura;
   var fert_data;
+  var def_data;
 
   @override
   void initState() {
@@ -111,6 +114,30 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
               fert_data = response_login_fert;
               this.loading_fertilizante = false;
               this.loading_fertilizante_detalhe = true;
+            });
+          }
+        }
+
+        String parametros_def = "?id_safra=" + response_login[0][0].toString();
+        print(parametros_def);
+        http.Response url_teste_def = await http.get(
+            "https://future-snowfall-319523.uc.r.appspot.com/read-one-defensivo" +
+                parametros_def);
+        var response_login_def = jsonDecode(url_teste_def.body).asMap();
+        print("Linha 95: ");
+        print(response_login_def.length);
+        if (response_login_def.length > 0) {
+          print(response_login_def[0][0]);
+          if (response_login_def[0][0] == 0) {
+            setState(() {
+              this.loading_defensivo = false;
+              this.loading_defensivo_detalhe = false;
+            });
+          } else {
+            setState(() {
+              def_data = response_login_def;
+              this.loading_defensivo = false;
+              this.loading_defensivo_detalhe = true;
             });
           }
         }
@@ -430,24 +457,30 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                     CircularProgressIndicator());
                                           } else {
                                             if (!loading_fertilizante_detalhe) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 15),
-                                                child: ButtonWidget(
-                                                  title: 'NOVO FERTILIZANTE',
-                                                  hasBorder: true,
-                                                  onClicked: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            NewFertilizanteScreen(),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              );
+                                              return Column(
+                                                children: [
+                                                  Container(                                                    
+                                                    height: (size.height * 0.42) - 70,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                            horizontal: 15),
+                                                    child: ButtonWidget(
+                                                      title: 'NOVO FERTILIZANTE',
+                                                      hasBorder: true,
+                                                      onClicked: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                NewFertilizanteScreen(),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  )
+                                                ]);
                                             } else {
                                               return Column(
                                                 children: [
@@ -595,7 +628,184 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                           }
                                         }),
                                         // second tab bar view widget
-                                        buildDefensivoList(size),
+                                        FutureBuilder(builder: (context, text) {
+                                          if (loading_defensivo) {
+                                            return Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          } else {
+                                            if (!loading_defensivo_detalhe) {
+                                              return Column(
+                                                children: [
+                                                  Container(                                                    
+                                                    height: (size.height * 0.42) - 70,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                            horizontal: 15),
+                                                    child: ButtonWidget(
+                                                      title: 'NOVO Defensivo',
+                                                      hasBorder: true,
+                                                      onClicked: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                NewDefensivoScreen(),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  )
+                                                ]);
+                                            } else {
+                                              return Column(
+                                                children: [
+                                                  Container(
+                                                    height:
+                                                        (size.height * 0.42) -
+                                                            70,
+                                                    child: ListView.builder(
+                                                      scrollDirection:
+                                                          Axis.vertical,
+                                                      padding: EdgeInsets.only(
+                                                          top: 10,
+                                                          left: 15,
+                                                          right: 15),
+                                                      itemCount:
+                                                          def_data.length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        return Container(
+                                                          // decoration: const BoxDecoration(color: Colors.black12),
+                                                          child: Column(
+                                                            children: [
+                                                              const SizedBox(
+                                                                height: 2,
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Container(
+                                                                    width: (size.width -
+                                                                            60) *
+                                                                        0.7,
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Text(
+                                                                          def_data[index]
+                                                                              [
+                                                                              2],
+                                                                          style:
+                                                                              const TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            fontSize:
+                                                                                14,
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              1,
+                                                                        ),
+                                                                        Text(
+                                                                          "Marca: " +
+                                                                              def_data[index][3],
+                                                                          style:
+                                                                              const TextStyle(
+                                                                            fontSize:
+                                                                                13,
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              1,
+                                                                        ),
+                                                                        Text(
+                                                                          "Data de aplicação: " +
+                                                                              def_data[index][4].split(" ")[1]+"/"+def_data[index][4].split(" ")[2]+"/"+def_data[index][4].split(" ")[3],
+                                                                              //fert_data[index][4],
+                                                                          style:
+                                                                              const TextStyle(
+                                                                            fontSize:
+                                                                                13,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  Center(
+                                                                    child:
+                                                                        IconButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator
+                                                                            .push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                EditDefensivoScreen(),
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                      icon: Icon(
+                                                                          Icons
+                                                                              .edit_outlined),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 2,
+                                                              ),
+                                                              const Divider(
+                                                                thickness: 0.8,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 15),
+                                                    child: ButtonWidget(
+                                                      title:
+                                                          'NOVO DEFENSIVO',
+                                                      hasBorder: true,
+                                                      onClicked: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                NewDefensivoScreen(),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                          }
+                                        }),
+                                        //buildDefensivoList(size),
                                       ],
                                     ),
                                   ),
