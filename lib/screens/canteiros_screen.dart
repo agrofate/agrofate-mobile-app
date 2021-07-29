@@ -185,7 +185,8 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                           ),
                                           Text(
                                             "Criação: " +
-                                                canteiro_data[index][4],
+                                                //canteiro_data[index][4],
+                                                canteiro_data[index][4].split(" ")[1]+"/"+canteiro_data[index][4].split(" ")[2]+"/"+canteiro_data[index][4].split(" ")[3],
                                             style: const TextStyle(
                                               fontSize: 14,
                                             ),
@@ -195,7 +196,8 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                           ),
                                           Text(
                                             "Última atualização: " +
-                                                canteiro_data[index][5],
+                                                //canteiro_data[index][5],
+                                                canteiro_data[index][5].split(" ")[1]+"/"+canteiro_data[index][5].split(" ")[2]+"/"+canteiro_data[index][5].split(" ")[3],
                                             style: const TextStyle(
                                               fontSize: 14,
                                             ),

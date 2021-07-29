@@ -329,7 +329,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Data de plantação: " + data_plantacao,
+                                    "Data de plantação: " + data_plantacao.split(" ")[1]+"/"+data_plantacao.split(" ")[2]+"/"+data_plantacao.split(" ")[3], //data_plantacao,
                                     // TODO: recuperar data de plantação da safra do BD
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -523,7 +523,8 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                                         ),
                                                                         Text(
                                                                           "Data de aplicação: " +
-                                                                              fert_data[index][4],
+                                                                              fert_data[index][4].split(" ")[1]+"/"+fert_data[index][4].split(" ")[2]+"/"+fert_data[index][4].split(" ")[3],
+                                                                              //fert_data[index][4],
                                                                           style:
                                                                               const TextStyle(
                                                                             fontSize:

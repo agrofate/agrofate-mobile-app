@@ -20,6 +20,7 @@ class _DadosScreenState extends State<DadosScreen> {
   var loading_dados = true;
   var sensor_umidade;
   var sensor_ph;
+  var data_ultima;
 
   Future _procuraSensor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -43,7 +44,9 @@ class _DadosScreenState extends State<DadosScreen> {
         setState(() {
           sensor_umidade = response_login[0][1];
           sensor_ph = response_login[0][2];
+          data_ultima = response_login[0][3];
         });
+        print(data_ultima);
       }
     }
   }
@@ -290,9 +293,11 @@ class _DadosScreenState extends State<DadosScreen> {
                       // TODO: puxar dados de atualizacao dos sensores do BD
                       Text(
                         "Última atualização: " +
-                            "22/07/2021" +
-                            " às " +
-                            "18:00",
+                            data_ultima.split(" ")[1]+"/"+data_ultima.split(" ")[2]+"/"+data_ultima.split(" ")[3]+
+                            //"22/07/2021" +
+                            " às " +                          
+                            data_ultima.split(" ")[4],
+                            //"18:00",
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.5),
                           fontSize: 11,

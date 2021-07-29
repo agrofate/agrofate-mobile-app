@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:agrofate_mobile_app/screens/main_screens.dart';
@@ -23,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   String password = '';
   bool isPasswordVisible = true;
+  int _state = 0;
 
   @override
   void initState() {
@@ -37,14 +39,14 @@ class _LoginScreenState extends State<LoginScreen> {
         // retorna um objeto do tipo Dialog
         return AlertDialog(
           title: new Text("Erro ao logar"),
-          content: new Text(mensagem),
+          content: new Text(mensagem[0]),
           actions: <Widget>[
             // define os botões na base do dialogo
             new FlatButton(
               child: new Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
-                if(mensagem != "Senha incorreta"){
+                if(mensagem[0] != "Senha incorreta"){
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => RegisterScreen()),
@@ -59,6 +61,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   onClickedEntrar(email, senha) async {
+    setState(() {
+      _state = 1;
+    });
+
     SharedPreferences prefs = await SharedPreferences.getInstance();    
     print(email);
     print(senha);
@@ -67,16 +73,27 @@ class _LoginScreenState extends State<LoginScreen> {
         "https://future-snowfall-319523.uc.r.appspot.com/read-one"+parametros);
     var response_login = jsonDecode(url_teste.body)[0].asMap();
     print(response_login);
-    if(response_login.length > 0){
+    if(response_login.length > 1){
+      setState(() {
+        _state = 2;
+      });
       prefs.setString('id_user', response_login[0].toString());
       prefs.setString('email', email);
       prefs.setString('senha', senha);
+      String parametros_sessao = "?id_usuario="+response_login[0].toString();
+      http.Response url_teste_sessao = await http.post(
+          "https://future-snowfall-319523.uc.r.appspot.com/update-user-sessao"+parametros_sessao);
+      var response_login_sessao = jsonDecode(url_teste_sessao.body)[0].asMap();
+      print(response_login_sessao);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MainScreens()),
         //MaterialPageRoute(builder: (context) => CanteirosScreen()),
       );
     }else{
+      setState(() {
+        _state = 0;
+      });
       _exibirDialogo(response_login);
     }
     /*Navigator.push(
@@ -275,7 +292,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                ButtonWidget(
+                /*ButtonWidget(
                     title: 'ENTRAR',
                     hasBorder: false,
                     onClicked: () {                      
@@ -286,7 +303,28 @@ class _LoginScreenState extends State<LoginScreen> {
                         context,
                         MaterialPageRoute(builder: (context) => MainScreens()),
                       );*/
-                    }),
+                    }),*/
+                    
+                Padding(                  
+                  padding: const EdgeInsets.all(0.0),                        
+                  child: new MaterialButton(                    
+                    child: setUpButtonChild(),                    
+                    onPressed: () {
+                      setState(() {
+                        if (_state == 0) {
+                          onClickedEntrar(emailController.text, password);
+                        }
+                      });
+                    },
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                    ),
+                    elevation: 4.0,
+                    minWidth: double.infinity,
+                    height: 58.0,
+                    color: kGreenColor,
+                  ),
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -312,4 +350,36 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  Widget setUpButtonChild() {
+    if (_state == 0) {
+      return new Text(
+        "ENTRAR",
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16.0,
+        ),
+      );
+    } else if (_state == 1) {
+      return CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+      );
+    } else {
+      return Icon(Icons.check, color: Colors.white);
+    }
+  }
+
+  void animateButton() {
+    setState(() {
+      _state = 1;
+    });
+
+    Timer(Duration(milliseconds: 3300), () {
+      setState(() {
+        _state = 2;
+      });
+    });
+  }
 }
+
+
