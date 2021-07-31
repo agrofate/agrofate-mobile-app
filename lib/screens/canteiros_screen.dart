@@ -23,6 +23,7 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
   String _id_canteiro_escolhido = '';
   var canteiro_data;
   bool loading = true;
+  bool loading_canteiro = false;
 
   @override
   void initState() {
@@ -46,6 +47,13 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
     var response_login = jsonDecode(url_teste.body).asMap();
     canteiro_data = response_login;
     print(response_login);
+
+    if(response_login.length > 0){
+      loading_canteiro = true;
+      setState(() {
+        loading_canteiro = false;
+      });
+    }
 
     setState(() {
       this.loading = false;
@@ -113,134 +121,151 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
               ),
             );
           } else {
-            return Column(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: canteiro_data.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onTap: () {
-                              // TODO: enviar para página de detalhes do canteiro selecionado
-                              _canteiroEscolhido(canteiro_data[index][0],
-                                  canteiro_data[index][2]);
-                              /*Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailCanteiroScreen(),
-                                ),
-                              );*/
-                            },
-                            child: Container(
-                              // decoration:
-                              //     const BoxDecoration(color: Colors.black12),
-                              child: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 2,
+            if(loading_canteiro){
+              return Column(
+                children: [ ButtonWidget(
+                          title: 'NOVO CANTEIRO',
+                          hasBorder: true,
+                          onClicked: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewCanteiroScreen(),
+                              ),
+                            );
+                          },
+                        )]);
+              
+            }else{
+              return Column(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                    child: Column(
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: canteiro_data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                // TODO: enviar para página de detalhes do canteiro selecionado
+                                _canteiroEscolhido(canteiro_data[index][0],
+                                    canteiro_data[index][2]);
+                                /*Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailCanteiroScreen(),
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 60,
-                                        height: 60,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.1),
-                                          shape: BoxShape.rectangle,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                            // todo: trocar img do canteiro de acordo com banco - se tiver
-                                            image: AssetImage(
-                                                "assets/images/canteiro_padrao.jpg"),
-                                            fit: BoxFit.cover,
+                                );*/
+                              },
+                              child: Container(
+                                // decoration:
+                                //     const BoxDecoration(color: Colors.black12),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: 60,
+                                          height: 60,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.1),
+                                            shape: BoxShape.rectangle,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                              // todo: trocar img do canteiro de acordo com banco - se tiver
+                                              image: AssetImage(
+                                                  "assets/images/canteiro_padrao.jpg"),
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            canteiro_data[index][2],
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
+                                        const SizedBox(
+                                          width: 15,
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              canteiro_data[index][2],
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: 1,
-                                          ),
-                                          Text(
-                                            "Criação: " +
-                                                //canteiro_data[index][4],
-                                                canteiro_data[index][4].split(" ")[1]+"/"+canteiro_data[index][4].split(" ")[2]+"/"+canteiro_data[index][4].split(" ")[3],
-                                            style: const TextStyle(
-                                              fontSize: 14,
+                                            const SizedBox(
+                                              height: 1,
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: 1,
-                                          ),
-                                          Text(
-                                            "Última atualização: " +
-                                                //canteiro_data[index][5],
-                                                canteiro_data[index][5].split(" ")[1]+"/"+canteiro_data[index][5].split(" ")[2]+"/"+canteiro_data[index][5].split(" ")[3],
-                                            style: const TextStyle(
-                                              fontSize: 14,
+                                            Text(
+                                              "Criação: " +
+                                                  //canteiro_data[index][4],
+                                                  canteiro_data[index][4].split(" ")[1]+"/"+canteiro_data[index][4].split(" ")[2]+"/"+canteiro_data[index][4].split(" ")[3],
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 2,
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 75, top: 6),
-                                    child: Divider(
-                                      thickness: 0.8,
+                                            const SizedBox(
+                                              height: 1,
+                                            ),
+                                            Text(
+                                              "Última atualização: " +
+                                                  //canteiro_data[index][5],
+                                                  canteiro_data[index][5].split(" ")[1]+"/"+canteiro_data[index][5].split(" ")[2]+"/"+canteiro_data[index][5].split(" ")[3],
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 75, top: 6),
+                                      child: Divider(
+                                        thickness: 0.8,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      ButtonWidget(
-                        title: 'NOVO CANTEIRO',
-                        hasBorder: true,
-                        onClicked: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NewCanteiroScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        ButtonWidget(
+                          title: 'NOVO CANTEIRO',
+                          hasBorder: true,
+                          onClicked: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewCanteiroScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            );
+                ],
+              );
+            }
           }
         }),
       ),

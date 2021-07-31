@@ -6,12 +6,14 @@ import 'package:flutter_session/flutter_session.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async{
+  //WidgetsFlutterBinding.ensureInitialized();
+  //dynamic _token = FlutterSession().get('token');
+  
   WidgetsFlutterBinding.ensureInitialized();
-  dynamic _token = FlutterSession().get('token');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var _token = prefs.getString('email');
   runApp(MyApp(token: _token,));
 }
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key, 
@@ -41,7 +43,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),    
-      home: token != '' ? MainScreens() : LoginScreen(),
+      home: token ==  null ? LoginScreen() : MainScreens(),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate
