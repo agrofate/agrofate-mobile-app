@@ -48,9 +48,10 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
                 if(mensagem[0] != "Senha incorreta"){
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => RegisterScreen()),
+                    ModalRoute.withName("/"),
                   );
                 }                
               },

@@ -23,7 +23,7 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
   String _id_canteiro_escolhido = '';
   var canteiro_data;
   bool loading = true;
-  bool loading_canteiro = false;
+  bool loading_canteiro = true;
 
   @override
   void initState() {
@@ -48,11 +48,12 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
     canteiro_data = response_login;
     print(response_login);
 
-    if(response_login.length > 0){
-      loading_canteiro = true;
-      setState(() {
-        loading_canteiro = false;
-      });
+    if (response_login.length > 0) {
+      if (response_login[0][0] != 0){
+        setState(() {
+          loading_canteiro = false;
+        });
+      }
     }
 
     setState(() {
@@ -121,27 +122,31 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
               ),
             );
           } else {
-            if(loading_canteiro){
-              return Column(
-                children: [ ButtonWidget(
-                          title: 'NOVO CANTEIRO',
-                          hasBorder: true,
-                          onClicked: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NewCanteiroScreen(),
-                              ),
-                            );
-                          },
-                        )]);
-              
-            }else{
+            if (loading_canteiro) {
+              return Column(children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  child: ButtonWidget(
+                    title: 'NOVO CANTEIRO',
+                    hasBorder: true,
+                    onClicked: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewCanteiroScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ]);
+            } else {
               return Column(
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 20),
                     child: Column(
                       children: [
                         ListView.builder(
@@ -170,7 +175,8 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                       height: 2,
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Container(
                                           width: 60,
@@ -210,7 +216,14 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                             Text(
                                               "Criação: " +
                                                   //canteiro_data[index][4],
-                                                  canteiro_data[index][4].split(" ")[1]+"/"+canteiro_data[index][4].split(" ")[2]+"/"+canteiro_data[index][4].split(" ")[3],
+                                                  canteiro_data[index][4]
+                                                      .split(" ")[1] +
+                                                  "/" +
+                                                  canteiro_data[index][4]
+                                                      .split(" ")[2] +
+                                                  "/" +
+                                                  canteiro_data[index][4]
+                                                      .split(" ")[3],
                                               style: const TextStyle(
                                                 fontSize: 14,
                                               ),
@@ -221,7 +234,14 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                             Text(
                                               "Última atualização: " +
                                                   //canteiro_data[index][5],
-                                                  canteiro_data[index][5].split(" ")[1]+"/"+canteiro_data[index][5].split(" ")[2]+"/"+canteiro_data[index][5].split(" ")[3],
+                                                  canteiro_data[index][5]
+                                                      .split(" ")[1] +
+                                                  "/" +
+                                                  canteiro_data[index][5]
+                                                      .split(" ")[2] +
+                                                  "/" +
+                                                  canteiro_data[index][5]
+                                                      .split(" ")[3],
                                               style: const TextStyle(
                                                 fontSize: 14,
                                               ),
@@ -234,7 +254,8 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                       height: 2,
                                     ),
                                     const Padding(
-                                      padding: EdgeInsets.only(left: 75, top: 6),
+                                      padding:
+                                          EdgeInsets.only(left: 75, top: 6),
                                       child: Divider(
                                         thickness: 0.8,
                                       ),
