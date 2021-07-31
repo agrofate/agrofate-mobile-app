@@ -462,6 +462,9 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                   Container(                                                    
                                                     height: (size.height * 0.42) - 70,
                                                   ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.symmetric(

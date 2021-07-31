@@ -73,6 +73,7 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
               Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -85,12 +86,11 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    Wrap(
                       children: [
                         DescriptionFormsWidget(
                           descriptionText:
-                              'Preencha os campos abaixo e crie um novo\ncanteiro.',
+                              'Preencha os campos abaixo e crie um novo canteiro.',
                         ),
                       ],
                     ),

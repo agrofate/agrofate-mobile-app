@@ -113,7 +113,7 @@ class _DadosScreenState extends State<DadosScreen> {
                     visible: true,
                     child: NotificationDadosWidget(
                       message:
-                          "O nível de pH está fora do intervalo correto. \nÉ indicado acrescentar mais fertilizante.",
+                          "O nível de pH está fora do intervalo certo. \nÉ indicado acrescentar mais fertilizante.",
                       // vermelho
                       colorNotification: 0xFFF44336,
                       iconNotification: Icons.warning,
@@ -290,7 +290,6 @@ class _DadosScreenState extends State<DadosScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      // TODO: puxar dados de atualizacao dos sensores do BD
                       Text(
                         "Última atualização: " +
                             data_ultima.split(" ")[1]+"/"+data_ultima.split(" ")[2]+"/"+data_ultima.split(" ")[3]+
