@@ -8,6 +8,8 @@ import 'package:flutter/painting.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class NewCanteiroScreen extends StatefulWidget {
   const NewCanteiroScreen({Key? key}) : super(key: key);
@@ -21,6 +23,35 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
   final ImagePicker _picker = ImagePicker();
 
   final nameCanteiroController = TextEditingController();
+  String _id_canteiro_escolhido = '';
+  String _id_user = '';
+
+  adicionarCanteiro(nome_cant) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _id_user = (prefs.getString('id_user') ?? '');
+    });
+    if(nome_cant != ''){       
+      SharedPreferences prefs = await SharedPreferences.getInstance();   
+      String parametros = "?nome_canteiro="+nome_cant+"&id_usuario="+_id_user;
+      http.Response url_teste = await http.post(
+          "https://future-snowfall-319523.uc.r.appspot.com/insert-novo-canteiro"+parametros);
+      var response_login = url_teste.body;
+      print(response_login);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              CanteirosScreen(), // TODO: enviar para canteiro que a safra foi adc
+        ),
+      );
+    
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Insira o nome do Canteiro'))
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,13 +122,15 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
                       hasBorder: false,
                       onClicked: () {
                         // TODO: subir informações do canteiro para nuvem
-                        print('Nome: ${nameCanteiroController.text}');
+                        
+                        adicionarCanteiro(nameCanteiroController.text);
+                        /*print('Nome: ${nameCanteiroController.text}');
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => CanteirosScreen(),
                           ),
-                        );
+                        );*/
                       },
                     ),
                   ],

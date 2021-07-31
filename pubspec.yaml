@@ -33,8 +33,9 @@ dependencies:
     sdk: flutter
   font_awesome_flutter: ^8.7.0
   http: ^0.12.2
-  shared_preferences: 2.0.6
+  shared_preferences: ^0.5.12
   basic_utils: ^1.2.0
+  flutter_session: ^0.1.1
 
   # Format date time
   intl: ^0.17.0

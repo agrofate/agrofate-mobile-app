@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 
 // import 'package:flutter/services.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -80,6 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString('id_user', response_login[0].toString());
       prefs.setString('email', email);
       prefs.setString('senha', senha);
+      await FlutterSession().set('token', email);
       String parametros_sessao = "?id_usuario="+response_login[0].toString();
       http.Response url_teste_sessao = await http.post(
           "https://future-snowfall-319523.uc.r.appspot.com/update-user-sessao"+parametros_sessao);
