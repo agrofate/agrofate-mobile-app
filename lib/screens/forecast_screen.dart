@@ -1,3 +1,4 @@
+import 'package:agrofate_mobile_app/screens/config_screen.dart';
 import 'package:agrofate_mobile_app/screens/detail_forecast_screen.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/utilities/forecast_json.dart';
@@ -113,10 +114,13 @@ class _ForecastScreenState extends State<ForecastScreen> {
               Icons.settings,
               color: Colors.black,
             ),
-            tooltip: 'Show Snackbar',
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Em desenvolvimento')));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => new ConfigScreen(),
+                ),
+              );
             },
           ),
         ],
