@@ -13,6 +13,8 @@ class ConfigScreen extends StatefulWidget {
 class _ConfigScreenState extends State<ConfigScreen> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -53,6 +55,9 @@ class _ConfigScreenState extends State<ConfigScreen> {
                           'Aqui você pode editar suas informações de perfil e também sair do aplicativo.',
                         ),
                       ],
+                    ),
+                    SizedBox(
+                      height: size.height * 0.1,
                     ),
                   ],
                 ),

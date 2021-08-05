@@ -1,5 +1,6 @@
 import 'package:agrofate_mobile_app/screens/config_screen.dart';
 import 'package:agrofate_mobile_app/screens/detail_forecast_screen.dart';
+import 'package:agrofate_mobile_app/screens/new_local_screen.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/utilities/forecast_json.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
@@ -670,8 +671,12 @@ class _ForecastScreenState extends State<ForecastScreen> {
                     title: 'NOVO LOCAL',
                     hasBorder: true,
                     onClicked: () {
-                      // todo: linkar nova tela de adc novo local
-                      print("tela de adc novo local");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => new NewLocalScreen(),
+                        ),
+                      );
                     },
                   ),
                 ),
