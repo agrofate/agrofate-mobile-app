@@ -458,6 +458,42 @@ class S {
       args: [],
     );
   }
+
+  String get telaPerfilDesenvolvimento {
+    return Intl.message(
+      'Em desenvolvimento',
+      name: 'telaPerfilDesenvolvimento',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDadosBotaoNovoEquipamento {
+    return Intl.message(
+      'NOVO EQUIPAMENTO',
+      name: 'telaDadosBotaoNovoEquipamento',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDadosUmidade {
+    return Intl.message(
+      'Umidade do solo',
+      name: 'telaDadosUmidade',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDadosPH {
+    return Intl.message(
+      'Acidez do Solo - pH',
+      name: 'telaDadosPH',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

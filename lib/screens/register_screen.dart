@@ -1,3 +1,4 @@
+import 'package:agrofate_mobile_app/classes/language.dart';
 import 'package:agrofate_mobile_app/screens/forecast_screen.dart';
 import 'package:agrofate_mobile_app/screens/main_screens.dart';
 import 'package:agrofate_mobile_app/screens/canteiros_screen.dart';
@@ -10,7 +11,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/src/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../LanguageChangeProvider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key key}) : super(key: key);
@@ -74,12 +78,53 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
+    void _changeLanguage(Language language) async {
+      //Locale _locale = await setLocale(language.languageCode);
+      print(language.languageCode);
+      setState(() {
+        context.read<LanguageChangeProvider>().changeLocale(language.languageCode);      
+      });
+      //MyHomePage.setLocale(context, _locale);
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(CupertinoIcons.back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<Language>(
+                underline: SizedBox(),
+                icon: Icon(
+                  Icons.language,
+                  color: Colors.black,
+                ),
+                onChanged: (Language language) {
+                  _changeLanguage(language);
+                },
+                items: Language.languageList()
+                  .map<DropdownMenuItem<Language>>(
+                    (e) => DropdownMenuItem<Language>(
+                      value: e,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            e.flag,
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Text(e.name)
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+              ),
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       body: Form(

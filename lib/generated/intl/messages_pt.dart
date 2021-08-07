@@ -25,6 +25,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "telaCanteiroTitulo" : MessageLookupByLibrary.simpleMessage("Seus Canteiros"),
     "telaCanteiroCampoDataCriacao" : MessageLookupByLibrary.simpleMessage("Criação: "),
     "telaCanteiroCampoDataUltima" : MessageLookupByLibrary.simpleMessage("Última atualização: "),
+    "telaDadosTitulo" : MessageLookupByLibrary.simpleMessage("Dados"),
+    "telaDadosUmidade" : MessageLookupByLibrary.simpleMessage("Umidade do solo"),
+    "telaDadosPH" : MessageLookupByLibrary.simpleMessage("Acidez do Solo - pH"),
+    "telaDadosBotaoNovoEquipamento" : MessageLookupByLibrary.simpleMessage("NOVO EQUIPAMENTO"),
     "telaCanteiroBotaoNovoCanteiro" : MessageLookupByLibrary.simpleMessage("NOVO CANTEIRO"),
     "telaMainBotaoPrevisao" : MessageLookupByLibrary.simpleMessage("Previsão"),
     "telaMainBotaoCanteiro" : MessageLookupByLibrary.simpleMessage("Canteiros"),
@@ -68,5 +72,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "telaLoginBotaoEntrar" : MessageLookupByLibrary.simpleMessage("ENTRAR"),
     "telaConfigTitle" : MessageLookupByLibrary.simpleMessage("Configurações"),
     "telaConfigDescricao" : MessageLookupByLibrary.simpleMessage("Aqui você pode editar suas informações de perfil e também sair do aplicativo."),
+    "telaPerfilDesenvolvimento" : MessageLookupByLibrary.simpleMessage("Em desenvolvimento"),
   };
 }

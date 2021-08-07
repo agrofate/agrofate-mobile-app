@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/screens/edit_canteiro_screen.dart';
 import 'package:agrofate_mobile_app/screens/edit_defensivo_screen.dart';
 import 'package:agrofate_mobile_app/screens/edit_fertilizante_screen.dart';
@@ -13,8 +15,11 @@ import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../LanguageChangeProvider.dart';
 
 class DetailCanteiroScreen extends StatefulWidget {
   const DetailCanteiroScreen({Key key}) : super(key: key);
@@ -28,6 +33,8 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
   TabController _tabController;
   String _id_canteiro_escolhido = '';
   String _nome_canteiro_escolhido = '';
+  String _imagem_canteiro_escolhido = '';
+  String _condicao_imagem_escolhido;
   bool loading = true;
   bool loading_safra = true;
   bool loading_safra_detalhe = true;
@@ -54,11 +61,14 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _id_canteiro_escolhido = (prefs.getString('id_canteiro_escolhido') ?? '');
-      _nome_canteiro_escolhido =
-          (prefs.getString('nome_canteiro_escolhido') ?? '');
+      _nome_canteiro_escolhido = (prefs.getString('nome_canteiro_escolhido') ?? '');
+      _imagem_canteiro_escolhido = (prefs.getString('imagem_canteiro_escolhido') ?? "assets/images/canteiro_padrao.jpg");
+      _condicao_imagem_escolhido = (prefs.getString('condicao_imagem_escolhido').toLowerCase() ?? 'false');
     });
     print(_id_canteiro_escolhido);
     print(_nome_canteiro_escolhido);
+    print(_imagem_canteiro_escolhido);
+    print(_condicao_imagem_escolhido);
 
     String parametros = "?id_canteiro=" + _id_canteiro_escolhido;
     http.Response url_teste = await http.get(
@@ -155,6 +165,15 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
+    void _changeLanguage(Language language) async {
+      //Locale _locale = await setLocale(language.languageCode);
+      print(language.languageCode);
+      setState(() {
+        context.read<LanguageChangeProvider>().changeLocale(language.languageCode);      
+      });
+      //MyHomePage.setLocale(context, _locale);
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -165,6 +184,36 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<Language>(
+                underline: SizedBox(),
+                icon: Icon(
+                  Icons.language,
+                  color: Colors.white,
+                ),
+                onChanged: (Language language) {
+                  _changeLanguage(language);
+                },
+                items: Language.languageList()
+                  .map<DropdownMenuItem<Language>>(
+                    (e) => DropdownMenuItem<Language>(
+                      value: e,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            e.flag,
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Text(e.name)
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+              ),
+          ),
           IconButton(
             icon: const Icon(
               Icons.edit_outlined,
@@ -200,12 +249,13 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                   // TODO: se tiver safra altura menor - se nao tiver safra altura maior / recuperar do BD
                   height: true ? (size.height) * 0.23 : (size.height) * 0.33,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
+                    image: _condicao_imagem_escolhido == "true" ? DecorationImage(image: NetworkImage(_imagem_canteiro_escolhido),fit: BoxFit.cover,):DecorationImage(image: AssetImage(_imagem_canteiro_escolhido),fit: BoxFit.cover),
+                    /*image: DecorationImage(
                       image: AssetImage(
                         "assets/images/canteiro_padrao.jpg",
                       ),
                       fit: BoxFit.cover,
-                    ),
+                    ),*/
                   ),
                   child: Container(
                     decoration: BoxDecoration(
@@ -259,7 +309,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              "Adicione uma nova safra",
+                              S.of(context).telaDetalheCanteiroAdicionarSafra,
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 22,
@@ -272,7 +322,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                           height: 30,
                         ),
                         ButtonWidget(
-                          title: 'NOVA SAFRA',
+                          title: S.of(context).telaDetalheCanteiroTituloSafra,
                           hasBorder: false,
                           onClicked: () {
                             // TODO: enviar informação de qual canteiro terá uma nova safra
@@ -288,7 +338,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                           height: 10,
                         ),
                         ButtonWidget(
-                          title: 'HISTÓRICO DE SAFRAS',
+                          title: S.of(context).telaDetalheCanteiroTituloHistorico,
                           hasBorder: true,
                           onClicked:
                               false //TODO: recuperar informação se existe histórico de safras
@@ -303,9 +353,9 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                     }
                                   : () {
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
+                                          .showSnackBar(SnackBar(
                                               content: Text(
-                                                  'Não existe histórico de safras! Crie uma nova safra.')));
+                                                  S.of(context).telaDetalheCanteiroMensagemHistorico)));
                                     },
                         ),
                       ],
@@ -356,7 +406,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Data de plantação: " + data_plantacao.split(" ")[1]+"/"+data_plantacao.split(" ")[2]+"/"+data_plantacao.split(" ")[3], //data_plantacao,
+                                    S.of(context).telaDetalheCanteiroDataPlantacao + data_plantacao.split(" ")[1]+"/"+data_plantacao.split(" ")[2]+"/"+data_plantacao.split(" ")[3], //data_plantacao,
                                     // TODO: recuperar data de plantação da safra do BD
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -372,7 +422,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Última atualização: " + "27/06/21",
+                                    S.of(context).telaDetalheCanteiroUltimaAtualizacao + "27/06/21",
                                     // TODO: recuperar data de última atualização da safra do BD
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -388,7 +438,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Cultura: " + nome_cultura,
+                                    S.of(context).telaDetalheCanteiroCultura + nome_cultura,
                                     // TODO: recuperar cultura da safra ativa do BD
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -432,12 +482,12 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                       tabs: [
                                         // first tab [you can add an icon using the icon property]
                                         Tab(
-                                          text: 'Fertilizantes',
+                                          text: S.of(context).telaDetalheCanteiroTabFertilizante,
                                         ),
 
                                         // second tab [you can add an icon using the icon property]
                                         Tab(
-                                          text: 'Defensivos',
+                                          text: S.of(context).telaDetalheCanteiroTabDefensivo,
                                         ),
                                       ],
                                     ),
@@ -470,7 +520,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                         const EdgeInsets.symmetric(
                                                             horizontal: 15),
                                                     child: ButtonWidget(
-                                                      title: 'NOVO FERTILIZANTE',
+                                                      title: S.of(context).telaDetalheCanteiroTituloNovoFertilizante,
                                                       hasBorder: true,
                                                       onClicked: () {
                                                         Navigator.push(
@@ -545,7 +595,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                                               1,
                                                                         ),
                                                                         Text(
-                                                                          "Marca: " +
+                                                                          S.of(context).telaDetalheCanteiroDefensivoMarca +
                                                                               fert_data[index][3],
                                                                           style:
                                                                               const TextStyle(
@@ -558,7 +608,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                                               1,
                                                                         ),
                                                                         Text(
-                                                                          "Data de aplicação: " +
+                                                                          S.of(context).telaDetalheCanteiroDefensivoDataAplicacao +
                                                                               fert_data[index][4].split(" ")[1]+"/"+fert_data[index][4].split(" ")[2]+"/"+fert_data[index][4].split(" ")[3],
                                                                               //fert_data[index][4],
                                                                           style:
@@ -612,7 +662,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                         horizontal: 15),
                                                     child: ButtonWidget(
                                                       title:
-                                                          'NOVO FERTILIZANTE',
+                                                          S.of(context).telaDetalheCanteiroTituloNovoFertilizante,
                                                       hasBorder: true,
                                                       onClicked: () {
                                                         Navigator.push(
@@ -648,7 +698,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                         const EdgeInsets.symmetric(
                                                             horizontal: 15),
                                                     child: ButtonWidget(
-                                                      title: 'NOVO DEFENSIVO',
+                                                      title: S.of(context).telaDetalheCanteiroTituloNovoDefensivo,
                                                       hasBorder: true,
                                                       onClicked: () {
                                                         Navigator.push(
@@ -723,7 +773,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                                               1,
                                                                         ),
                                                                         Text(
-                                                                          "Marca: " +
+                                                                          S.of(context).telaDetalheCanteiroDefensivoMarca +
                                                                               def_data[index][3],
                                                                           style:
                                                                               const TextStyle(
@@ -736,7 +786,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                                               1,
                                                                         ),
                                                                         Text(
-                                                                          "Data de aplicação: " +
+                                                                          S.of(context).telaDetalheCanteiroDefensivoDataAplicacao +
                                                                               def_data[index][4].split(" ")[1]+"/"+def_data[index][4].split(" ")[2]+"/"+def_data[index][4].split(" ")[3],
                                                                               //fert_data[index][4],
                                                                           style:
@@ -790,7 +840,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                         horizontal: 15),
                                                     child: ButtonWidget(
                                                       title:
-                                                          'NOVO DEFENSIVO',
+                                                          S.of(context).telaDetalheCanteiroTituloNovoDefensivo,
                                                       hasBorder: true,
                                                       onClicked: () {
                                                         Navigator.push(
@@ -821,7 +871,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
                                 child: ButtonWidget(
-                                  title: 'FINALIZAR SAFRA',
+                                  title: S.of(context).telaDetalheCanteiroTituloFinalizarSafra,
                                   hasBorder: false,
                                   onClicked: () {
                                     // todo: finalizar safra botao
@@ -847,7 +897,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: ButtonWidget(
-          title: 'NOVO FERTILIZANTE',
+          title: S.of(context).telaDetalheCanteiroTituloNovoFertilizante,
           hasBorder: true,
           onClicked: () {
             Navigator.push(

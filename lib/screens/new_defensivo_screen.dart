@@ -1,3 +1,5 @@
+import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/screens/detail_canteiro_screen.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/datepicker_widget.dart';
@@ -7,8 +9,11 @@ import 'package:agrofate_mobile_app/widgets/title_forms_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/src/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../LanguageChangeProvider.dart';
 
 
 class NewDefensivoScreen extends StatefulWidget {
@@ -28,7 +33,7 @@ class _NewDefensivoScreenState extends State<NewDefensivoScreen> {
   String getDateText() {
     //TODO: arrumar gambiarra - deveria ser date == null
     if (date == DateTime(DateTime.now().year - 500)) {
-      return 'Selecione a data de aplicação';
+      return S.of(context).telaNovoDefensivoDataAplicacaoSelecao;
     } else {
       return DateFormat('dd/MM/yyyy').format(date);
       // return '${date.day}/${date.month}/${date.year}';
@@ -55,17 +60,17 @@ class _NewDefensivoScreenState extends State<NewDefensivoScreen> {
           );
         }else{
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Insira a data de aplicação'))
+            SnackBar(content: Text(S.of(context).telaNovoDefensivoDataAplicacaoInsercao))
           );
         }
       }else{
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Insira a marca do Defensivo'))
+          SnackBar(content: Text(S.of(context).telaNovoDefensivoMarca))
         );
       }
     }else{
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Insira o nome do Defensivo'))
+        SnackBar(content: Text(S.of(context).telaNovoDefensivoNome))
       );
     }
   }
@@ -73,6 +78,15 @@ class _NewDefensivoScreenState extends State<NewDefensivoScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
+    void _changeLanguage(Language language) async {
+      //Locale _locale = await setLocale(language.languageCode);
+      print(language.languageCode);
+      setState(() {
+        context.read<LanguageChangeProvider>().changeLocale(language.languageCode);      
+      });
+      //MyHomePage.setLocale(context, _locale);
+    }
 
     Future pickDate(BuildContext context) async {
       final initialDate = DateTime.now();
@@ -98,6 +112,38 @@ class _NewDefensivoScreenState extends State<NewDefensivoScreen> {
           icon: const Icon(CupertinoIcons.back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<Language>(
+                underline: SizedBox(),
+                icon: Icon(
+                  Icons.language,
+                  color: Colors.black,
+                ),
+                onChanged: (Language language) {
+                  _changeLanguage(language);
+                },
+                items: Language.languageList()
+                  .map<DropdownMenuItem<Language>>(
+                    (e) => DropdownMenuItem<Language>(
+                      value: e,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            e.flag,
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Text(e.name)
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+              ),
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       body: Form(
@@ -116,7 +162,7 @@ class _NewDefensivoScreenState extends State<NewDefensivoScreen> {
                           children: [
                             TitleFormsWidget(
                               titleText:
-                              'Adicione um \nnovo defensivo',
+                              S.of(context).telaNovoDefensivoTitulo,
                             ),
                           ],
                         ),
@@ -129,7 +175,7 @@ class _NewDefensivoScreenState extends State<NewDefensivoScreen> {
                       children: [
                         DescriptionFormsWidget(
                           descriptionText:
-                          'Preencha os campos abaixo e adicione um novo defensivo à sua safra.',
+                              S.of(context).telaNovoDefensivoDescricao,
                         ),
                       ],
                     ),
@@ -137,7 +183,7 @@ class _NewDefensivoScreenState extends State<NewDefensivoScreen> {
                       height: size.height * 0.1,
                     ),
                     TextFieldWidget(
-                      hintText: 'Nome do defensivo',
+                      hintText: S.of(context).telaNovoDefensivoTFNome,
                       prefixIconData: Icons.article_outlined,
                       obscureText: false,
                       textFieldController: _nameDefController,
@@ -147,7 +193,7 @@ class _NewDefensivoScreenState extends State<NewDefensivoScreen> {
                       height: 10,
                     ),
                     TextFieldWidget(
-                      hintText: 'Marca do defensivo',
+                      hintText: S.of(context).telaNovoDefensivoTFMarca,
                       prefixIconData: Icons.business_center_outlined,
                       obscureText: false,
                       textFieldController: _marcaDefController,
@@ -166,7 +212,7 @@ class _NewDefensivoScreenState extends State<NewDefensivoScreen> {
                       height: 20,
                     ),
                     ButtonWidget(
-                      title: 'ADICIONAR DEFENSIVO',
+                      title: S.of(context).telaNovoDefensivoBotaoAdicionar,
                       hasBorder: false,
                       onClicked: () {
                         // TODO: subir informações do defensivo p BD (nome; marca; date)

@@ -1,6 +1,5 @@
-import 'package:agrofate_mobile_app/screens/config_screen.dart';
+import 'package:agrofate_mobile_app/classes/language.dart';
 import 'package:agrofate_mobile_app/screens/detail_forecast_screen.dart';
-import 'package:agrofate_mobile_app/screens/new_local_screen.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/utilities/forecast_json.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
@@ -10,9 +9,12 @@ import 'package:flutter/painting.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:provider/src/provider.dart';
 import 'package:weather_icons/weather_icons.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../LanguageChangeProvider.dart';
 
 class ForecastScreen extends StatefulWidget {
   @override
@@ -85,6 +87,15 @@ class _ForecastScreenState extends State<ForecastScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    void _changeLanguage(Language language) async {
+      //Locale _locale = await setLocale(language.languageCode);
+      print(language.languageCode);
+      setState(() {
+        context.read<LanguageChangeProvider>().changeLocale(language.languageCode);      
+      });
+      //MyHomePage.setLocale(context, _locale);
+    }
+    
     List main_weather = ["Clear", "Clouds", "Rain"];
     final main_weather_a = main_weather.asMap();
     List<IconData> icon_weather = [
@@ -110,18 +121,45 @@ class _ForecastScreenState extends State<ForecastScreen> {
           height: 25,
         ),
         actions: [
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<Language>(
+                underline: SizedBox(),
+                icon: Icon(
+                  Icons.language,
+                  color: Colors.black,
+                ),
+                onChanged: (Language language) {
+                  _changeLanguage(language);
+                },
+                items: Language.languageList()
+                  .map<DropdownMenuItem<Language>>(
+                    (e) => DropdownMenuItem<Language>(
+                      value: e,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            e.flag,
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Text(e.name)
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+              ),
+          ),
           IconButton(
             icon: const Icon(
               Icons.settings,
               color: Colors.black,
             ),
+            tooltip: 'Show Snackbar',
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => new ConfigScreen(),
-                ),
-              );
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Em desenvolvimento')));
             },
           ),
         ],
@@ -671,12 +709,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
                     title: 'NOVO LOCAL',
                     hasBorder: true,
                     onClicked: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => new NewLocalScreen(),
-                        ),
-                      );
+                      // todo: linkar nova tela de adc novo local
+                      print("tela de adc novo local");
                     },
                   ),
                 ),

@@ -1,10 +1,15 @@
 import 'dart:convert';
 
+import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/screens/detail_canteiro_screen.dart';
 import 'package:agrofate_mobile_app/services/canteiro.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
+import 'package:agrofate_mobile_app/localization/language_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:agrofate_mobile_app/LanguageChangeProvider.dart';
+import 'package:provider/src/provider.dart';
 
 import 'new_canteiro_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,6 +45,8 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
     print(_email);
     print(_id_user);
 
+    print(Language.languageList());
+
     String parametros = "?id_usuario=" + _id_user;
     http.Response url_teste = await http.get(
         "https://future-snowfall-319523.uc.r.appspot.com/read-one-canteiro" +
@@ -53,6 +60,18 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
         setState(() {
           loading_canteiro = false;
         });
+        for(var i=0; i < response_login.length; i++){
+          if(response_login[i][3] == "" || response_login[i][3] == null){
+            response_login[i][3] = "assets/images/canteiro_padrao.jpg";
+            response_login[i].add(false);
+          }else{
+            response_login[i][3] = response_login[i][3].toString().replaceAll('download/storage/v1/b/', '');
+            response_login[i][3] = response_login[i][3].toString().replaceAll('o/', '');
+            response_login[i][3] = response_login[i][3].toString().split('?')[0];
+            response_login[i].add(true);
+          }
+        }
+        print(response_login);
       }
     }
 
@@ -61,11 +80,13 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
     });
   }
 
-  _canteiroEscolhido(id_canteiro, nome_canteiro) async {
+  _canteiroEscolhido(id_canteiro, nome_canteiro, imagem_canteiro, condicao_imagem) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       prefs.setString('id_canteiro_escolhido', id_canteiro.toString());
       prefs.setString('nome_canteiro_escolhido', nome_canteiro.toString());
+      prefs.setString('imagem_canteiro_escolhido', imagem_canteiro.toString());
+      prefs.setString('condicao_imagem_escolhido', condicao_imagem.toString());
     });
     Navigator.push(
       context,
@@ -79,6 +100,15 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
+    void _changeLanguage(Language language) async {
+      //Locale _locale = await setLocale(language.languageCode);
+      print(language.languageCode);
+      setState(() {
+        context.read<LanguageChangeProvider>().changeLocale(language.languageCode);      
+      });
+      //MyHomePage.setLocale(context, _locale);
+    }
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -89,15 +119,46 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
           ),
           preferredSize: Size.fromHeight(4.0),
         ),
-        title: const Text(
-          'Seus canteiros',
+        title: Text(
+          //'Seus canteiros',
+          S.of(context).telaCanteiroTitulo,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 19,
           ),
         ),
-        actions: [
+        actions: <Widget>[
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<Language>(
+                underline: SizedBox(),
+                icon: Icon(
+                  Icons.language,
+                  color: Colors.black,
+                ),
+                onChanged: (Language language) {
+                  _changeLanguage(language);
+                },
+                items: Language.languageList()
+                  .map<DropdownMenuItem<Language>>(
+                    (e) => DropdownMenuItem<Language>(
+                      value: e,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            e.flag,
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Text(e.name)
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+              ),
+          ),
           IconButton(
             icon: const Icon(
               Icons.settings,
@@ -106,7 +167,7 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
             tooltip: 'Show Snackbar',
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Em desenvolvimento')));
+                  SnackBar(content: Text(S.of(context).telaPerfilDesenvolvimento)));
             },
           ),
         ],
@@ -128,7 +189,7 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                   child: ButtonWidget(
-                    title: 'NOVO CANTEIRO',
+                    title:  S.of(context).telaCanteiroBotaoNovoCanteiro,
                     hasBorder: true,
                     onClicked: () {
                       Navigator.push(
@@ -158,7 +219,7 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                               onTap: () {
                                 // TODO: enviar para página de detalhes do canteiro selecionado
                                 _canteiroEscolhido(canteiro_data[index][0],
-                                    canteiro_data[index][2]);
+                                    canteiro_data[index][2], canteiro_data[index][3], canteiro_data[index][6]);
                                 /*Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -186,12 +247,13 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                             shape: BoxShape.rectangle,
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            image: DecorationImage(
+                                            image: canteiro_data[index][6] ? DecorationImage(image: NetworkImage(canteiro_data[index][3]),fit: BoxFit.fill,):DecorationImage(image: AssetImage(canteiro_data[index][3])),
+                                            /*image: DecorationImage(
                                               // todo: trocar img do canteiro de acordo com banco - se tiver
-                                              image: AssetImage(
-                                                  "assets/images/canteiro_padrao.jpg"),
+                                              //image: if(canteiro_data[index][6]) AssetImage(canteiro_data[index][3]),
+                                              image: canteiro_data[index][6] ? Image.network(canteiro_data[index][3]):AssetImage(canteiro_data[index][3]),
                                               fit: BoxFit.cover,
-                                            ),
+                                            ),*/
                                           ),
                                         ),
                                         const SizedBox(
@@ -214,7 +276,7 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                               height: 1,
                                             ),
                                             Text(
-                                              "Criação: " +
+                                                S.of(context).telaCanteiroCampoDataCriacao+
                                                   //canteiro_data[index][4],
                                                   canteiro_data[index][4]
                                                       .split(" ")[1] +
@@ -232,7 +294,7 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                               height: 1,
                                             ),
                                             Text(
-                                              "Última atualização: " +
+                                                S.of(context).telaCanteiroCampoDataUltima+
                                                   //canteiro_data[index][5],
                                                   canteiro_data[index][5]
                                                       .split(" ")[1] +
@@ -270,7 +332,7 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                           height: 15,
                         ),
                         ButtonWidget(
-                          title: 'NOVO CANTEIRO',
+                          title: S.of(context).telaCanteiroBotaoNovoCanteiro,
                           hasBorder: true,
                           onClicked: () {
                             Navigator.push(

@@ -25,6 +25,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "telaCanteiroTitulo" : MessageLookupByLibrary.simpleMessage("Tus Cultivos"),
     "telaCanteiroCampoDataCriacao" : MessageLookupByLibrary.simpleMessage("Creación: "),
     "telaCanteiroCampoDataUltima" : MessageLookupByLibrary.simpleMessage("Última actualización: "),
+    "telaDadosTitulo" : MessageLookupByLibrary.simpleMessage("Sensores"),
+    "telaDadosUmidade" : MessageLookupByLibrary.simpleMessage("La humedad del suelo"),
+    "telaDadosPH" : MessageLookupByLibrary.simpleMessage("Acidez del suelo - pH"),
+    "telaDadosBotaoNovoEquipamento" : MessageLookupByLibrary.simpleMessage("NUEVO EQUIPAMIENTO"),
     "telaCanteiroBotaoNovoCanteiro" : MessageLookupByLibrary.simpleMessage("NUEVO CULTIVO"),
     "telaMainBotaoPrevisao" : MessageLookupByLibrary.simpleMessage("Previsión"),
     "telaMainBotaoCanteiro" : MessageLookupByLibrary.simpleMessage("Cultivos"),
@@ -53,7 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "telaDetalheCanteiroTituloNovoFertilizante" : MessageLookupByLibrary.simpleMessage("NUEVO FERTILIZANTE"),
     "telaDetalheCanteiroTituloNovoDefensivo" : MessageLookupByLibrary.simpleMessage("NUEVA DEFENSIVA"),
     "telaDetalheCanteiroTituloFinalizarSafra" : MessageLookupByLibrary.simpleMessage("FIN DE LA COSECHA"),
-    "telaDetalheForecastTitulo" : MessageLookupByLibrary.simpleMessage("Previsión meteorológica \ndetallada"),
+    "telaDetalheForecastTitulo" : MessageLookupByLibrary.simpleMessage("Previsión \nmeteorológica \ndetallada"),
     "telaDetalheForecastDescricao" : MessageLookupByLibrary.simpleMessage("Comprenda cuál es el mejor momento para producir de acuerdo con los pronósticos en su ubicación."),
     "telaEditarCanteiroTitulo" : MessageLookupByLibrary.simpleMessage("Actualizar \nsu cultivo"),
     "telaEditarCanteiroDescricao" : MessageLookupByLibrary.simpleMessage("Complete los campos a continuación y actualice la información de su cultivo."),
@@ -68,5 +72,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "telaLoginBotaoEntrar" : MessageLookupByLibrary.simpleMessage("INICIAR SESIÓN"),
     "telaConfigTitle" : MessageLookupByLibrary.simpleMessage("Configuración"),
     "telaConfigDescricao" : MessageLookupByLibrary.simpleMessage("Aquí puede editar la información de su perfil y también salir de la aplicación."),
+    "telaPerfilDesenvolvimento" : MessageLookupByLibrary.simpleMessage("En desarrollo"),
   };
 }

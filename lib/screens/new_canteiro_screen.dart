@@ -1,15 +1,23 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:agrofate_mobile_app/classes/language.dart';
 import 'package:agrofate_mobile_app/screens/canteiros_screen.dart';
+import 'package:agrofate_mobile_app/services/api.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/description_forms_widget.dart';
 import 'package:agrofate_mobile_app/widgets/imagefield_widget.dart';
 import 'package:agrofate_mobile_app/widgets/textfield_widget.dart';
 import 'package:agrofate_mobile_app/widgets/title_forms_widget.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../LanguageChangeProvider.dart';
 
 class NewCanteiroScreen extends StatefulWidget {
   const NewCanteiroScreen({Key key}) : super(key: key);
@@ -21,19 +29,62 @@ class NewCanteiroScreen extends StatefulWidget {
 class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
-
+  final picker = ImagePicker();
+  CloudApi api;
+  File _image;
+  Uint8List _imageBytes;
+  String _imageName;
+  bool isUploaded = false;
+  bool loading = false;
   final nameCanteiroController = TextEditingController();
   String _id_canteiro_escolhido = '';
   String _id_user = '';
+
+  void _getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        print(pickedFile.path);
+        _image = File(pickedFile.path);
+        _imageBytes = _image.readAsBytesSync();
+        _imageName = _image.path.split('/').last;
+        isUploaded = false;
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  void _saveImage() async {
+    setState(() {
+      loading = true;
+    });
+    // Upload to Google cloud
+    final response = await api.save(_imageName, _imageBytes);
+    print(response);
+    print(response.downloadLink);
+    setState(() {
+      loading = false;
+      isUploaded = true;
+    });
+  }
 
   adicionarCanteiro(nome_cant) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _id_user = (prefs.getString('id_user') ?? '');
     });
-    if(nome_cant != ''){       
+    if(nome_cant != ''){   
+      final response = await api.save(_imageName, _imageBytes);
+      print(response);
+      print(response.downloadLink);
+      setState(() {
+        loading = false;
+        isUploaded = true;
+      });    
       SharedPreferences prefs = await SharedPreferences.getInstance();   
-      String parametros = "?nome_canteiro="+nome_cant+"&id_usuario="+_id_user;
+      String parametros = "?nome_canteiro="+nome_cant+"&id_usuario="+_id_user+"&imagem_canteiro="+response.downloadLink.toString();
       http.Response url_teste = await http.post(
           "https://future-snowfall-319523.uc.r.appspot.com/insert-novo-canteiro"+parametros);
       var response_login = url_teste.body;
@@ -54,8 +105,25 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    rootBundle.loadString('assets/cloud/credentials.json').then((json) {
+      api = CloudApi(json);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
+    void _changeLanguage(Language language) async {
+      //Locale _locale = await setLocale(language.languageCode);
+      print(language.languageCode);
+      setState(() {
+        context.read<LanguageChangeProvider>().changeLocale(language.languageCode);      
+      });
+      //MyHomePage.setLocale(context, _locale);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -63,6 +131,38 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
           icon: const Icon(CupertinoIcons.back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<Language>(
+                underline: SizedBox(),
+                icon: Icon(
+                  Icons.language,
+                  color: Colors.black,
+                ),
+                onChanged: (Language language) {
+                  _changeLanguage(language);
+                },
+                items: Language.languageList()
+                  .map<DropdownMenuItem<Language>>(
+                    (e) => DropdownMenuItem<Language>(
+                      value: e,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            e.flag,
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Text(e.name)
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+              ),
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       body: Form(
@@ -145,10 +245,16 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
 
   void takePhoto(ImageSource source) async {
     final pickedFile = await _picker.getImage(source: source);
+    _image = File(pickedFile.path);
+    _imageBytes = _image.readAsBytesSync();
+    _imageName = _image.path.split('/').last;
+    isUploaded = false;
     print(pickedFile.path);
     setState(() {
-      _imageFile = pickedFile; // TODO: essa imagem irá subir para o servidor - var _imageFile declarada lá encima
+      _imageFile = pickedFile;
+      loading = true; // TODO: essa imagem irá subir para o servidor - var _imageFile declarada lá encima
     });
+    
   }
 
   Widget bottomSheet() {

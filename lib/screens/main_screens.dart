@@ -3,6 +3,8 @@ import 'package:agrofate_mobile_app/screens/dados_screen.dart';
 import 'package:agrofate_mobile_app/screens/forecast_screen.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 
 class MainScreens extends StatefulWidget {
   const MainScreens({Key key}) : super(key: key);
@@ -20,7 +22,7 @@ class _MainScreensState extends State<MainScreens> {
       ForecastScreen(),
       CanteirosScreen(),
       DadosScreen(),
-      Text('Em desenvolvimento'),
+      Text(S.of(context).telaPerfilDesenvolvimento),
     ];
 
     void _onItemTap(int index) {
@@ -57,22 +59,22 @@ class _MainScreensState extends State<MainScreens> {
           selectedFontSize: 12,
           unselectedItemColor: const Color(0xff575c63),
           unselectedFontSize: 12,
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.cloud_outlined),
-              label: 'Previsão',
+              label: S.of(context).telaMainBotaoPrevisao,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.format_list_bulleted_outlined),
-              label: 'Canteiros',
+              label: S.of(context).telaMainBotaoCanteiro,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.sensors_outlined),
-              label: 'Dados',
+              label: S.of(context).telaMainBotaoDados,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline),
-              label: 'Perfil',
+              label: S.of(context).telaMainBotaoPerfil,
             ),
           ],
         ),

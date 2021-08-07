@@ -1,3 +1,4 @@
+import 'package:agrofate_mobile_app/classes/language.dart';
 import 'package:agrofate_mobile_app/screens/detail_canteiro_screen.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/datepicker_widget.dart';
@@ -7,6 +8,9 @@ import 'package:agrofate_mobile_app/widgets/title_forms_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/src/provider.dart';
+
+import '../LanguageChangeProvider.dart';
 
 class EditDefensivoScreen extends StatefulWidget {
   const EditDefensivoScreen({Key key}) : super(key: key);
@@ -44,6 +48,13 @@ class _EditDefensivoScreenState extends State<EditDefensivoScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
+    void _changeLanguage(Language language) async {
+      print(language.languageCode);
+      setState(() {
+        context.read<LanguageChangeProvider>().changeLocale(language.languageCode);      
+      });
+    }
+
     Future pickDate(BuildContext context) async {
       final initialDate = DateTime.now();
       final newDate = await showDatePicker(
@@ -68,6 +79,38 @@ class _EditDefensivoScreenState extends State<EditDefensivoScreen> {
           icon: const Icon(CupertinoIcons.back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<Language>(
+                underline: SizedBox(),
+                icon: Icon(
+                  Icons.language,
+                  color: Colors.black,
+                ),
+                onChanged: (Language language) {
+                  _changeLanguage(language);
+                },
+                items: Language.languageList()
+                  .map<DropdownMenuItem<Language>>(
+                    (e) => DropdownMenuItem<Language>(
+                      value: e,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            e.flag,
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Text(e.name)
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+              ),
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       body: Form(

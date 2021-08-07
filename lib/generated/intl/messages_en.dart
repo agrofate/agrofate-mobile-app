@@ -26,6 +26,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "telaCanteiroCampoDataCriacao" : MessageLookupByLibrary.simpleMessage("Created: "),
     "telaCanteiroCampoDataUltima" : MessageLookupByLibrary.simpleMessage("Last update: "),
     "telaCanteiroBotaoNovoCanteiro" : MessageLookupByLibrary.simpleMessage("NEW CROP"),
+    "telaDadosTitulo" : MessageLookupByLibrary.simpleMessage("Sensors"),
+    "telaDadosUmidade" : MessageLookupByLibrary.simpleMessage("Soil moisture"),
+    "telaDadosPH" : MessageLookupByLibrary.simpleMessage("Soil Acidity - pH"),
+    "telaDadosBotaoNovoEquipamento" : MessageLookupByLibrary.simpleMessage("NEW EQUIPMENT"),
     "telaMainBotaoPrevisao" : MessageLookupByLibrary.simpleMessage("Forecast"),
     "telaMainBotaoCanteiro" : MessageLookupByLibrary.simpleMessage("Crops"),
     "telaMainBotaoDados" : MessageLookupByLibrary.simpleMessage("Sensors"),
@@ -68,5 +72,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "telaLoginBotaoEntrar" : MessageLookupByLibrary.simpleMessage("ENTER"),
     "telaConfigTitle" : MessageLookupByLibrary.simpleMessage("Configuration"),
     "telaConfigDescricao" : MessageLookupByLibrary.simpleMessage("Here you can edit your profile information and also exit the app."),
+    "telaPerfilDesenvolvimento" : MessageLookupByLibrary.simpleMessage("Under development"),
   };
 }

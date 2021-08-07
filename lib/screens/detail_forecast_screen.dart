@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/services/forecast_by_hour.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/utilities/forecast_json.dart';
@@ -11,9 +13,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/src/provider.dart';
 import 'package:weather_icons/weather_icons.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../LanguageChangeProvider.dart';
 
 class DetailForecastScreen extends StatefulWidget {
   const DetailForecastScreen({Key key}) : super(key: key);
@@ -110,12 +115,53 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
     final task = ModalRoute.of(context)?.settings.arguments;
     //final String agora  = '${task}';
 
+    void _changeLanguage(Language language) async {
+      //Locale _locale = await setLocale(language.languageCode);
+      print(language.languageCode);
+      setState(() {
+        context.read<LanguageChangeProvider>().changeLocale(language.languageCode);      
+      });
+      //MyHomePage.setLocale(context, _locale);
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(CupertinoIcons.back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<Language>(
+                underline: SizedBox(),
+                icon: Icon(
+                  Icons.language,
+                  color: Colors.black,
+                ),
+                onChanged: (Language language) {
+                  _changeLanguage(language);
+                },
+                items: Language.languageList()
+                  .map<DropdownMenuItem<Language>>(
+                    (e) => DropdownMenuItem<Language>(
+                      value: e,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            e.flag,
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Text(e.name)
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+              ),
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -130,16 +176,16 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       TitleFormsWidget(
-                        titleText: 'Previsão do tempo \ndetalhada',
+                        titleText: S.of(context).telaDetalheForecastTitulo,
                       ),
                     ],
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  const DescriptionFormsWidget(
+                  DescriptionFormsWidget(
                     descriptionText:
-                    'Entenda o melhor momento para a produção de acordo com as previsões em sua localização.',
+                    S.of(context).telaDetalheForecastDescricao,
                   ),
                   const SizedBox(
                     height: 30,
