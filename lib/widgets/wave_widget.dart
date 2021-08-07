@@ -8,9 +8,9 @@ class WaveWidget extends StatefulWidget {
   final Color color;
 
   WaveWidget({
-    required this.size,
-    required this.yOffset,
-    required this.color,
+    this.size,
+    this.yOffset,
+    this.color,
   });
 
   @override
@@ -18,7 +18,7 @@ class WaveWidget extends StatefulWidget {
 }
 
 class _WaveWidgetState extends State<WaveWidget> with TickerProviderStateMixin {
-  late AnimationController animationController;
+  AnimationController animationController;
   List<Offset> wavePoints = [];
 
   @override

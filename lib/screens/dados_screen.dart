@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class DadosScreen extends StatefulWidget {
-  const DadosScreen({Key? key}) : super(key: key);
+  const DadosScreen({Key key}) : super(key: key);
 
   @override
   _DadosScreenState createState() => _DadosScreenState();

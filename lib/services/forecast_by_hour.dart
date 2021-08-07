@@ -6,11 +6,11 @@ class ForecastByHour {
   String humidity;
 
   ForecastByHour(
-      {required this.hour,
-      required this.temperature,
-      required this.windVelocity,
-      required this.rainProbability,
-      required this.humidity});
+      {this.hour,
+      this.temperature,
+      this.windVelocity,
+      this.rainProbability,
+      this.humidity});
 
   // TODO: função async para recuperar da API os valores de previsão por hra
 }

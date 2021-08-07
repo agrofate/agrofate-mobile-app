@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ImageFieldWidget extends StatelessWidget {
-  const ImageFieldWidget({Key? key, this.onTap}) : super(key: key);
+  const ImageFieldWidget({Key key, this.onTap}) : super(key: key);
 
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {

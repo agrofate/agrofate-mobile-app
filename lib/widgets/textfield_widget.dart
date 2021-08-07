@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 class TextFieldWidget extends StatelessWidget {
   final String hintText;
   final IconData prefixIconData;
-  final IconData? suffixIcondata; // pode ser nulo por conta da ?
+  final IconData suffixIcondata; // pode ser nulo por conta da ?
   final bool obscureText;
-  final Function? onChanged;
-  final TextInputType? textInputType;
-  final TextEditingController? textFieldController;
-  final VoidCallback? onTap;
+  final Function onChanged;
+  final TextInputType textInputType;
+  final TextEditingController textFieldController;
+  final VoidCallback onTap;
 
   const TextFieldWidget({
-    required this.hintText,
-    required this.prefixIconData,
+    this.hintText,
+    this.prefixIconData,
     this.suffixIcondata,
-    required this.obscureText,
+    this.obscureText,
     this.onChanged,
     this.textInputType,
     this.textFieldController,

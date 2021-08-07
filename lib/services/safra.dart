@@ -6,9 +6,9 @@ class Safra {
   String cultura;
 
   Safra({
-    required this.nome,
-    required this.dataPlantacao,
-    required this.cultura,
+    this.nome,
+    this.dataPlantacao,
+    this.cultura,
   });
 
 // TODO: função async para recuperar do banco as infos

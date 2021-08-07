@@ -10,14 +10,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EditCanteiroScreen extends StatefulWidget {
-  const EditCanteiroScreen({Key? key}) : super(key: key);
+  const EditCanteiroScreen({Key key}) : super(key: key);
 
   @override
   _EditCanteiroScreenState createState() => _EditCanteiroScreenState();
 }
 
 class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
-  late PickedFile _imageFile;
+  PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
 
   final _nameCanteiroController = TextEditingController();

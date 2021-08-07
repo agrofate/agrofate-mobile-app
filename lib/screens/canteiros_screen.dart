@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class CanteirosScreen extends StatefulWidget {
-  const CanteirosScreen({Key? key}) : super(key: key);
+  const CanteirosScreen({Key key}) : super(key: key);
 
   @override
   _CanteirosScreenState createState() => _CanteirosScreenState();

@@ -5,7 +5,7 @@ import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class MainScreens extends StatefulWidget {
-  const MainScreens({Key? key}) : super(key: key);
+  const MainScreens({Key key}) : super(key: key);
 
   @override
   _MainScreensState createState() => _MainScreensState();

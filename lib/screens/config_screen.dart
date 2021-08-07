@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ConfigScreen extends StatefulWidget {
-  const ConfigScreen({Key? key}) : super(key: key);
+  const ConfigScreen({Key key}) : super(key: key);
 
   @override
   _ConfigScreenState createState() => _ConfigScreenState();

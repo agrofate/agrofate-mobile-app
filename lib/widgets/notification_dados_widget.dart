@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class NotificationDadosWidget extends StatelessWidget {
   const NotificationDadosWidget({
-    Key? key,
-    required this.colorNotification,
-    required this.message,
-    required this.iconNotification,
+    Key key,
+    this.colorNotification,
+    this.message,
+    this.iconNotification,
   }) : super(key: key);
 
   final int colorNotification;

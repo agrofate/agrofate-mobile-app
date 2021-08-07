@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ClipperWidget extends CustomClipper<Path> {
   final List<Offset> waveList;
-  ClipperWidget({required this.waveList});
+  ClipperWidget({this.waveList});
 
   @override
   getClip(Size size) {

@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class NewSafraScreen extends StatefulWidget {
-  const NewSafraScreen({Key? key}) : super(key: key);
+  const NewSafraScreen({Key key}) : super(key: key);
 
   @override
   _NewSafraScreenState createState() => _NewSafraScreenState();
@@ -27,7 +27,7 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
   bool loading = true;
   //var data_cultura;
   List data_cultura = List.empty();
-  String? countryid; 
+  String countryid; 
   var _mySelection;
 
   String dropdownValue = '';
@@ -281,7 +281,7 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
                                             value: item[0].toString()                                                                         
                                           );  
                                         }).toList(),
-                                        onChanged: (String? newVal) {
+                                        onChanged: (String newVal) {
                                           setState(() {
                                             countryid = newVal;
                                             print(countryid.toString());

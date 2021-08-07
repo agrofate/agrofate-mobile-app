@@ -16,7 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailForecastScreen extends StatefulWidget {
-  const DetailForecastScreen({Key? key}) : super(key: key);
+  const DetailForecastScreen({Key key}) : super(key: key);
 
   @override
   _DetailForecastScreenState createState() => _DetailForecastScreenState();

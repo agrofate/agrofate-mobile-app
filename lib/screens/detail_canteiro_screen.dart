@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class DetailCanteiroScreen extends StatefulWidget {
-  const DetailCanteiroScreen({Key? key}) : super(key: key);
+  const DetailCanteiroScreen({Key key}) : super(key: key);
 
   @override
   _DetailCanteiroScreenState createState() => _DetailCanteiroScreenState();
@@ -25,7 +25,7 @@ class DetailCanteiroScreen extends StatefulWidget {
 
 class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
     with TickerProviderStateMixin {
-  late TabController _tabController;
+  TabController _tabController;
   String _id_canteiro_escolhido = '';
   String _nome_canteiro_escolhido = '';
   bool loading = true;

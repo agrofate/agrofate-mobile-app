@@ -12,14 +12,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class NewCanteiroScreen extends StatefulWidget {
-  const NewCanteiroScreen({Key? key}) : super(key: key);
+  const NewCanteiroScreen({Key key}) : super(key: key);
 
   @override
   _NewCanteiroScreenState createState() => _NewCanteiroScreenState();
 }
 
 class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
-  late PickedFile _imageFile;
+  PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
 
   final nameCanteiroController = TextEditingController();

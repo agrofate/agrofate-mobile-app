@@ -6,9 +6,9 @@ class Fertilizante {
   String dataAplicacao;
 
   Fertilizante({
-    required this.nome,
-    required this.marca,
-    required this.dataAplicacao,
+    this.nome,
+    this.marca,
+    this.dataAplicacao,
   });
 
 // TODO: função async para recuperar do banco as infos

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HistorySafraScreen extends StatefulWidget {
-  const HistorySafraScreen({Key? key}) : super(key: key);
+  const HistorySafraScreen({Key key}) : super(key: key);
 
   @override
   _HistorySafraScreenState createState() => _HistorySafraScreenState();

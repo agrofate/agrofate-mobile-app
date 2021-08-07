@@ -6,7 +6,7 @@ import 'package:mime/mime.dart';
 
 class CloudApi {
   final auth.ServiceAccountCredentials _credentials;
-  auth.AutoRefreshingAuthClient? _client;
+  auth.AutoRefreshingAuthClient _client;
 
   CloudApi(String json)
       : _credentials = auth.ServiceAccountCredentials.fromJson(json);

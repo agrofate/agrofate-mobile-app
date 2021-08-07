@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class DescriptionFormsWidget extends StatelessWidget {
   const DescriptionFormsWidget({
-    Key? key,
-    required this.descriptionText,
+    Key key,
+    this.descriptionText,
   }) : super(key: key);
 
   final String descriptionText;

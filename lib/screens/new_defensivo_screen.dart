@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 
 
 class NewDefensivoScreen extends StatefulWidget {
-  const NewDefensivoScreen({Key? key}) : super(key: key);
+  const NewDefensivoScreen({Key key}) : super(key: key);
 
   @override
   _NewDefensivoScreenState createState() => _NewDefensivoScreenState();

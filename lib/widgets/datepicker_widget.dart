@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class DatePickerWidget extends StatelessWidget {
-  const DatePickerWidget({Key? key, this.onTap, this.text}) : super(key: key);
+  const DatePickerWidget({Key key, this.onTap, this.text}) : super(key: key);
 
-  final VoidCallback? onTap;
-  final String? text;
+  final VoidCallback onTap;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class DatePickerWidget extends StatelessWidget {
                   width: 15,
                 ),
                 Text(
-                  text!,
+                  text,
                   style: TextStyle(
                     color: Color(0xff575c63),
                     fontSize: 14.0,

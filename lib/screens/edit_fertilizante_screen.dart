@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class EditFertilizanteScreen extends StatefulWidget {
-  const EditFertilizanteScreen({Key? key}) : super(key: key);
+  const EditFertilizanteScreen({Key key}) : super(key: key);
 
   @override
   _EditFertilizanteScreenState createState() => _EditFertilizanteScreenState();

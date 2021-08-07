@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class EditDefensivoScreen extends StatefulWidget {
-  const EditDefensivoScreen({Key? key}) : super(key: key);
+  const EditDefensivoScreen({Key key}) : super(key: key);
 
   @override
   _EditDefensivoScreenState createState() => _EditDefensivoScreenState();

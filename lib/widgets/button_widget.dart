@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 class ButtonWidget extends StatelessWidget {
   final String title;
   final bool hasBorder;
-  final VoidCallback? onClicked;
+  final VoidCallback onClicked;
 
   const ButtonWidget({
-    required this.title,
-    required this.hasBorder,
+    this.title,
+    this.hasBorder,
     this.onClicked,
   });
 

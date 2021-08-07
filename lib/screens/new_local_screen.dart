@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NewLocalScreen extends StatefulWidget {
-  const NewLocalScreen({Key? key}) : super(key: key);
+  const NewLocalScreen({Key key}) : super(key: key);
 
   @override
   _NewLocalScreenState createState() => _NewLocalScreenState();

@@ -16,7 +16,7 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, 
+  const MyApp({Key key, 
         @required this.token}) : super(key: key);
   final dynamic token;
 
