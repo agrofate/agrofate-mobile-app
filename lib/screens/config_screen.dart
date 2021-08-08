@@ -24,7 +24,9 @@ class _ConfigScreenState extends State<ConfigScreen> {
       //Locale _locale = await setLocale(language.languageCode);
       print(language.languageCode);
       setState(() {
-        context.read<LanguageChangeProvider>().changeLocale(language.languageCode);      
+        context
+            .read<LanguageChangeProvider>()
+            .changeLocale(language.languageCode);
       });
       //MyHomePage.setLocale(context, _locale);
     }
@@ -37,17 +39,17 @@ class _ConfigScreenState extends State<ConfigScreen> {
         ),
         actions: [
           Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: DropdownButton<Language>(
-                underline: SizedBox(),
-                icon: Icon(
-                  Icons.language,
-                  color: Colors.black,
-                ),
-                onChanged: (Language language) {
-                  _changeLanguage(language);
-                },
-                items: Language.languageList()
+            padding: const EdgeInsets.all(8.0),
+            child: DropdownButton<Language>(
+              underline: SizedBox(),
+              icon: Icon(
+                Icons.language,
+                color: Colors.black,
+              ),
+              onChanged: (Language language) {
+                _changeLanguage(language);
+              },
+              items: Language.languageList()
                   .map<DropdownMenuItem<Language>>(
                     (e) => DropdownMenuItem<Language>(
                       value: e,
@@ -64,7 +66,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                     ),
                   )
                   .toList(),
-              ),
+            ),
           ),
         ],
       ),
@@ -72,43 +74,244 @@ class _ConfigScreenState extends State<ConfigScreen> {
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Wrap(
-                          children: [
-                            TitleFormsWidget(
-                              titleText:
-                                S.of(context).telaConfigTitle,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Wrap(
+                        children: [
+                          TitleFormsWidget(
+                            titleText: S.of(context).telaConfigTitle,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Wrap(
+                    children: [
+                      DescriptionFormsWidget(
+                        descriptionText: S.of(context).telaConfigDescricao,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.08,
+                  ),
+
+                  // Alterar e-mail
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Icon(
+                                  Icons.email_outlined,
+                                  size: 20,
+                                ),
+                              ),
+                              SizedBox(
+                                width: size.width * 0.04,
+                              ),
+                              Text(
+                                "Alterar e-mail",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                            child: Divider(
+                              thickness: 0.8,
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(
-                      height: 10,
+                  ),
+
+                  // Alterar senha
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Icon(
+                                  Icons.lock_outlined,
+                                  size: 20,
+                                ),
+                              ),
+                              SizedBox(
+                                width: size.width * 0.04,
+                              ),
+                              Text(
+                                "Alterar senha",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                            child: Divider(
+                              thickness: 0.8,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Wrap(
-                      children: [
-                        DescriptionFormsWidget(
-                          descriptionText:
-                            S.of(context).telaConfigDescricao,
-                        ),
-                      ],
+                  ),
+
+                  // Sobre a agrofate
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Icon(
+                                  Icons.info_outline,
+                                  size: 20,
+                                ),
+                              ),
+                              SizedBox(
+                                width: size.width * 0.04,
+                              ),
+                              Text(
+                                "Sobre a agrofate",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                            child: Divider(
+                              thickness: 0.8,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(
-                      height: size.height * 0.1,
+                  ),
+
+                  // Políticas de privacidade
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Icon(
+                                  Icons.policy_outlined,
+                                  size: 20,
+                                ),
+                              ),
+                              SizedBox(
+                                width: size.width * 0.04,
+                              ),
+                              Text(
+                                "Políticas de privacidade",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                            child: Divider(
+                              thickness: 0.8,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+
+                  // Sair
+                  GestureDetector(
+                    onTap: () {
+                      // TODO: Logout function
+                    },
+                    child: Container(
+                      width: size.width,
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Icon(
+                                  Icons.logout_outlined,
+                                  size: 20,
+                                ),
+                              ),
+                              SizedBox(
+                                width: size.width * 0.04,
+                              ),
+                              Text(
+                                "Sair",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                            child: Divider(
+                              thickness: 0.8,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
+          ],
         ),
       ),
     );

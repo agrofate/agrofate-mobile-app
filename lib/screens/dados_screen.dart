@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../LanguageChangeProvider.dart';
+import 'config_screen.dart';
 
 class DadosScreen extends StatefulWidget {
   const DadosScreen({Key key}) : super(key: key);
@@ -132,8 +133,12 @@ class _DadosScreenState extends State<DadosScreen> {
             ),
             tooltip: 'Show Snackbar',
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Em desenvolvimento')));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConfigScreen(),
+                ),
+              );
             },
           ),
         ],

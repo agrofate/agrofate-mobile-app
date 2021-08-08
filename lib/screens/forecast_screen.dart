@@ -15,6 +15,7 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../LanguageChangeProvider.dart';
+import 'config_screen.dart';
 
 class ForecastScreen extends StatefulWidget {
   @override
@@ -158,8 +159,12 @@ class _ForecastScreenState extends State<ForecastScreen> {
             ),
             tooltip: 'Show Snackbar',
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Em desenvolvimento')));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConfigScreen(),
+                ),
+              );
             },
           ),
         ],

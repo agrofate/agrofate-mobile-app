@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:agrofate_mobile_app/classes/language.dart';
 import 'package:agrofate_mobile_app/generated/l10n.dart';
+import 'package:agrofate_mobile_app/screens/config_screen.dart';
 import 'package:agrofate_mobile_app/screens/detail_canteiro_screen.dart';
 import 'package:agrofate_mobile_app/services/canteiro.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
@@ -166,8 +167,12 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
             ),
             tooltip: 'Show Snackbar',
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(S.of(context).telaPerfilDesenvolvimento)));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConfigScreen(),
+                ),
+              );
             },
           ),
         ],
@@ -248,12 +253,6 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             image: canteiro_data[index][6] ? DecorationImage(image: NetworkImage(canteiro_data[index][3]),fit: BoxFit.fill,):DecorationImage(image: AssetImage(canteiro_data[index][3])),
-                                            /*image: DecorationImage(
-                                              // todo: trocar img do canteiro de acordo com banco - se tiver
-                                              //image: if(canteiro_data[index][6]) AssetImage(canteiro_data[index][3]),
-                                              image: canteiro_data[index][6] ? Image.network(canteiro_data[index][3]):AssetImage(canteiro_data[index][3]),
-                                              fit: BoxFit.cover,
-                                            ),*/
                                           ),
                                         ),
                                         const SizedBox(
