@@ -198,6 +198,87 @@ class S {
     );
   }
 
+  String get telaNovoFertilizanteDataAplicacaoSelecao {
+    return Intl.message(
+      'Selecione a data de aplicação',
+      name: 'telaNovoFertilizanteDataAplicacaoSelecao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovoFertilizanteDataAplicacaoInsercao {
+    return Intl.message(
+      'Insira a data de aplicação',
+      name: 'telaNovoFertilizanteDataAplicacaoInsercao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovoFertilizanteMarca {
+    return Intl.message(
+      'Insira a marca do fertilizante',
+      name: 'telaNovoFertilizanteMarca',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovoFertilizanteNome {
+    return Intl.message(
+      'Insira o nome do fertilizante',
+      name: 'telaNovoFertilizanteNome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovoFertilizanteTitulo {
+    return Intl.message(
+      'Adicione um \nnovo fertilizante',
+      name: 'telaNovoFertilizanteTitulo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovoFertilizanteDescricao {
+    return Intl.message(
+      'Preencha os campos abaixo e adicione um novo fertilizante à sua safra.',
+      name: 'telaNovoFertilizanteDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovoFertilizanteBotaoAdicionar {
+    return Intl.message(
+      'ADICIONAR FERTILIZANTE',
+      name: 'telaNovoFertilizanteBotaoAdicionar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovoFertilizanteTFNome {
+    return Intl.message(
+      'Nome do fertilizante',
+      name: 'telaNovoFertilizanteTFNome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovoFertilizanteTFMarca {
+    return Intl.message(
+      'Tipo de fertilizante',
+      name: 'telaNovoFertilizanteTFMarca',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get telaDetalheCanteiroAdicionarSafra {
     return Intl.message(
       'Adicione uma nova safra',

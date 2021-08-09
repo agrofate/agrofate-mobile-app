@@ -161,7 +161,7 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
                       height: 10,
                     ),
                     TextFieldWidget(
-                      hintText: 'Marca do fertilizante',
+                      hintText: 'Tipo do fertilizante',
                       prefixIconData: Icons.business_center_outlined,
                       obscureText: false,
                       textFieldController: _marcaFertController,
@@ -185,7 +185,7 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
                       onClicked: () {
                         // TODO: subir informações da fertilizante (nome; marca; date)
                         print('Nome fert: ${_nameFertController.text}');
-                        print('Marca fert: ${_marcaFertController.text}');
+                        print('Tipo fert: ${_marcaFertController.text}');
                         Navigator.push(
                           context,
                           MaterialPageRoute(

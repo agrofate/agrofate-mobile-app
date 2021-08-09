@@ -1,4 +1,5 @@
 import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/screens/detail_canteiro_screen.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/datepicker_widget.dart';
@@ -25,13 +26,14 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
   final _nameFertController = TextEditingController();
   final _marcaFertController = TextEditingController();
   String _id_safra_escolhida = '';
+  bool pressedButton = false;
 
   DateTime date = DateTime(DateTime.now().year - 500);
 
   String getDateText() {
     //TODO: arrumar gambiarra - deveria ser date == null
     if (date == DateTime(DateTime.now().year - 500)) {
-      return 'Selecione a data de aplicação';
+      return S.of(context).telaNovoFertilizanteDataAplicacaoSelecao;
     } else {
       return DateFormat('dd/MM/yyyy').format(date);
       // return '${date.day}/${date.month}/${date.year}';
@@ -41,7 +43,10 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
   adicionarFertilizante(nome_fert, marca_fert, data_fert) async{
     if(nome_fert != ''){
       if(marca_fert != ''){
-        if(data_fert.toString().split('-')[0] != '1521'){        
+        if(data_fert.toString().split('-')[0] != '1521'){  
+          setState(() {     
+            pressedButton = true; 
+          });
           SharedPreferences prefs = await SharedPreferences.getInstance();   
           _id_safra_escolhida = (prefs.getString('id_safra_atual') ?? ''); 
           String parametros = "?id_safra="+_id_safra_escolhida+"&nome_fert="+nome_fert+"&data_fert="+data_fert.toString()+"&marca_fert="+marca_fert;
@@ -58,17 +63,17 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
           );
         }else{
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Insira a data de aplicação'))
+            SnackBar(content: Text(S.of(context).telaNovoFertilizanteDataAplicacaoInsercao))
           );
         }
       }else{
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Insira a marca do Fertilizante'))
+          SnackBar(content: Text('Insira o tipo do Fertilizante'))
         );
       }
     }else{
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Insira o nome do Fertilizante'))
+        SnackBar(content: Text('Insira o nome do Fertilizante'))
       );
     }
   }
@@ -160,7 +165,7 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
                           children: [
                             TitleFormsWidget(
                               titleText:
-                              'Adicione um \nnovo fertilizante',
+                              S.of(context).telaNovoFertilizanteTitulo,
                             ),
                           ],
                         ),
@@ -173,7 +178,7 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
                       children: [
                         DescriptionFormsWidget(
                           descriptionText:
-                          'Preencha os campos abaixo e adicione um novo fertilizante à sua safra.',
+                              S.of(context).telaNovoFertilizanteDescricao,
                         ),
                       ],
                     ),
@@ -181,7 +186,7 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
                       height: size.height * 0.1,
                     ),
                     TextFieldWidget(
-                      hintText: 'Nome do fertilizante',
+                      hintText: S.of(context).telaNovoFertilizanteTFNome,
                       prefixIconData: Icons.article_outlined,
                       obscureText: false,
                       textFieldController: _nameFertController,
@@ -191,7 +196,7 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
                       height: 10,
                     ),
                     TextFieldWidget(
-                      hintText: 'Marca do fertilizante',
+                      hintText: S.of(context).telaNovoFertilizanteTFMarca,
                       prefixIconData: Icons.business_center_outlined,
                       obscureText: false,
                       textFieldController: _marcaFertController,
@@ -210,11 +215,17 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
                       height: 20,
                     ),
                     ButtonWidget(
-                      title: 'ADICIONAR FERTILIZANTE',
+                      title: S.of(context).telaNovoFertilizanteBotaoAdicionar,
                       hasBorder: false,
                       onClicked: () {
                         // TODO: subir informações da fertilizante (nome; marca; date)
-                        adicionarFertilizante(_nameFertController.text, _marcaFertController.text, date);
+                      
+                        if (!pressedButton) {
+                          // await Your normal function
+                          adicionarFertilizante(_nameFertController.text, _marcaFertController.text, date); 
+                        } else {
+                          return null;
+                        }                     
                         /*print('Nome fert: ${_nameFertController.text}');
                         print('Marca fert: ${_marcaFertController.text}');
                         Navigator.push(
