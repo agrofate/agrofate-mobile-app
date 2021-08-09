@@ -23,7 +23,7 @@ class NewFertilizanteScreen extends StatefulWidget {
 
 class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
   final _nameFertController = TextEditingController();
-  final _marcaFertController = TextEditingController();
+  final _tipoFertController = TextEditingController();
   String _id_safra_escolhida = '';
 
   DateTime date = DateTime(DateTime.now().year - 500);
@@ -38,13 +38,13 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
     }
   }
 
-  adicionarFertilizante(nome_fert, marca_fert, data_fert) async{
+  adicionarFertilizante(nome_fert, tipo_fert, data_fert) async{
     if(nome_fert != ''){
-      if(marca_fert != ''){
+      if(tipo_fert != ''){
         if(data_fert.toString().split('-')[0] != '1521'){        
           SharedPreferences prefs = await SharedPreferences.getInstance();   
           _id_safra_escolhida = (prefs.getString('id_safra_atual') ?? ''); 
-          String parametros = "?id_safra="+_id_safra_escolhida+"&nome_fert="+nome_fert+"&data_fert="+data_fert.toString()+"&marca_fert="+marca_fert;
+          String parametros = "?id_safra="+_id_safra_escolhida+"&nome_fert="+nome_fert+"&data_fert="+data_fert.toString()+"&marca_fert="+tipo_fert;
           http.Response url_teste = await http.post(
               "https://future-snowfall-319523.uc.r.appspot.com/insert-novo-fertilizante"+parametros);
           var response_login = url_teste.body;
@@ -63,7 +63,7 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
         }
       }else{
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Insira a marca do Fertilizante'))
+          const SnackBar(content: Text('Insira o tipo do Fertilizante'))
         );
       }
     }else{
@@ -191,10 +191,10 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
                       height: 10,
                     ),
                     TextFieldWidget(
-                      hintText: 'Marca do fertilizante',
-                      prefixIconData: Icons.business_center_outlined,
+                      hintText: 'Tipo do fertilizante',
+                      prefixIconData: Icons.label_outline_rounded,
                       obscureText: false,
-                      textFieldController: _marcaFertController,
+                      textFieldController: _tipoFertController,
                       textInputType: TextInputType.text,
                     ),
                     const SizedBox(
@@ -213,10 +213,10 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
                       title: 'ADICIONAR FERTILIZANTE',
                       hasBorder: false,
                       onClicked: () {
-                        // TODO: subir informações da fertilizante (nome; marca; date)
-                        adicionarFertilizante(_nameFertController.text, _marcaFertController.text, date);
+                        // TODO: subir informações da fertilizante (nome; tipo; date)
+                        adicionarFertilizante(_nameFertController.text, _tipoFertController.text, date);
                         /*print('Nome fert: ${_nameFertController.text}');
-                        print('Marca fert: ${_marcaFertController.text}');
+                        print('tipo fert: ${_tipoFertController.text}');
                         Navigator.push(
                           context,
                           MaterialPageRoute(

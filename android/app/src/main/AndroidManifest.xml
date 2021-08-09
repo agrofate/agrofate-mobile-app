@@ -3,6 +3,15 @@
    <application
         android:label="Agrofate"
         android:icon="@mipmap/ic_launcher">
+       <meta-data
+           android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyBm7uLN2PtfZQ77T4owUxmq0kgOs8Z_ZUs"
+           />
+
+       <uses-library
+           android:name="com.google.android.maps"
+           android:required="true" />
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
