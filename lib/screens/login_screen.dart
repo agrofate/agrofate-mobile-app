@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/screens/main_screens.dart';
 import 'package:agrofate_mobile_app/screens/register_screen.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
@@ -166,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       cursorColor: Color(0xff575c63),
       decoration: InputDecoration(
-        labelText: 'Senha',
+        labelText: S.of(context).telaLoginCampoSenha,
         // errorText: 'E-mail ou senha incorretos', todo: validação de erros form login
         prefixIcon: Icon(
           Icons.lock_outline,
@@ -234,7 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 underline: SizedBox(),
                 icon: Icon(
                   Icons.language,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
                 onChanged: (Language language) {
                   _changeLanguage(language);
@@ -303,7 +304,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 10,
                 ),
                 Text(
-                  'Pensando um futuro mais consciente',
+                  S.of(context).telaLoginFrase,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 13,
@@ -329,7 +330,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 10,
                     ),
                     Text(
-                      'Esqueceu a senha?',
+                      S.of(context).telaLoginEsqueceuSenha,
                       style: TextStyle(
                         color: Color(0xff575c63),
                         fontSize: 14,
@@ -380,7 +381,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 10,
                 ),
                 ButtonWidget(
-                  title: 'CADASTRAR',
+                  title: S.of(context).telaLoginBotaoCadastrar,
                   hasBorder: true,
                   onClicked: () {
                     Navigator.push(
@@ -405,7 +406,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget setUpButtonChild() {
     if (_state == 0) {
       return new Text(
-        "ENTRAR",
+        S.of(context).telaLoginBotaoEntrar,
         style: const TextStyle(
           color: Colors.white,
           fontSize: 16.0,

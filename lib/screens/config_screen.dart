@@ -5,8 +5,10 @@ import 'package:agrofate_mobile_app/widgets/title_forms_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../LanguageChangeProvider.dart';
+import 'login_screen.dart';
 
 class ConfigScreen extends StatefulWidget {
   const ConfigScreen({Key key}) : super(key: key);
@@ -29,6 +31,17 @@ class _ConfigScreenState extends State<ConfigScreen> {
             .changeLocale(language.languageCode);
       });
       //MyHomePage.setLocale(context, _locale);
+    }
+
+    void _Logout() async {
+      SharedPreferences prefManager = await SharedPreferences.getInstance();
+      await prefManager.clear();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => new LoginScreen(),
+        ),
+      );
     }
 
     return Scaffold(
@@ -128,7 +141,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                 width: size.width * 0.04,
                               ),
                               Text(
-                                "Alterar e-mail",
+                                S.of(context).telaConfigAlterarEmail,
                                 style: const TextStyle(
                                   fontSize: 14,
                                 ),
@@ -168,7 +181,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                 width: size.width * 0.04,
                               ),
                               Text(
-                                "Alterar senha",
+                                S.of(context).telaConfigAlterarSenha,
                                 style: const TextStyle(
                                   fontSize: 14,
                                 ),
@@ -208,7 +221,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                 width: size.width * 0.04,
                               ),
                               Text(
-                                "Sobre a agrofate",
+                                S.of(context).telaConfigSobre,
                                 style: const TextStyle(
                                   fontSize: 14,
                                 ),
@@ -248,7 +261,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                 width: size.width * 0.04,
                               ),
                               Text(
-                                "Políticas de privacidade",
+                                S.of(context).telaConfigPolitica,
                                 style: const TextStyle(
                                   fontSize: 14,
                                 ),
@@ -270,6 +283,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                   GestureDetector(
                     onTap: () {
                       // TODO: Logout function
+                      _Logout();
                     },
                     child: Container(
                       width: size.width,
@@ -291,7 +305,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                 width: size.width * 0.04,
                               ),
                               Text(
-                                "Sair",
+                                S.of(context).telaConfigSair,
                                 style: const TextStyle(
                                   fontSize: 14,
                                 ),

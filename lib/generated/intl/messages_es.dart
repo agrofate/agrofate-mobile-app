@@ -70,8 +70,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "telaLoginEsqueceuSenha" : MessageLookupByLibrary.simpleMessage("Olvido la contraseña?"),
     "telaLoginBotaoCadastrar" : MessageLookupByLibrary.simpleMessage("REGISTRAR"),
     "telaLoginBotaoEntrar" : MessageLookupByLibrary.simpleMessage("INICIAR SESIÓN"),
+    "telaLoginCampoSenha" : MessageLookupByLibrary.simpleMessage("Contraseña"),
     "telaConfigTitle" : MessageLookupByLibrary.simpleMessage("Configuración"),
     "telaConfigDescricao" : MessageLookupByLibrary.simpleMessage("Aquí puede editar la información de su perfil y también salir de la aplicación."),
+    "telaConfigAlterarEmail" : MessageLookupByLibrary.simpleMessage("Cambiar e-mail"),
+    "telaConfigAlterarSenha" : MessageLookupByLibrary.simpleMessage("Cambiar contraseña"),
+    "telaConfigSobre" : MessageLookupByLibrary.simpleMessage("Sobre la Agrofate"),
+    "telaConfigPolitica" : MessageLookupByLibrary.simpleMessage("Políticas de privacidad"),
+    "telaConfigSair" : MessageLookupByLibrary.simpleMessage("Salir"),
     "telaPerfilDesenvolvimento" : MessageLookupByLibrary.simpleMessage("En desarrollo"),
   };
 }

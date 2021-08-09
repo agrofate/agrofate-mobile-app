@@ -441,6 +441,15 @@ class S {
     );
   }
 
+  String get telaLoginCampoSenha {
+    return Intl.message(
+      'Senha',
+      name: 'telaLoginCampoSenha',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get telaConfigTitle {
     return Intl.message(
       'Configurações',
@@ -454,6 +463,51 @@ class S {
     return Intl.message(
       'Aqui você pode editar suas informações de perfil e também sair do aplicativo.',
       name: 'telaConfigDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaConfigAlterarEmail {
+    return Intl.message(
+      'Alterar e-mail',
+      name: 'telaConfigAlterarEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaConfigAlterarSenha {
+    return Intl.message(
+      'Alterar senha',
+      name: 'telaConfigAlterarSenha',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaConfigSobre {
+    return Intl.message(
+      'Sobre a Agrofate',
+      name: 'telaConfigSobre',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaConfigPolitica {
+    return Intl.message(
+      'Políticas de privacidade',
+      name: 'telaConfigPolitica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaConfigSair {
+    return Intl.message(
+      'Sair',
+      name: 'telaConfigSair',
       desc: '',
       args: [],
     );
