@@ -252,7 +252,7 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                                             shape: BoxShape.rectangle,
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            image: canteiro_data[index][6] ? DecorationImage(image: NetworkImage(canteiro_data[index][3]),fit: BoxFit.fill,):DecorationImage(image: AssetImage(canteiro_data[index][3])),
+                                            image: canteiro_data[index][6] ? DecorationImage(image: NetworkImage(canteiro_data[index][3]),fit: BoxFit.fill,):DecorationImage(image: AssetImage(canteiro_data[index][3]),fit: BoxFit.fill),
                                           ),
                                         ),
                                         const SizedBox(

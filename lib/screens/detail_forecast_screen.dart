@@ -197,24 +197,20 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                       return Column(
                         children: [
                           Container(
-                            height: MediaQuery.of(context).size.height / 5,
+                            // height: MediaQuery.of(context).size.height / 5,
                             width: MediaQuery.of(context).size.width * 0.9,
                             // todo: personalizar box de acordo com previsao no momento
                             decoration: BoxDecoration(
                               color: Colors.grey.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(15),
-                              // boxShadow: [
-                              //   BoxShadow(
-                              //     color: Colors.grey.withOpacity(0.2),
-                              //     spreadRadius: 1.5,
-                              //     blurRadius: 5,
-                              //   )
-                              // ],
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                SizedBox(
+                                  height: size.height * 0.03,
+                                ),
                                 RichText(
                                   text: TextSpan(
                                     style: Theme.of(context).textTheme.bodyText1,
@@ -356,6 +352,9 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                       ],
                                     ),
                                   ],
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.03,
                                 ),
                               ],
                             ),
