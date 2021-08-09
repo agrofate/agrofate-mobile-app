@@ -1,5 +1,6 @@
 import 'package:agrofate_mobile_app/classes/language.dart';
 import 'package:agrofate_mobile_app/screens/detail_forecast_screen.dart';
+import 'package:agrofate_mobile_app/screens/new_local_screen.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/utilities/forecast_json.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
@@ -229,7 +230,6 @@ class _ForecastScreenState extends State<ForecastScreen> {
                         height: 10,
                       ),
                       Column(
-                        // todo: limitar a 5 dias da semana
                         children: List.generate(forecast_data["daily"].length,
                             (index) {
                           return Padding(
@@ -258,8 +258,6 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                             ),
                                             child: Center(
                                               child: Image.asset(
-                                                // todo: trocar icone/img de acordo com  ao
-                                                //weather[3]['icon_path'],
                                                 "assets/images/weather/" +
                                                     forecast_data["daily"]
                                                             [index]["weather"]
@@ -282,8 +280,6 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  // todo: pegar 'seg' da API
-                                                  //'Seg',
                                                   StringUtils.capitalize(DateFormat(
                                                           'EEEE', 'pt_Br')
                                                       .format(DateTime.parse(new DateFormat(
@@ -475,7 +471,6 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                               children: [
                                                 IconButton(
                                                   onPressed: () {
-                                                    // todo: enviar para página de detalhes do dia selecionado
                                                     _dataEscolhida(new DateFormat(
                                                             'dd/MM')
                                                         .format(new DateTime
@@ -485,16 +480,6 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                                                     ["dt"] *
                                                                 1000))
                                                         .toString());
-                                                    /*Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                        new DetailForecastScreen(),
-                                                        settings: RouteSettings(
-                                                          arguments: new DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(forecast_data["daily"][index]["dt"]*1000)).toString(),
-                                                        ),
-                                                    ),
-                                                  );*/
                                                   },
                                                   icon: Icon(
                                                     Icons.arrow_forward_ios,
@@ -522,188 +507,6 @@ class _ForecastScreenState extends State<ForecastScreen> {
                             ),
                           );
                         }),
-                        /*Container(
-                child: Column(
-                  children: List.generate(forecast_data["list"].length, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: (size.width) * 0.9,
-                                height: 50,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: (size.width) * 0.15,
-                                      // decoration: const BoxDecoration(color: Colors.grey),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Seg',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 2,
-                                          ),
-                                          Text(
-                                            forecast_data["list"][index]["dt_txt"]
-                                                    .split(" ")[0]
-                                                    .split("-")[2]
-                                                    .toString() +
-                                                '/' +
-                                                forecast_data["list"][index]
-                                                        ["dt_txt"]
-                                                    .split(" ")[0]
-                                                    .split("-")[1]
-                                                    .toString(),
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: (size.width) * 0.15,
-                                      // decoration:
-                                      //     const BoxDecoration(color: Colors.green),
-                                      // todo: colocar imagem aqui de acordo com API
-                                      child: Icon(
-                                        icon_weather_a[main_weather.indexWhere(
-                                            (note) => note.startsWith(
-                                                forecast_data["list"][index]
-                                                        ["weather"][0]["main"]
-                                                    .toString()))],
-                                        //icon_weather_a[int.parse(main_weather.indexOf(forecast_data["list"][index]["weather"][0]["main"]))],
-                                        size: 42,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                      width: (size.width) * 0.25,
-                                      // decoration:
-                                      //     const BoxDecoration(color: Colors.green),
-                                      // todo: inserir infos da API
-                                      child: RichText(
-                                        text: TextSpan(
-                                          style:
-                                              DefaultTextStyle.of(context).style,
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text: forecast_data["list"][index]
-                                                          ["main"]["temp_max"]
-                                                      .toString() +
-                                                  'º',
-                                              style: TextStyle(
-                                                color: Colors.deepOrangeAccent,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text: "/" +
-                                                  forecast_data["list"][index]
-                                                          ["main"]["temp_min"]
-                                                      .toString() +
-                                                  'º',
-                                              style: TextStyle(
-                                                fontSize: 24,
-                                                color: Colors.grey,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: (size.width) * 0.15,
-                                      decoration: const BoxDecoration(
-                                          color: Colors.green),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                WeatherIcons.humidity,
-                                                size: 15,
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Column(
-                                                children: [
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(forecast_data["list"]
-                                                                  [index]["main"]
-                                                              ["humidity"]
-                                                          .toString() +
-                                                      '%'),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                WeatherIcons.strong_wind,
-                                                size: 15,
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Column(
-                                                children: [
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(forecast_data["list"]
-                                                                  [index]["wind"]
-                                                              ["speed"]
-                                                          .toString() +
-                                                      ' m/s'),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: (size.width) * 0.15,
-                                      // decoration:
-                                      //     const BoxDecoration(color: Colors.green),
-                                      child: Icon(Icons.arrow_forward_ios),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    );
-                  }),
-                ),
-              ),*/
                       ),
                     ],
                   ),
@@ -714,8 +517,12 @@ class _ForecastScreenState extends State<ForecastScreen> {
                     title: 'NOVO LOCAL',
                     hasBorder: true,
                     onClicked: () {
-                      // todo: linkar nova tela de adc novo local
-                      print("tela de adc novo local");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewLocalScreen(),
+                        ),
+                      );
                     },
                   ),
                 ),

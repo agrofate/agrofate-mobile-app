@@ -24,7 +24,7 @@ class NewFertilizanteScreen extends StatefulWidget {
 
 class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
   final _nameFertController = TextEditingController();
-  final _marcaFertController = TextEditingController();
+  final _tipoFertController = TextEditingController();
   String _id_safra_escolhida = '';
   bool pressedButton = false;
 
@@ -40,16 +40,16 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
     }
   }
 
-  adicionarFertilizante(nome_fert, marca_fert, data_fert) async{
+  adicionarFertilizante(nome_fert, tipo_fert, data_fert) async{
     if(nome_fert != ''){
-      if(marca_fert != ''){
+      if(tipo_fert != ''){
         if(data_fert.toString().split('-')[0] != '1521'){  
           setState(() {     
             pressedButton = true; 
           });
           SharedPreferences prefs = await SharedPreferences.getInstance();   
           _id_safra_escolhida = (prefs.getString('id_safra_atual') ?? ''); 
-          String parametros = "?id_safra="+_id_safra_escolhida+"&nome_fert="+nome_fert+"&data_fert="+data_fert.toString()+"&marca_fert="+marca_fert;
+          String parametros = "?id_safra="+_id_safra_escolhida+"&nome_fert="+nome_fert+"&data_fert="+data_fert.toString()+"&marca_fert="+tipo_fert;
           http.Response url_teste = await http.post(
               "https://future-snowfall-319523.uc.r.appspot.com/insert-novo-fertilizante"+parametros);
           var response_login = url_teste.body;
@@ -199,7 +199,7 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
                       hintText: S.of(context).telaNovoFertilizanteTFMarca,
                       prefixIconData: Icons.business_center_outlined,
                       obscureText: false,
-                      textFieldController: _marcaFertController,
+                      textFieldController: _tipoFertController,
                       textInputType: TextInputType.text,
                     ),
                     const SizedBox(
@@ -222,12 +222,12 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
                       
                         if (!pressedButton) {
                           // await Your normal function
-                          adicionarFertilizante(_nameFertController.text, _marcaFertController.text, date); 
+                          adicionarFertilizante(_nameFertController.text, _tipoFertController.text, date); 
                         } else {
                           return null;
                         }                     
                         /*print('Nome fert: ${_nameFertController.text}');
-                        print('Marca fert: ${_marcaFertController.text}');
+                        print('tipo fert: ${_tipoFertController.text}');
                         Navigator.push(
                           context,
                           MaterialPageRoute(
