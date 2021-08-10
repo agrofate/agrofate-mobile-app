@@ -191,7 +191,6 @@ class _ForecastScreenState extends State<ForecastScreen> {
                         height: 15,
                       ),
                       Container(
-                        height: MediaQuery.of(context).size.height / 7,
                         width: MediaQuery.of(context).size.width * 0.9,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -247,6 +246,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                       // decoration: const BoxDecoration(color: Colors.black12),
                                       width: (size.width - 40),
                                       child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Container(
                                             width: 50,
@@ -268,7 +268,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(width: 15),
+                                          SizedBox(width: size.width * 0.045),
                                           Container(
                                             // decoration:
                                             //     const BoxDecoration(color: Colors.black26),
@@ -329,7 +329,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                           Container(
                                             // decoration:
                                             //     const BoxDecoration(color: Colors.black38),
-                                            width: (size.width) * 0.26,
+                                            width: (size.width) * 0.24,
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -346,8 +346,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                                                             index]
                                                                         ["temp"]
                                                                     ["max"]
-                                                                .toStringAsFixed(
-                                                                    1) +
+                                                                .toStringAsFixed(0) +
                                                             'º',
                                                         style: TextStyle(
                                                           color: kGreenColor,
@@ -464,31 +463,25 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                           Container(
                                             // decoration:
                                             //     const BoxDecoration(color: Colors.black38),
-                                            width: (size.width) * 0.13,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                IconButton(
-                                                  onPressed: () {
-                                                    _dataEscolhida(new DateFormat(
-                                                            'dd/MM')
-                                                        .format(new DateTime
-                                                                .fromMillisecondsSinceEpoch(
-                                                            forecast_data["daily"]
-                                                                        [index]
-                                                                    ["dt"] *
-                                                                1000))
-                                                        .toString());
-                                                  },
-                                                  icon: Icon(
-                                                    Icons.arrow_forward_ios,
-                                                    size: 18,
-                                                    color: Colors.black
-                                                        .withOpacity(0.7),
-                                                  ),
-                                                ),
-                                              ],
+                                            width: (size.width) * 0.09,
+                                            child: IconButton(
+                                              onPressed: () {
+                                                _dataEscolhida(new DateFormat(
+                                                    'dd/MM')
+                                                    .format(new DateTime
+                                                    .fromMillisecondsSinceEpoch(
+                                                    forecast_data["daily"]
+                                                    [index]
+                                                    ["dt"] *
+                                                        1000))
+                                                    .toString());
+                                              },
+                                              icon: Icon(
+                                                Icons.arrow_forward_ios,
+                                                size: 18,
+                                                color: Colors.black
+                                                    .withOpacity(0.7),
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -498,7 +491,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.only(left: 65, top: 6),
+                                      EdgeInsets.only(left: (55 + (size.width * 0.045)), top: 6),
                                   child: Divider(
                                     thickness: 0.8,
                                   ),

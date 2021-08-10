@@ -180,7 +180,7 @@ class _DadosScreenState extends State<DadosScreen> {
                     height: 10,
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height / 5,
+                    // height: MediaQuery.of(context).size.height / 5,
                     width: MediaQuery.of(context).size.width * 0.9,
                     decoration: BoxDecoration(
                       color: Colors.grey.withOpacity(0.1),
@@ -193,6 +193,9 @@ class _DadosScreenState extends State<DadosScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          SizedBox(
+                            height: size.height * 0.025,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -247,6 +250,9 @@ class _DadosScreenState extends State<DadosScreen> {
                               ),
                             ],
                           ),
+                          SizedBox(
+                            height: size.height * 0.025,
+                          ),
                         ],
                       ),
                     ),
@@ -255,7 +261,7 @@ class _DadosScreenState extends State<DadosScreen> {
                     height: 10,
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height / 5,
+                    // height: MediaQuery.of(context).size.height / 5,
                     width: MediaQuery.of(context).size.width * 0.9,
                     decoration: BoxDecoration(
                       color: boxPhColor(sensor_ph),
@@ -268,6 +274,9 @@ class _DadosScreenState extends State<DadosScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          SizedBox(
+                            height: size.height * 0.025,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -328,6 +337,9 @@ class _DadosScreenState extends State<DadosScreen> {
                                 ],
                               ),
                             ],
+                          ),
+                          SizedBox(
+                            height: size.height * 0.025,
                           ),
                         ],
                       ),
