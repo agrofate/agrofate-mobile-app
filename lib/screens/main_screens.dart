@@ -7,7 +7,9 @@ import 'package:agrofate_mobile_app/classes/language.dart';
 import 'package:agrofate_mobile_app/generated/l10n.dart';
 
 class MainScreens extends StatefulWidget {
-  const MainScreens({Key key}) : super(key: key);
+  
+  final int myInt;
+  MainScreens({Key key, this.myInt}) : super(key: key);
 
   @override
   _MainScreensState createState() => _MainScreensState();
@@ -17,6 +19,24 @@ class _MainScreensState extends State<MainScreens> {
   int _selectedIndex = 0;
 
   @override
+  void initState() { 
+    super.initState();
+    //set our varible state to be that of the parent screen
+    //isMeeters is a local var to Settings and is changeable. 
+    //isM is a static and can't be changed. isM was passed in 
+    //from our home screen. We need a changeable var or the 
+    //checkboxes won't update correctly. Thats why we need 
+    //isMeeters (lol bad spelling). When the settings screen 
+    //first loads we use initState to take the value of 
+    //isM(from our home screen) and copy it into isMeeters 
+    //as it's initial value before it is built and shown 
+    //to the user for the first time. 
+    isMeeters = widget.myInt;
+  }
+  
+  var isMeeters;
+  bool tela_anterior = false;
+  @override
   Widget build(BuildContext context) {
     List<Widget> _telas = [
       ForecastScreen(),
@@ -24,8 +44,15 @@ class _MainScreensState extends State<MainScreens> {
       DadosScreen(),
       Text(S.of(context).telaPerfilDesenvolvimento),
     ];
+    print(isMeeters);
+    if(isMeeters != null){
+      if(tela_anterior == false){
+        _selectedIndex = isMeeters;
+      }
+    }
 
     void _onItemTap(int index) {
+      tela_anterior = true;
       setState(() {
         _selectedIndex = index;
         print(_selectedIndex);

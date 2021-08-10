@@ -29,23 +29,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final passwordController = TextEditingController();
 
   onClickedCadastrar(nome, email, senha) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();    
-    String parametros = "?nome="+nome+"&email="+email+"&senha="+senha;
-    http.Response url_teste = await http.post(
-        "https://future-snowfall-319523.uc.r.appspot.com/create-login"+parametros);
-    var response_login = url_teste.body;
-    print(response_login);
-    if(response_login == "Login cadastrado"){
-      prefs.setString('email', email);
-      prefs.setString('senha', senha);
-      Navigator.push(
-        context,
-        //MaterialPageRoute(builder: (context) => MainScreens()),
-        MaterialPageRoute(builder: (context) => CanteirosScreen()),
-      );
+    if(isEmail(email)){
+      SharedPreferences prefs = await SharedPreferences.getInstance();    
+      String parametros = "?nome="+nome+"&email="+email+"&senha="+senha;
+      http.Response url_teste = await http.post(
+          "https://future-snowfall-319523.uc.r.appspot.com/create-login"+parametros);
+      var response_login = url_teste.body;
+      print(response_login);
+      if(response_login == "Login cadastrado"){
+        prefs.setString('email', email);
+        prefs.setString('senha', senha);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainScreens()),
+          //MaterialPageRoute(builder: (context) => CanteirosScreen()),
+        );
+      }else{
+        _exibirDialogoErro(response_login);
+      }
     }else{
-      _exibirDialogoErro(response_login);
+      _exibirDialogoErro("Email inválido. Tente novamente!");
+    } 
+  }
+
+  bool isEmail(String string) {
+    // Null or empty string is invalid
+    if (string == null || string.isEmpty) {
+      return false;
     }
+
+    const pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+    final regExp = RegExp(pattern);
+
+    if (!regExp.hasMatch(string)) {
+      return false;
+    }
+    return true;
   }
 
   void _exibirDialogoErro(mensagem) {
@@ -62,9 +81,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: new Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => RegisterScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => RegisterScreen(),
+                  ),
                 );
               },
             ),
@@ -149,7 +170,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     DescriptionFormsWidget(
                       descriptionText:
-                          'Preencha os campos abaixo e crie sua conta na agrofate.',
+                          'Preencha os campos abaixo e crie sua conta na Agrofate.',
                     ),
                     SizedBox(
                       height: size.height * 0.1,

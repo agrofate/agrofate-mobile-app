@@ -36,12 +36,17 @@ class _ConfigScreenState extends State<ConfigScreen> {
     void _Logout() async {
       SharedPreferences prefManager = await SharedPreferences.getInstance();
       await prefManager.clear();
-      Navigator.push(
+      /*Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => new LoginScreen(),
         ),
-      );
+      );*/
+     Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (Route<dynamic> route) => false,
+                );
     }
 
     return Scaffold(

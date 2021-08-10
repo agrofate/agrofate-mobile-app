@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:agrofate_mobile_app/classes/language.dart';
 import 'package:agrofate_mobile_app/screens/canteiros_screen.dart';
+import 'package:agrofate_mobile_app/screens/main_screens.dart';
 import 'package:agrofate_mobile_app/services/api.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/description_forms_widget.dart';
@@ -89,13 +90,19 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
           "https://future-snowfall-319523.uc.r.appspot.com/insert-novo-canteiro"+parametros);
       var response_login = url_teste.body;
       print(response_login);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              CanteirosScreen(), // TODO: enviar para canteiro que a safra foi adc
-        ),
-      );
+
+      /*Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CanteirosScreen(),
+                  ),
+                );*/
+      Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainScreens(myInt:1)),
+                  (Route<dynamic> route) => false,
+                );
     
     }else{
       ScaffoldMessenger.of(context).showSnackBar(

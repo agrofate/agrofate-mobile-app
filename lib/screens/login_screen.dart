@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print(response_login_sessao);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MainScreens()),
+        MaterialPageRoute(builder: (context) => MainScreens(myInt:0)),
         //MaterialPageRoute(builder: (context) => CanteirosScreen()),
       );
     }else{
