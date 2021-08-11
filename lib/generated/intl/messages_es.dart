@@ -66,6 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "telaDetalheCanteiroTituloNovoFertilizante" : MessageLookupByLibrary.simpleMessage("NUEVO FERTILIZANTE"),
     "telaDetalheCanteiroTituloNovoDefensivo" : MessageLookupByLibrary.simpleMessage("NUEVA DEFENSIVA"),
     "telaDetalheCanteiroTituloFinalizarSafra" : MessageLookupByLibrary.simpleMessage("FIN DE LA COSECHA"),
+    "telaForecastDiadaSemana" : MessageLookupByLibrary.simpleMessage("es_ES"),
     "telaDetalheForecastTitulo" : MessageLookupByLibrary.simpleMessage("Previsión \nmeteorológica \ndetallada"),
     "telaDetalheForecastDescricao" : MessageLookupByLibrary.simpleMessage("Comprenda cuál es el mejor momento para producir de acuerdo con los pronósticos en su ubicación."),
     "telaEditarCanteiroTitulo" : MessageLookupByLibrary.simpleMessage("Actualizar \nsu cultivo"),

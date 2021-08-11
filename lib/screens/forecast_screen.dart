@@ -1,4 +1,5 @@
 import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/screens/detail_forecast_screen.dart';
 import 'package:agrofate_mobile_app/screens/new_local_screen.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
@@ -35,6 +36,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
   var nome_local;
   var forecast_data;
   var teste_link;
+  var hora_atual;
   bool loading = true;
 
   _dataEscolhida(data_atual) async {
@@ -68,6 +70,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
     http.Response forecast = await http.get(
         "https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude={current,minutely,hourly,alerts}&appid=${codigo}&lang=pt_br&units=metric");
     forecast_data = jsonDecode(forecast.body);
+    print(forecast_data);
 
     setState(() {
       this.temp = results['main']['temp'];
@@ -96,6 +99,16 @@ class _ForecastScreenState extends State<ForecastScreen> {
         context.read<LanguageChangeProvider>().changeLocale(language.languageCode);      
       });
       //MyHomePage.setLocale(context, _locale);
+    }
+    hora_atual = DateFormat('kk:mm:ss').format(DateTime.now()).toString().split(':')[0];
+    print(DateFormat('kk:mm:ss').format(DateTime.now()).toString().split(':')[0]);
+
+    String _setImage(imagem) {
+      if(int.parse(hora_atual) > 6 && int.parse(hora_atual) < 18) {
+        return "assets/images/weather/" + imagem +".png";
+      } else {
+        return "assets/images/weather/" + imagem.toString().substring(0,2)+"n.png";
+      } 
     }
     
     List main_weather = ["Clear", "Clouds", "Rain"];
@@ -258,11 +271,14 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                             ),
                                             child: Center(
                                               child: Image.asset(
-                                                "assets/images/weather/" +
+                                                /*"assets/images/weather/" +
                                                     forecast_data["daily"]
                                                             [index]["weather"]
                                                         [0]["icon"] +
-                                                    ".png",
+                                                    ".png",*/
+                                                _setImage(forecast_data["daily"]
+                                                            [index]["weather"]
+                                                        [0]["icon"]),
                                                 width: 30,
                                                 height: 30,
                                               ),
@@ -281,7 +297,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                                               children: [
                                                 Text(
                                                   StringUtils.capitalize(DateFormat(
-                                                          'EEEE', 'pt_Br')
+                                                          'EEEE', S.of(context).telaForecastDiadaSemana)
                                                       .format(DateTime.parse(new DateFormat(
                                                               'yyyy-MM-dd hh:mm:ss')
                                                           .format(new DateTime

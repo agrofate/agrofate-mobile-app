@@ -51,14 +51,14 @@ class _LoginScreenState extends State<LoginScreen> {
             new FlatButton(
               child: new Text("OK"),
               onPressed: () {
-                Navigator.of(context).pop();
+                /*Navigator.of(context).pop();
                 if(mensagem[0] != "Senha incorreta"){
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => RegisterScreen()),
                     ModalRoute.withName("/"),
                   );
-                }                
+                }   */             
               },
             ),
           ],

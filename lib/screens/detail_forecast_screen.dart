@@ -36,6 +36,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
   var temp_min, temp_max, humidity, wind, icon, data_completa;
   var add_dia = [];
   var data_escolhida;
+  var hora_atual;
   bool loading = true;
 
   Future getWeatherHourly(data_atual) async {
@@ -100,6 +101,8 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
     _procuraData();
   }
 
+  
+
   Future _procuraData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -122,6 +125,17 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
         context.read<LanguageChangeProvider>().changeLocale(language.languageCode);      
       });
       //MyHomePage.setLocale(context, _locale);
+    }
+
+    hora_atual = DateFormat('kk:mm:ss').format(DateTime.now()).toString().split(':')[0];
+    print(DateFormat('kk:mm:ss').format(DateTime.now()).toString().split(':')[0]);
+
+    String _setImage(imagem) {
+      if(int.parse(hora_atual) > 6 && int.parse(hora_atual) < 18) {
+        return "assets/images/weather/" + imagem +".png";
+      } else {
+        return "assets/images/weather/" + imagem.toString().substring(0,2)+"n.png";
+      } 
     }
 
     return Scaffold(
@@ -217,7 +231,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                     children: <TextSpan>[
                                       TextSpan(
                                         text: StringUtils.capitalize(DateFormat(
-                                            'EEEE', 'pt_Br')
+                                            'EEEE', S.of(context).telaForecastDiadaSemana)
                                             .format(DateTime.parse(new DateFormat(
                                             'yyyy-MM-dd hh:mm:ss')
                                             .format(new DateTime
@@ -255,9 +269,10 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                       children: [
                                         Image.asset(
                                           //weather[2]['icon_path'],
-                                          "assets/images/weather/" +
+                                          /*"assets/images/weather/" +
                                               this.icon +
-                                              ".png",
+                                              ".png",*/
+                                          _setImage(this.icon),
                                           width: 78,
                                           height: 78,
                                         ),

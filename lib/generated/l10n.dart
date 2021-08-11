@@ -405,6 +405,15 @@ class S {
     );
   }
 
+  String get telaForecastDiadaSemana {
+    return Intl.message(
+      'pt_Br',
+      name: 'telaForecastDiadaSemana',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get telaDetalheForecastTitulo {
     return Intl.message(
       'Previsão do tempo \ndetalhada',
