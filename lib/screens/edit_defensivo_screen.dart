@@ -110,6 +110,13 @@ class _EditDefensivoScreenState extends State<EditDefensivoScreen> {
                   .toList(),
               ),
           ),
+          IconButton(
+            icon: const Icon(
+              Icons.delete_outline,
+              color: Colors.black,
+            ),
+            onPressed: () {},
+          ),
         ],
       ),
       backgroundColor: Colors.white,

@@ -110,6 +110,13 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
                   .toList(),
               ),
           ),
+          IconButton(
+            icon: const Icon(
+              Icons.delete_outline,
+              color: Colors.black,
+            ),
+            onPressed: () {},
+          ),
         ],
       ),
       backgroundColor: Colors.white,

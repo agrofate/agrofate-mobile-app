@@ -80,6 +80,13 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
                   .toList(),
               ),
           ),
+          IconButton(
+            icon: const Icon(
+              Icons.delete_outline,
+              color: Colors.black,
+            ),
+            onPressed: () {},
+          ),
         ],
       ),
       backgroundColor: Colors.white,
