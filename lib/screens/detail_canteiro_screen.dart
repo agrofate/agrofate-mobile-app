@@ -155,6 +155,39 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
     }
   }
 
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Não"),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Sim"),
+      onPressed:  () {},
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Finalizar Safra"),
+      content: Text("Deseja realmente finalizar a safra?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -875,6 +908,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                   hasBorder: false,
                                   onClicked: () {
                                     // todo: finalizar safra botao
+                                    showAlertDialog(context);
                                     print("finalizar safra botao");
                                   },
                                 ),

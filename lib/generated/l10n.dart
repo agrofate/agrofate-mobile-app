@@ -279,6 +279,61 @@ class S {
     );
   }
 
+  String get telaNovoLocalTitulo {
+    return Intl.message(
+      'Adicione um \nnovo local',
+      name: 'telaNovoLocalTitulo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovoLocalDescricao {
+    return Intl.message(
+      'Preencha com seu endereço ou selecione no mapa o local para receber a previsão do tempo localizada.',
+      name: 'telaNovoLocalDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovoLocalPlaceholder {
+    return Intl.message(
+      'Preencha com o endereço',
+      name: 'telaNovoLocalPlaceholder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovoLocalLanguage {
+    return Intl.message(
+      'pt',
+      name: 'telaNovoLocalLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovoLocalBotaoAdicionar {
+    return Intl.message(
+      'ADICIONAR LOCAL',
+      name: 'telaNovoLocalBotaoAdicionar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaForecastBotaoNovoLocal {
+    return Intl.message(
+      'NOVO LOCAL',
+      name: 'telaForecastBotaoNovoLocal',
+      desc: '',
+      args: [],
+    );
+  }
+
+
   String get telaDetalheCanteiroAdicionarSafra {
     return Intl.message(
       'Adicione uma nova safra',

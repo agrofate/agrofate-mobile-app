@@ -37,6 +37,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
   var forecast_data;
   var teste_link;
   var hora_atual;
+  var visibility_forecast=false;
+  String _id_user;
   bool loading = true;
 
   _dataEscolhida(data_atual) async {
@@ -56,31 +58,56 @@ class _ForecastScreenState extends State<ForecastScreen> {
   }
 
   Future getWeather() async {
-    this.lat = '-23.5638291';
-    this.long = '-46.007628';
+    //this.lat = '-23.5638291';
+    //this.long = '-46.007628';
     this.codigo = '8508113bd018ec7a9708de6d57d2de9c';
-    http.Response response = await http.get(
-        "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&lang=pt_br&units=metric&appid=${codigo}");
-    var results = jsonDecode(response.body);
 
-    /*http.Response forecast = await http.get(
-        "https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&lang=pt_br&units=metric&appid=${codigo}");
-    forecast_data = jsonDecode(forecast.body);*/
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _id_user = (prefs.getString('id_user'));
+    String parametros = "?&id_usuario="+_id_user;
+    http.Response latlng = await http.get(
+          "https://future-snowfall-319523.uc.r.appspot.com/read-one-locais"+parametros);
+    var response_latlng = json.decode(latlng.body);
+    print("LatLong: ");
+    print(response_latlng);
 
-    http.Response forecast = await http.get(
-        "https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude={current,minutely,hourly,alerts}&appid=${codigo}&lang=pt_br&units=metric");
-    forecast_data = jsonDecode(forecast.body);
-    print(forecast_data);
+    if(response_latlng[0][0] == 0){
+      setState(() {
+        visibility_forecast=false;
+        this.temp = 0;
+        this.description = '';
+        this.currently = '';
+        this.humidity =  0;
+        this.windSpeed =  0;
+        this.nome_local =  '';
+        this.loading = false;
+      });
+    }else{
+      visibility_forecast=true;
+      http.Response response = await http.get(
+        "https://api.openweathermap.org/data/2.5/weather?lat=${response_latlng[0][2]}&lon=${response_latlng[0][3]}&lang=pt_br&units=metric&appid=${codigo}");
+      var results = jsonDecode(response.body);
 
-    setState(() {
-      this.temp = results['main']['temp'];
-      this.description = results['weather'][0]['description'];
-      this.currently = results['weather'][0]['main'];
-      this.humidity = results['main']['humidity'];
-      this.windSpeed = results['wind']['speed'];
-      this.nome_local = results['name'];
-      this.loading = false;
-    });
+      /*http.Response forecast = await http.get(
+          "https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&lang=pt_br&units=metric&appid=${codigo}");
+      forecast_data = jsonDecode(forecast.body);*/
+
+      http.Response forecast = await http.get(
+          "https://api.openweathermap.org/data/2.5/onecall?lat=${response_latlng[0][2]}&lon=${response_latlng[0][3]}&exclude={current,minutely,hourly,alerts}&appid=${codigo}&lang=pt_br&units=metric");
+      forecast_data = jsonDecode(forecast.body);
+      print(forecast_data);
+
+      setState(() {
+        this.temp = results['main']['temp'];
+        this.description = results['weather'][0]['description'];
+        this.currently = results['weather'][0]['main'];
+        this.humidity = results['main']['humidity'];
+        this.windSpeed = results['wind']['speed'];
+        this.nome_local = results['name'];
+        this.loading = false;
+      });
+    }   
+    print(visibility_forecast);
   }
 
   @override
@@ -192,12 +219,30 @@ class _ForecastScreenState extends State<ForecastScreen> {
                 child: CircularProgressIndicator(),
               ),
             );
-          } else {
+          } 
+          else if(!visibility_forecast) {
+            return Padding(
+                  padding: const EdgeInsets.all(30),
+                  child: ButtonWidget(
+                    title: S.of(context).telaForecastBotaoNovoLocal,
+                    hasBorder: true,
+                    onClicked: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewLocalScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                );
+          }
+          else {
             return Column(
               children: [
                 Visibility(
                   // TODO: ativar visualização qdo tiver local adicionado - se n tiver local, desativa a vis. e deixa só o botão
-                  visible: true,
+                  visible: visibility_forecast,
                   child: Column(
                     children: [
                       const SizedBox(
@@ -523,7 +568,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                 Padding(
                   padding: const EdgeInsets.all(30),
                   child: ButtonWidget(
-                    title: 'NOVO LOCAL',
+                    title: S.of(context).telaForecastBotaoNovoLocal,
                     hasBorder: true,
                     onClicked: () {
                       Navigator.push(
