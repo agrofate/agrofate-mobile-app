@@ -667,10 +667,82 @@ class S {
     );
   }
 
+  String get telaDadosTitulo {
+    return Intl.message(
+      'Dados',
+      name: 'telaDadosTitulo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDadosUmidadeDescricao {
+    return Intl.message(
+      'Importante para a formação',
+      name: 'telaDadosUmidadeDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDadosUmidadeDescricao2 {
+    return Intl.message(
+      'adequada das plantas',
+      name: 'telaDadosUmidadeDescricao2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDadosPHDescricao {
+    return Intl.message(
+      'Indicador de fertilidade',
+      name: 'telaDadosPHDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get telaDadosBotaoNovoEquipamento {
     return Intl.message(
       'NOVO EQUIPAMENTO',
       name: 'telaDadosBotaoNovoEquipamento',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDadosStatusPH1 {
+    return Intl.message(
+      'Ácido',
+      name: 'telaDadosStatusPH1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDadosStatusPH2 {
+    return Intl.message(
+      'Alcalino',
+      name: 'telaDadosStatusPH2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDadosNotificationMessage1 {
+    return Intl.message(
+      'O nível de pH está fora do intervalo certo. \nÉ indicado acrescentar mais fertilizante.',
+      name: 'telaDadosNotificationMessage1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDadosNotificationMessage2 {
+    return Intl.message(
+      'O nível de pH está dentro do intervalo certo! \nMantenha a quantidade de fertilizante.',
+      name: 'telaDadosNotificationMessage2',
       desc: '',
       args: [],
     );

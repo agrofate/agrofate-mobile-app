@@ -55,8 +55,12 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
     if(nome_safra != ''){
       if(data_safra.toString().split('-')[0] != '1521'){
         if(tipo_cultura != null){
-          SharedPreferences prefs = await SharedPreferences.getInstance();   
+          SharedPreferences prefs = await SharedPreferences.getInstance();             
           _id_canteiro_escolhido =  (prefs.getString('id_canteiro_escolhido') ?? ''); 
+          print(_id_canteiro_escolhido);
+          print(nome_safra);
+          print(data_safra.toString());
+          print(tipo_cultura);
           String parametros = "?id_canteiro="+_id_canteiro_escolhido+"&nome_safra="+nome_safra+"&data_safra="+data_safra.toString()+"&id_cultura="+tipo_cultura;
           http.Response url_teste = await http.post(
               "https://future-snowfall-319523.uc.r.appspot.com/insert-nova-safra"+parametros);

@@ -27,6 +27,7 @@ class _DadosScreenState extends State<DadosScreen> {
   var sensor_umidade;
   var sensor_ph;
   var data_ultima;
+  var status_ph;
 
   Future _procuraSensor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -57,6 +58,13 @@ class _DadosScreenState extends State<DadosScreen> {
     }
   }
 
+  Future verificaStatus() async {
+    if(double.parse(sensor_ph) > 7){status_ph = S.of(context).telaDadosStatusPH2;}
+    else{status_ph = S.of(context).telaDadosStatusPH1;}
+
+    return status_ph.toString();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -76,6 +84,8 @@ class _DadosScreenState extends State<DadosScreen> {
       //MyHomePage.setLocale(context, _locale);
     }
 
+    
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -87,8 +97,8 @@ class _DadosScreenState extends State<DadosScreen> {
           ),
           preferredSize: Size.fromHeight(4.0),
         ),
-        title: const Text(
-          'Dados',
+        title: Text(
+          S.of(context).telaDadosTitulo,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -160,9 +170,45 @@ class _DadosScreenState extends State<DadosScreen> {
                   Visibility(
                     // TODO: personalizar notifications de acordo com informações do BD
                     visible: true,
-                    child: NotificationDadosWidget(
+                    child: 
+                    FutureBuilder(builder: (context, text) {                                    
+                      if(double.parse(sensor_ph)>6 && double.parse(sensor_ph)<=7.5){
+                        /*return Text(
+                          // TODO: recuperar status do pH do solo do BD
+                          "Status: " + S.of(context).telaDadosStatusPH2,
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        );*/
+
+                        return NotificationDadosWidget(
+                          message: S.of(context).telaDadosNotificationMessage2,
+                          
+                          // vermelho
+                          colorNotification: 0xff4b9100,
+                          iconNotification: Icons.check_outlined,
+                        );
+                      }else{
+                        /*return Text(
+                          // TODO: recuperar status do pH do solo do BD
+                          "Status: " + S.of(context).telaDadosStatusPH1,
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        );*/
+                        return NotificationDadosWidget(
+                          message:S.of(context).telaDadosNotificationMessage1,
+                          
+                          // vermelho
+                          colorNotification: 0xFFF44336,
+                          iconNotification: Icons.warning,
+                        );
+                      }
+                    }),
+                    /*NotificationDadosWidget(
                       message:
                           "O nível de pH está fora do intervalo certo. \nÉ indicado acrescentar mais fertilizante.",
+                      
                       // vermelho
                       colorNotification: 0xFFF44336,
                       iconNotification: Icons.warning,
@@ -174,7 +220,7 @@ class _DadosScreenState extends State<DadosScreen> {
                       // azul
                       // colorNotification: 0xFF2196F3,
                       // iconNotification: Icons.info,
-                    ),
+                    ),*/
                   ),
                   const SizedBox(
                     height: 10,
@@ -235,13 +281,13 @@ class _DadosScreenState extends State<DadosScreen> {
                                     height: 3,
                                   ),
                                   Text(
-                                    "Importante para a formação",
+                                    S.of(context).telaDadosUmidadeDescricao,
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
                                   ),
                                   Text(
-                                    "adequada das plantas",
+                                    S.of(context).telaDadosUmidadeDescricao2,
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -315,15 +361,28 @@ class _DadosScreenState extends State<DadosScreen> {
                                   const SizedBox(
                                     height: 3,
                                   ),
+                                  FutureBuilder(builder: (context, text) {                                    
+                                    if(double.parse(sensor_ph)>7){
+                                      return Text(
+                                        // TODO: recuperar status do pH do solo do BD
+                                        "Status: " + S.of(context).telaDadosStatusPH2,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      );
+                                    }else{
+                                      return Text(
+                                        // TODO: recuperar status do pH do solo do BD
+                                        "Status: " + S.of(context).telaDadosStatusPH1,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      );
+                                    }
+                                  }),
+                                  
                                   Text(
-                                    // TODO: recuperar status do pH do solo do BD
-                                    "Status: " + "Alcalino",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Indicador de fertilidade",
+                                    S.of(context).telaDadosPHDescricao,
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
