@@ -460,6 +460,42 @@ class S {
     );
   }
 
+  String get telaDetalheCanteiroAlertTitle {
+    return Intl.message(
+      'Finalizar Safra',
+      name: 'telaDetalheCanteiroAlertTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDetalheCanteiroAlertDescricao {
+    return Intl.message(
+      'Deseja realmente finalizar a safra?',
+      name: 'telaDetalheCanteiroAlertDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDetalheCanteiroAlertEscolha1 {
+    return Intl.message(
+      'Não',
+      name: 'telaDetalheCanteiroAlertEscolha1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaDetalheCanteiroAlertEscolha2 {
+    return Intl.message(
+      'Sim',
+      name: 'telaDetalheCanteiroAlertEscolha2',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get telaForecastDiadaSemana {
     return Intl.message(
       'pt_Br',
@@ -545,6 +581,42 @@ class S {
     return Intl.message(
       'Galeria',
       name: 'telaEditarCanteiroLabelGaleria',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarCanteiroAlertTitle {
+    return Intl.message(
+      'Excluir Canteiro',
+      name: 'telaEditarCanteiroAlertTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarCanteiroAlertDescricao {
+    return Intl.message(
+      'Deseja realmente excluir o canteiro?',
+      name: 'telaEditarCanteiroAlertDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarCanteiroAlertEscolha1 {
+    return Intl.message(
+      'Não',
+      name: 'telaEditarCanteiroAlertEscolha1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarCanteiroAlertEscolha2 {
+    return Intl.message(
+      'Sim',
+      name: 'telaEditarCanteiroAlertEscolha2',
       desc: '',
       args: [],
     );

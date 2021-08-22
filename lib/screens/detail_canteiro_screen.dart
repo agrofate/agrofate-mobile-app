@@ -15,6 +15,7 @@ import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/src/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -49,6 +50,11 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
   var nome_cultura;
   var fert_data;
   var def_data;
+
+  var months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; 
+  List data = [
+    {"name": "Jan"},{"name": "Feb"},{"name": "Mar"},{"name": "Apr"},{"name": "May"},{"name": "Jun"},{"name": "Jul"},{"name": "Aug"},{"name": "Sep"},{"name": "Oct"},
+  ];
 
   @override
   void initState() {
@@ -122,6 +128,10 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
           } else {
             setState(() {
               fert_data = response_login_fert;
+              //DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+              //String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(fert_data[0][4]);
+              int trendIndex = data.indexWhere((f) => f['name'] == fert_data[0][4].split(" ")[2]);
+              print(trendIndex);
               this.loading_fertilizante = false;
               this.loading_fertilizante_detalhe = true;
             });
@@ -159,20 +169,20 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
   showAlertDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = TextButton(
-      child: Text("Não"),
+      child: Text(S.of(context).telaDetalheCanteiroAlertEscolha1),
       onPressed:  () {
         Navigator.of(context).pop();
       },
     );
     Widget continueButton = TextButton(
-      child: Text("Sim"),
+      child: Text(S.of(context).telaDetalheCanteiroAlertEscolha2),
       onPressed:  () {},
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Finalizar Safra"),
-      content: Text("Deseja realmente finalizar a safra?"),
+      title: Text(S.of(context).telaDetalheCanteiroAlertTitle),
+      content: Text(S.of(context).telaDetalheCanteiroAlertDescricao),
       actions: [
         cancelButton,
         continueButton,
@@ -185,6 +195,46 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
       builder: (BuildContext context) {
         return alert;
       },
+    );
+  }
+
+  _defensivoEscolhido(id_defensivo, nome_def, marca_def, data_def) async {
+    print(id_defensivo);
+    print(nome_def);
+    print(marca_def);
+    print(data_def);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setString('id_defensivo_escolhido', id_defensivo.toString());
+      prefs.setString('nome_defensivo_escolhido', nome_def.toString());
+      prefs.setString('marca_defensivo_escolhido', marca_def.toString());
+      prefs.setString('data_defensivo_escolhido', data_def.toString());
+    });
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditDefensivoScreen(),
+      ),
+    );
+  }
+
+  _fertilizanteEscolhido(id_fertilizante, nome_fert, marca_fert, data_fert) async {
+    print(id_fertilizante);
+    print(nome_fert);
+    print(marca_fert);
+    print(data_fert);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setString('id_fertilizante_escolhido', id_fertilizante.toString());
+      prefs.setString('nome_fertilizante_escolhido', nome_fert.toString());
+      prefs.setString('marca_fertilizante_escolhido', marca_fert.toString());
+      prefs.setString('data_fertilizante_escolhido', data_fert.toString());
+    });
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditFertilizanteScreen(),
+      ),
     );
   }
 
@@ -642,7 +692,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                                         ),
                                                                         Text(
                                                                           S.of(context).telaDetalheCanteiroDefensivoDataAplicacao +
-                                                                              fert_data[index][4].split(" ")[1]+"/"+fert_data[index][4].split(" ")[2]+"/"+fert_data[index][4].split(" ")[3],
+                                                                              fert_data[index][4].split(" ")[1]+"/"+ (data.indexWhere((f) => f['name'] == fert_data[index][4].split(" ")[2])+1).toString()+"/"+fert_data[index][4].split(" ")[3],
                                                                               //fert_data[index][4],
                                                                           style:
                                                                               const TextStyle(
@@ -658,14 +708,15 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                                         IconButton(
                                                                       onPressed:
                                                                           () {
-                                                                        Navigator
+                                                                        /*Navigator
                                                                             .push(
                                                                           context,
                                                                           MaterialPageRoute(
                                                                             builder: (context) =>
                                                                                 EditFertilizanteScreen(),
                                                                           ),
-                                                                        );
+                                                                        );*/
+                                                                        _fertilizanteEscolhido(fert_data[index][0], fert_data[index][2], fert_data[index][3], fert_data[index][4].split(" ")[3]+"-0"+(data.indexWhere((f) => f['name'] == fert_data[index][4].split(" ")[2])+1).toString()+"-"+fert_data[index][4].split(" ")[1]);
                                                                       },
                                                                       icon: Icon(
                                                                           Icons
@@ -820,7 +871,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                                         ),
                                                                         Text(
                                                                           S.of(context).telaDetalheCanteiroDefensivoDataAplicacao +
-                                                                              def_data[index][4].split(" ")[1]+"/"+def_data[index][4].split(" ")[2]+"/"+def_data[index][4].split(" ")[3],
+                                                                              def_data[index][4].split(" ")[1]+"/"+(data.indexWhere((f) => f['name'] == def_data[index][4].split(" ")[2])+1).toString()+"/"+def_data[index][4].split(" ")[3],
                                                                               //fert_data[index][4],
                                                                           style:
                                                                               const TextStyle(
@@ -836,14 +887,15 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                                                         IconButton(
                                                                       onPressed:
                                                                           () {
-                                                                        Navigator
+                                                                        /*Navigator
                                                                             .push(
                                                                           context,
                                                                           MaterialPageRoute(
                                                                             builder: (context) =>
                                                                                 EditDefensivoScreen(),
                                                                           ),
-                                                                        );
+                                                                        );*/
+                                                                        _defensivoEscolhido(def_data[index][0], def_data[index][2], def_data[index][3], def_data[index][4].split(" ")[3]+"-0"+(data.indexWhere((f) => f['name'] == def_data[index][4].split(" ")[2])+1).toString()+"-"+def_data[index][4].split(" ")[1]);
                                                                       },
                                                                       icon: Icon(
                                                                           Icons
@@ -1114,12 +1166,13 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                         Center(
                           child: IconButton(
                             onPressed: () {
-                              Navigator.push(
+                              /*Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => EditDefensivoScreen(),
                                 ),
-                              );
+                              );*/                              
+                              _defensivoEscolhido(def_data[index][0], def_data[index][2], def_data[index][3], def_data[index][4].split(" ")[3]+"-"+(data.indexWhere((f) => f['name'] == def_data[index][4].split(" ")[2])+1).toString()+"-"+def_data[index][4].split(" ")[1]);
                             },
                             icon: Icon(Icons.edit_outlined),
                           ),

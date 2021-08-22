@@ -1,4 +1,5 @@
 import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/screens/detail_canteiro_screen.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/datepicker_widget.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/src/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import '../LanguageChangeProvider.dart';
 
@@ -22,14 +25,30 @@ class EditFertilizanteScreen extends StatefulWidget {
 class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
   final _nameFertController = TextEditingController();
   final _marcaFertController = TextEditingController();
+  String _id_fertilizante_escolhido = '';
+  String _nome_fertilizante_escolhido = '';
+  String _marca_fertilizante_escolhido = '';
+  String _data_fertilizante_escolhido = '';
 
   @override
   void initState() {
     super.initState();
-    // TODO: puxar nome, marca e data do fertilizante do BD
-    _nameFertController.text = "Nome fert 1";
-    _marcaFertController.text = "Marca fert 1";
-    date = DateTime.now();
+    iniciaCampos();
+  }
+  iniciaCampos() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _id_fertilizante_escolhido = (prefs.getString('id_fertilizante_escolhido') ?? '');
+      _nome_fertilizante_escolhido = (prefs.getString('nome_fertilizante_escolhido') ?? '');
+      _marca_fertilizante_escolhido = (prefs.getString('marca_fertilizante_escolhido') ?? '');
+      _data_fertilizante_escolhido = (prefs.getString('data_fertilizante_escolhido') ?? '');
+    });
+    // TODO: puxar nome, marca e data do defensivo do BD
+    _nameFertController.text = _nome_fertilizante_escolhido;
+    _marcaFertController.text = _marca_fertilizante_escolhido;
+    print(new DateTime.now());
+    date =  DateTime.parse(_data_fertilizante_escolhido);
   }
 
   DateTime date = DateTime(DateTime.now().year - 500);
@@ -42,6 +61,55 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
       return DateFormat('dd/MM/yyyy').format(date);
       // return '${date.day}/${date.month}/${date.year}';
     }
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text(S.of(context).telaEditarCanteiroAlertEscolha1),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text(S.of(context).telaEditarCanteiroAlertEscolha2),
+      onPressed:  () async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        setState(() {
+          _id_fertilizante_escolhido = (prefs.getString('id_fertilizante_escolhido') ?? '');
+        });
+        print(_id_fertilizante_escolhido);
+        String parametros = "?id_fertilizante="+_id_fertilizante_escolhido;
+        http.Response url_teste = await http.post(
+            "https://future-snowfall-319523.uc.r.appspot.com/delete-fertilizante"+parametros);
+        var response_login = url_teste.body;
+        print(response_login);
+        Navigator.push(
+          context,
+          //MaterialPageRoute(builder: (context) => MainScreens(myInt:1)),
+          MaterialPageRoute(builder: (context) => DetailCanteiroScreen()),
+        );
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(S.of(context).telaEditarCanteiroAlertTitle),
+      content: Text(S.of(context).telaEditarCanteiroAlertDescricao),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -115,7 +183,9 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
               Icons.delete_outline,
               color: Colors.black,
             ),
-            onPressed: () {},
+            onPressed: () {
+              showAlertDialog(context);
+            },
           ),
         ],
       ),

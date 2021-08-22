@@ -1,4 +1,5 @@
 import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/screens/canteiros_screen.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/description_forms_widget.dart';
@@ -10,8 +11,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import '../LanguageChangeProvider.dart';
+import 'main_screens.dart';
 
 class EditCanteiroScreen extends StatefulWidget {
   const EditCanteiroScreen({Key key}) : super(key: key);
@@ -23,6 +27,7 @@ class EditCanteiroScreen extends StatefulWidget {
 class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
+  String _id_canteiro_escolhido = '';
 
   final _nameCanteiroController = TextEditingController();
 
@@ -30,6 +35,55 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
   void initState() {
     super.initState();
     _nameCanteiroController.text = "Canteiro Sul"; // TODO: puxar nome do canteiro do BD
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text(S.of(context).telaEditarCanteiroAlertEscolha1),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text(S.of(context).telaEditarCanteiroAlertEscolha2),
+      onPressed:  () async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        setState(() {
+          _id_canteiro_escolhido = (prefs.getString('id_canteiro_escolhido') ?? '');
+        });
+
+        String parametros = "?id_canteiro="+_id_canteiro_escolhido;
+        http.Response url_teste = await http.post(
+            "https://future-snowfall-319523.uc.r.appspot.com/delete-canteiro"+parametros);
+        var response_login = url_teste.body;
+        print(response_login);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainScreens(myInt:1)),
+          //MaterialPageRoute(builder: (context) => CanteirosScreen()),
+        );
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(S.of(context).telaEditarCanteiroAlertTitle),
+      content: Text(S.of(context).telaEditarCanteiroAlertDescricao),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -85,7 +139,9 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
               Icons.delete_outline,
               color: Colors.black,
             ),
-            onPressed: () {},
+            onPressed: () {
+              showAlertDialog(context);
+            },
           ),
         ],
       ),
