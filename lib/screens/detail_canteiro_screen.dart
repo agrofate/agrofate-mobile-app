@@ -53,7 +53,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
 
   var months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; 
   List data = [
-    {"name": "Jan"},{"name": "Feb"},{"name": "Mar"},{"name": "Apr"},{"name": "May"},{"name": "Jun"},{"name": "Jul"},{"name": "Aug"},{"name": "Sep"},{"name": "Oct"},
+    {"name": "Jan"},{"name": "Feb"},{"name": "Mar"},{"name": "Apr"},{"name": "May"},{"name": "Jun"},{"name": "Jul"},{"name": "Aug"},{"name": "Sep"},{"name": "Oct"},{"name": "Nov"},{"name": "Dec"},
   ];
 
   @override
@@ -489,7 +489,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    S.of(context).telaDetalheCanteiroDataPlantacao + data_plantacao.split(" ")[1]+"/"+data_plantacao.split(" ")[2]+"/"+data_plantacao.split(" ")[3], //data_plantacao,
+                                    S.of(context).telaDetalheCanteiroDataPlantacao + data_plantacao.split(" ")[1]+"/"+data.indexWhere((f) => f['name'] == data_plantacao.split(" ")[2]).toString()+"/"+data_plantacao.split(" ")[3], //data_plantacao,
                                     // TODO: recuperar data de plantação da safra do BD
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -504,14 +504,14 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  /*Text(
                                     S.of(context).telaDetalheCanteiroUltimaAtualizacao + "27/06/21",
                                     // TODO: recuperar data de última atualização da safra do BD
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 14,
                                     ),
-                                  ),
+                                  ),*/
                                 ],
                               ),
                               const SizedBox(

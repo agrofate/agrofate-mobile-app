@@ -17,6 +17,7 @@ import 'package:provider/src/provider.dart';
 import 'package:weather_icons/weather_icons.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geocoder/geocoder.dart';
 
 import '../LanguageChangeProvider.dart';
 
@@ -36,15 +37,25 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
   var temp_min, temp_max, humidity, wind, icon, data_completa;
   var add_dia = [];
   var data_escolhida;
+  var nome_local;
   var hora_atual;
+  var latitude_escolhida;
+  var longitude_escolhida;
   bool loading = true;
 
   Future getWeatherHourly(data_atual) async {
     this.lat = '-23.5638291';
     this.long = '-46.007628';
     this.codigo = '8508113bd018ec7a9708de6d57d2de9c';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      latitude_escolhida = (prefs.getString('latitude_escolhida') ?? '');
+      longitude_escolhida = (prefs.getString('longitude_escolhida') ?? '');
+    });
+    
     http.Response response = await http.get(
-        "https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude={current,minutely,alerts}&appid=${codigo}&lang=pt_br&units=metric");
+        "https://api.openweathermap.org/data/2.5/onecall?lat=${latitude_escolhida}&lon=${longitude_escolhida}&exclude={current,minutely,alerts}&appid=${codigo}&lang=pt_br&units=metric");
     var results = jsonDecode(response.body);
     var dia = [];
     var dia_espec = [];
@@ -107,6 +118,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       data_escolhida = (prefs.getString('data_escolhida') ?? '');
+      nome_local = (prefs.getString('nome_local') ?? '');
     });
     print(data_escolhida);
     this.getWeatherHourly(data_escolhida);
@@ -252,7 +264,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                                   height: 2,
                                 ),
                                 Text(
-                                  "Biritiba Mirim, São Paulo",
+                                  nome_local+", São Paulo",
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 14.0,

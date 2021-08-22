@@ -837,6 +837,15 @@ class S {
       args: [],
     );
   }
+
+  String get telaDadosAs {
+    return Intl.message(
+      ' às ',
+      name: 'telaDadosAs',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

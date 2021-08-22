@@ -36,6 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "telaDadosStatusPH2" : MessageLookupByLibrary.simpleMessage("Álcali"),
     "telaDadosNotificationMessage1" : MessageLookupByLibrary.simpleMessage("El nivel de pH está fuera de rango. \nSe recomienda agregar más fertilizante."),
     "telaDadosNotificationMessage2" : MessageLookupByLibrary.simpleMessage("¡El nivel de pH está dentro del rango correcto! \nMantenga la cantidad de fertilizante."),
+    "telaDadosAs" : MessageLookupByLibrary.simpleMessage(" a "),
     "telaCanteiroBotaoNovoCanteiro" : MessageLookupByLibrary.simpleMessage("NUEVO CULTIVO"),
     "telaMainBotaoPrevisao" : MessageLookupByLibrary.simpleMessage("Previsión"),
     "telaMainBotaoCanteiro" : MessageLookupByLibrary.simpleMessage("Cultivos"),

@@ -411,10 +411,10 @@ class _DadosScreenState extends State<DadosScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        "Última atualização: " +
+                            S.of(context).telaDetalheCanteiroUltimaAtualizacao +
                             data_ultima.split(" ")[1]+"/"+data_ultima.split(" ")[2]+"/"+data_ultima.split(" ")[3]+
                             //"22/07/2021" +
-                            " às " +                          
+                            S.of(context).telaDadosAs +                          
                             data_ultima.split(" ")[4],
                             //"18:00",
                         style: TextStyle(

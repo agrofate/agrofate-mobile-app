@@ -45,6 +45,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       prefs.setString('data_escolhida', data_atual.toString());
+      prefs.setString('nome_local', nome_local.toString());
     });
     Navigator.push(
       context,
@@ -98,6 +99,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
       print(forecast_data);
 
       setState(() {
+        prefs.setString('latitude_escolhida', response_latlng[0][2].toString());
+        prefs.setString('longitude_escolhida', response_latlng[0][3].toString());
         this.temp = results['main']['temp'];
         this.description = results['weather'][0]['description'];
         this.currently = results['weather'][0]['main'];
