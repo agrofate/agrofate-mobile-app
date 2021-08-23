@@ -8,6 +8,7 @@ import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
@@ -34,10 +35,13 @@ class _ForecastScreenState extends State<ForecastScreen> {
   var long;
   var codigo;
   var nome_local;
+  var cidade_local;
   var forecast_data;
   var teste_link;
   var hora_atual;
   var visibility_forecast=false;
+  var adresses;
+  var first;
   String _id_user;
   bool loading = true;
 
@@ -81,6 +85,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
         this.humidity =  0;
         this.windSpeed =  0;
         this.nome_local =  '';
+        this.cidade_local =  '';
         this.loading = false;
       });
     }else{
@@ -98,6 +103,12 @@ class _ForecastScreenState extends State<ForecastScreen> {
       forecast_data = jsonDecode(forecast.body);
       print(forecast_data);
 
+      final coordinates = new Coordinates(response_latlng[0][2], response_latlng[0][3]);
+      adresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      first = adresses.first;
+      print("${first.featureName} : ${first.addressLine}");
+      print(first.addressLine.split(',')[0]);
+
       setState(() {
         prefs.setString('latitude_escolhida', response_latlng[0][2].toString());
         prefs.setString('longitude_escolhida', response_latlng[0][3].toString());
@@ -106,7 +117,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
         this.currently = results['weather'][0]['main'];
         this.humidity = results['main']['humidity'];
         this.windSpeed = results['wind']['speed'];
-        this.nome_local = results['name'];
+        this.nome_local = first.addressLine.split(',')[0];
+        this.cidade_local = first.addressLine.split(',')[2];
         this.loading = false;
       });
     }   
@@ -266,13 +278,15 @@ class _ForecastScreenState extends State<ForecastScreen> {
                             const SizedBox(
                               height: 5,
                             ),
-                            Text(
-                              nome_local + ", São Paulo",
+                            Center(
+                              child: Text(
+                              nome_local + ", " + cidade_local,
+                              textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 14.0,
                               ),
-                            ),
+                            )),
                             Text(
                               temp != null
                                   ? temp.toStringAsFixed(1) + "\u00B0"
