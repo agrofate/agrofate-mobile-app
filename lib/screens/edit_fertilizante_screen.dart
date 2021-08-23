@@ -56,7 +56,7 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
   String getDateText() {
     //TODO: arrumar gambiarra - deveria ser date == null
     if (date == DateTime(DateTime.now().year - 500)) {
-      return 'Selecione a data de aplicação';
+      return S.of(context).telaNovoDefensivoDataAplicacaoSelecao;
     } else {
       return DateFormat('dd/MM/yyyy').format(date);
       // return '${date.day}/${date.month}/${date.year}';
@@ -95,8 +95,8 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).telaEditarCanteiroAlertTitle),
-      content: Text(S.of(context).telaEditarCanteiroAlertDescricao),
+      title: Text(S.of(context).telaEditarFertilizanteAlertTitle),
+      content: Text(S.of(context).telaEditarFertilizanteAlertDescricao),
       actions: [
         cancelButton,
         continueButton,
@@ -207,7 +207,7 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
                           children: [
                             TitleFormsWidget(
                               titleText:
-                              'Edite o \nfertilizante',
+                              S.of(context).telaEditarFertilizanteTitulo,
                             ),
                           ],
                         ),
@@ -220,7 +220,7 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
                       children: [
                         DescriptionFormsWidget(
                           descriptionText:
-                          'Preencha os campos abaixo e atualize o fertilizante.',
+                          S.of(context).telaEditarFertilizanteDescricao,
                         ),
                       ],
                     ),
@@ -228,7 +228,7 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
                       height: size.height * 0.1,
                     ),
                     TextFieldWidget(
-                      hintText: 'Nome do fertilizante',
+                      hintText: S.of(context).telaEditarFertilizanteNome,
                       prefixIconData: Icons.article_outlined,
                       obscureText: false,
                       textFieldController: _nameFertController,
@@ -238,7 +238,7 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
                       height: 10,
                     ),
                     TextFieldWidget(
-                      hintText: 'Tipo do fertilizante',
+                      hintText: S.of(context).telaEditarFertilizanteTipo,
                       prefixIconData: Icons.business_center_outlined,
                       obscureText: false,
                       textFieldController: _marcaFertController,
@@ -257,7 +257,7 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
                       height: 20,
                     ),
                     ButtonWidget(
-                      title: 'ATUALIZAR FERTILIZANTE',
+                      title: S.of(context).telaEditarFertilizanteBotao,
                       hasBorder: false,
                       onClicked: () {
                         // TODO: subir informações da fertilizante (nome; marca; date)

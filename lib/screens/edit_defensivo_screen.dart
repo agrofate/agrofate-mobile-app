@@ -85,8 +85,8 @@ class _EditDefensivoScreenState extends State<EditDefensivoScreen> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).telaEditarCanteiroAlertTitle),
-      content: Text(S.of(context).telaEditarCanteiroAlertDescricao),
+      title: Text(S.of(context).telaEditarDefensivoAlertTitle),
+      content: Text(S.of(context).telaEditarDefensivoAlertDescricao),
       actions: [
         cancelButton,
         continueButton,
@@ -209,7 +209,7 @@ class _EditDefensivoScreenState extends State<EditDefensivoScreen> {
                           children: [
                             TitleFormsWidget(
                               titleText:
-                              'Edite o \ndefensivo',
+                              S.of(context).telaEditarDefensivoTitulo,
                             ),
                           ],
                         ),
@@ -222,7 +222,7 @@ class _EditDefensivoScreenState extends State<EditDefensivoScreen> {
                       children: [
                         DescriptionFormsWidget(
                           descriptionText:
-                          'Preencha os campos abaixo e atualize o defensivo.',
+                          S.of(context).telaEditarDefensivoDescricao,
                         ),
                       ],
                     ),
@@ -230,7 +230,7 @@ class _EditDefensivoScreenState extends State<EditDefensivoScreen> {
                       height: size.height * 0.1,
                     ),
                     TextFieldWidget(
-                      hintText: 'Nome do defensivo',
+                      hintText: S.of(context).telaEditarDefensivoNome,
                       prefixIconData: Icons.article_outlined,
                       obscureText: false,
                       textFieldController: _nameDefController,
@@ -240,7 +240,7 @@ class _EditDefensivoScreenState extends State<EditDefensivoScreen> {
                       height: 10,
                     ),
                     TextFieldWidget(
-                      hintText: 'Marca do defensivo',
+                      hintText: S.of(context).telaEditarDefensivoTipo,
                       prefixIconData: Icons.business_center_outlined,
                       obscureText: false,
                       textFieldController: _marcaDefController,
@@ -259,7 +259,7 @@ class _EditDefensivoScreenState extends State<EditDefensivoScreen> {
                       height: 20,
                     ),
                     ButtonWidget(
-                      title: 'ATUALIZAR DEFENSIVO',
+                      title: S.of(context).telaEditarDefensivoBotao,
                       hasBorder: false,
                       onClicked: () {
                         // TODO: subir informações da defensivo (nome; marca; date)

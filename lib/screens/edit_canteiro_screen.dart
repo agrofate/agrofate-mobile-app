@@ -159,7 +159,7 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         TitleFormsWidget(
-                          titleText: 'Atualize \nseu canteiro',
+                          titleText: S.of(context).telaEditarCanteiroTitulo,
                         ),
                       ],
                     ),
@@ -170,7 +170,7 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
                       children: [
                         DescriptionFormsWidget(
                           descriptionText:
-                          'Preencha os campos abaixo e atualize as informações do seu canteiro.',
+                          S.of(context).telaEditarCanteiroDescricao,
                         ),
                       ],
                     ),
@@ -178,7 +178,7 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
                       height: size.height * 0.1,
                     ),
                     TextFieldWidget(
-                      hintText: 'Nome do canteiro',
+                      hintText: S.of(context).telaEditarCanteiroNome,
                       prefixIconData: Icons.article_outlined,
                       obscureText: false,
                       textFieldController: _nameCanteiroController,
@@ -198,7 +198,7 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
                       height: 20,
                     ),
                     ButtonWidget(
-                      title: 'ATUALIZAR',
+                      title: S.of(context).telaEditarCanteiroBotao,
                       hasBorder: false,
                       onClicked: () {
                         // TODO: subir informações do canteiro para nuvem
@@ -239,7 +239,7 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
       child: Column(
         children: [
           Text(
-            "Escolha uma imagem para o canteiro",
+            S.of(context).telaEditarCanteiroEscolherImagem,
             style: TextStyle(
               fontSize: 15,
             ),
@@ -255,7 +255,7 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
                   takePhoto(ImageSource.camera);
                 },
                 icon: Icon(Icons.camera_alt_outlined),
-                label: Text("Câmera"),
+                label: Text(S.of(context).telaEditarCanteiroLabelCamera),
               ),
               const SizedBox(
                 width: 20,
@@ -265,7 +265,7 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
                   takePhoto(ImageSource.gallery);
                 },
                 icon: Icon(Icons.file_upload_outlined),
-                label: Text("Galeria"),
+                label: Text(S.of(context).telaEditarCanteiroLabelGaleria),
               ),
             ],
           ),

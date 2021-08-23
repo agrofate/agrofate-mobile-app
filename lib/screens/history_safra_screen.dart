@@ -1,4 +1,5 @@
 import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/services/safra.dart';
 import 'package:agrofate_mobile_app/widgets/description_forms_widget.dart';
 import 'package:agrofate_mobile_app/widgets/title_forms_widget.dart';
@@ -81,7 +82,7 @@ class _HistorySafraScreenState extends State<HistorySafraScreen> {
                   Wrap(
                     children: [
                       TitleFormsWidget(
-                        titleText: 'Histórico de safras no \n' +
+                        titleText: S.of(context).telaHistoricoSafraTitulo +
                             'Canteiro Sul', //TODO: recuperar nome do canteiro do BD
                       ),
                     ],
@@ -93,7 +94,7 @@ class _HistorySafraScreenState extends State<HistorySafraScreen> {
                     children: [
                       DescriptionFormsWidget(
                         descriptionText:
-                            'Visualize o histórico de safras do seu canteiro.',
+                            S.of(context).telaHistoricoSafraDescricao,
                       ),
                     ],
                   ),
@@ -130,13 +131,13 @@ class _HistorySafraScreenState extends State<HistorySafraScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Plantação: " + historicoSafras[index].dataPlantacao,
+                                    S.of(context).telaHistoricoSafraPlantacao + historicoSafras[index].dataPlantacao,
                                     style: TextStyle(
                                       fontSize: 14,
                                     ),
                                   ),
                                   Text(
-                                    "Cultura: " + historicoSafras[index].cultura,
+                                    S.of(context).telaHistoricoSafraCultura + historicoSafras[index].cultura,
                                     style: TextStyle(
                                       fontSize: 14,
                                     ),

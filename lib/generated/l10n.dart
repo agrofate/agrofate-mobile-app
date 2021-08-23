@@ -496,6 +496,186 @@ class S {
     );
   }
 
+  String get telaEditarDefensivoAlertTitle {
+    return Intl.message(
+      'Excluir Defensivo',
+      name: 'telaEditarDefensivoAlertTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarDefensivoAlertDescricao {
+    return Intl.message(
+      'Deseja realmente excluir o defensivo?',
+      name: 'telaEditarDefensivoAlertDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarFertilizanteAlertTitle {
+    return Intl.message(
+      'Excluir Fertilizante',
+      name: 'telaEditarFertilizanteAlertTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarFertilizanteAlertDescricao {
+    return Intl.message(
+      'Deseja realmente excluir o fertilizante?',
+      name: 'telaEditarFertilizanteAlertDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarSafraAlertTitle {
+    return Intl.message(
+      'Excluir Safra',
+      name: 'telaEditarSafraAlertTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarSafraAlertDescricao {
+    return Intl.message(
+      'Deseja realmente excluir a safra?',
+      name: 'telaEditarSafraAlertDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarFertilizanteTitulo {
+    return Intl.message(
+      'Edite o \nfertilizante',
+      name: 'telaEditarFertilizanteTitulo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarFertilizanteDescricao {
+    return Intl.message(
+      'Preencha os campos abaixo e atualize o fertilizante.',
+      name: 'telaEditarFertilizanteDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarFertilizanteNome {
+    return Intl.message(
+      'Nome do fertilizante',
+      name: 'telaEditarFertilizanteNome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarFertilizanteTipo {
+    return Intl.message(
+      'Tipo do fertilizante',
+      name: 'telaEditarFertilizanteTipo',
+      desc: '',
+      args: [],
+    );
+  }
+  
+  String get telaEditarFertilizanteBotao {
+    return Intl.message(
+      'ATUALIZAR FERTILIZANTE',
+      name: 'telaEditarFertilizanteBotao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarDefensivoTitulo {
+    return Intl.message(
+      'Edite o \ndefensivo',
+      name: 'telaEditarDefensivoTitulo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarDefensivoDescricao {
+    return Intl.message(
+      'Preencha os campos abaixo e atualize o defensivo.',
+      name: 'telaEditarDefensivoDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarDefensivoNome {
+    return Intl.message(
+      'Nome do defensivo',
+      name: 'telaEditarDefensivoNome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarDefensivoTipo {
+    return Intl.message(
+      'Tipo do defensivo',
+      name: 'telaEditarDefensivoTipo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaEditarDefensivoBotao {
+    return Intl.message(
+      'ATUALIZAR DEFENSIVO',
+      name: 'telaEditarDefensivoBotao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaHistoricoSafraTitulo {
+    return Intl.message(
+      'Histórico de safras no \n',
+      name: 'telaHistoricoSafraTitulo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaHistoricoSafraDescricao {
+    return Intl.message(
+      'Visualize o histórico de safras do seu canteiro.',
+      name: 'telaHistoricoSafraDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaHistoricoSafraPlantacao {
+    return Intl.message(
+      'Plantação: ',
+      name: 'telaHistoricoSafraPlantacao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaHistoricoSafraCultura {
+    return Intl.message(
+      'Cultura: ',
+      name: 'telaHistoricoSafraCultura',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get telaForecastDiadaSemana {
     return Intl.message(
       'pt_Br',
