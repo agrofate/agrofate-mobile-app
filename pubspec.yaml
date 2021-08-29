@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.0+3
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -33,7 +33,7 @@ dependencies:
     sdk: flutter
   font_awesome_flutter: ^8.7.0
   http: ^0.12.2
-  #shared_preferences: ^0.5.8
+  shared_preferences: ^0.5.8
   basic_utils: ^1.2.0
   flutter_session: ^0.1.1
 
@@ -58,12 +58,12 @@ dependencies:
   geolocator: ^6.2.1
   search_map_place: ^0.3.0
 
-dependency_overrides:
-  shared_preferences:
-    git:
-      url: https://github.com/Flutter-Dart-Open-Source/plugins.git
-      path: packages/shared_preferences/shared_preferences
-      ref: update_prefs
+#dependency_overrides:
+#  shared_preferences:
+#    git:
+#      url: https://github.com/Flutter-Dart-Open-Source/plugins.git
+#      path: packages/shared_preferences/shared_preferences
+#      ref: update_prefs
 
 dev_dependencies:
   flutter_test:
