@@ -1,7 +1,12 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/screens/forecast_screen.dart';
 import 'package:agrofate_mobile_app/screens/main_screens.dart';
 import 'package:agrofate_mobile_app/screens/canteiros_screen.dart';
+import 'package:agrofate_mobile_app/utilities/constants.dart';
 // import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/description_forms_widget.dart';
@@ -16,6 +21,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../LanguageChangeProvider.dart';
 
+import 'package:flutter_string_encryption/flutter_string_encryption.dart';
+
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key key}) : super(key: key);
 
@@ -27,27 +35,72 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  int _state = 0;
+  var key = "null";
+  String encryptedS,decryptedS;
+  PlatformStringCryptor cryptor;
+  var _senha;
+
+  Encrypt(password) async{
+    cryptor = PlatformStringCryptor();
+    final salt = await cryptor.generateSalt();
+    key = await cryptor.generateKeyFromPassword(password, salt);
+  // here pass the password entered by user and the key
+    encryptedS = await cryptor.encrypt(password, key);
+    return encryptedS;
+  }
+// method to decrypt String Password
+  Decrypt(password) async{
+    try{
+      //here pass encrypted string and the key to decrypt it 
+      decryptedS = await cryptor.decrypt(password, key);
+      print(decryptedS);
+      return decryptedS;
+    }on MacMismatchException{
+    }
+  }
 
   onClickedCadastrar(nome, email, senha) async {
     if(isEmail(email)){
-      SharedPreferences prefs = await SharedPreferences.getInstance();    
+      setState(() {
+        _state = 1;
+      });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       String parametros = "?nome="+nome+"&email="+email+"&senha="+senha;
       http.Response url_teste = await http.post(
           "https://future-snowfall-319523.uc.r.appspot.com/create-login"+parametros);
       var response_login = url_teste.body;
       print(response_login);
-      if(response_login == "Login cadastrado"){
+      if(response_login == "Login cadastrado"){        
         prefs.setString('email', email);
         prefs.setString('senha', senha);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MainScreens()),
-          //MaterialPageRoute(builder: (context) => CanteirosScreen()),
-        );
+
+        String parametros = "?email="+email+"&senha="+senha;
+        http.Response url_teste = await http.get(
+            "https://future-snowfall-319523.uc.r.appspot.com/read-one"+parametros);
+        var response_login1 = jsonDecode(url_teste.body)[0].asMap();
+        print(response_login1);
+        if(response_login1.length > 1){
+          setState(() {
+            _state = 2;
+          });
+          prefs.setString('id_user', response_login1[0].toString());
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MainScreens()),
+            //MaterialPageRoute(builder: (context) => CanteirosScreen()),
+          );
+        }
       }else{
+        setState(() {
+          _state = 0;
+        });
         _exibirDialogoErro(response_login);
       }
     }else{
+      setState(() {
+        _state = 0;
+      });
       _exibirDialogoErro("Email inválido. Tente novamente!");
     } 
   }
@@ -161,7 +214,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         TitleFormsWidget(
-                          titleText: 'Crie uma \nnova conta',
+                          titleText: S.of(context).telaCadastrarLoginTitulo,
                         ),
                       ],
                     ),
@@ -170,13 +223,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     DescriptionFormsWidget(
                       descriptionText:
-                          'Preencha os campos abaixo e crie sua conta na Agrofate.',
+                          S.of(context).telaCadastrarLoginDescricao,
                     ),
                     SizedBox(
                       height: size.height * 0.1,
                     ),
                     TextFieldWidget(
-                      hintText: 'Nome',
+                      hintText: S.of(context).telaCadastrarLoginNome,
                       prefixIconData: Icons.person_outline,
                       obscureText: false,
                       textFieldController: nameController,
@@ -186,7 +239,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 10,
                     ),
                     TextFieldWidget(
-                      hintText: 'Email',
+                      hintText: S.of(context).telaCadastrarLoginEmail,
                       prefixIconData: Icons.mail_outline,
                       obscureText: false,
                       textFieldController: emailController,
@@ -196,7 +249,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 10,
                     ),
                     TextFieldWidget(
-                      hintText: 'Senha',
+                      hintText: S.of(context).telaCadastrarLoginSenha,
                       prefixIconData: Icons.lock_outline,
                       obscureText: true,
                       textFieldController: passwordController,
@@ -204,8 +257,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    ButtonWidget(
-                        title: 'CADASTRAR',
+                    /*ButtonWidget(
+                        title: S.of(context).telaCadastrarLoginBotao,
                         hasBorder: false,
                         onClicked: () {
                           print('Nome: ${nameController.text}');
@@ -217,7 +270,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             MaterialPageRoute(
                                 builder: (context) => MainScreens()),
                           );*/
-                        }),
+                        }
+                    ),*/
+                    Padding(                  
+                      padding: const EdgeInsets.all(0.0),                        
+                      child: new MaterialButton(
+                        child: setUpButtonChild(),                    
+                        onPressed: () {
+                          setState(() {
+                            if (_state == 0) {
+                              onClickedCadastrar(nameController.text, emailController.text, passwordController.text);
+                            }
+                          });
+                        },
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(10.0),
+                        ),
+                        elevation: 0,
+                        hoverElevation: 0,
+                        focusElevation: 0,
+                        highlightElevation: 0,
+                        minWidth: double.infinity,
+                        height: 58.0,
+                        color: kGreenColor,
+                      ),
+                    ),
                   ],
                 ),
               )
@@ -226,5 +303,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  Widget setUpButtonChild() {
+    if (_state == 0) {
+      return new Text(
+        S.of(context).telaCadastrarLoginBotao,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16.0,
+        ),
+      );
+    } else if (_state == 1) {
+      return CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+      );
+    } else {
+      return Icon(Icons.check, color: Colors.white);
+    }
+  }
+
+  void animateButton() {
+    setState(() {
+      _state = 1;
+    });
+
+    Timer(Duration(milliseconds: 3300), () {
+      setState(() {
+        _state = 2;
+      });
+    });
   }
 }

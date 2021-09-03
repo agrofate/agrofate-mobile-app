@@ -802,6 +802,60 @@ class S {
     );
   }
 
+  String get telaCadastrarLoginTitulo {
+    return Intl.message(
+      'Crie uma \nnova conta',
+      name: 'telaCadastrarLoginTitulo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaCadastrarLoginDescricao {
+    return Intl.message(
+      'Preencha os campos abaixo e crie sua conta na Agrofate.',
+      name: 'telaCadastrarLoginDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaCadastrarLoginNome {
+    return Intl.message(
+      'Nome',
+      name: 'telaCadastrarLoginNome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaCadastrarLoginEmail {
+    return Intl.message(
+      'Email',
+      name: 'telaCadastrarLoginEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaCadastrarLoginSenha {
+    return Intl.message(
+      'Senha',
+      name: 'telaCadastrarLoginSenha',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaCadastrarLoginBotao {
+    return Intl.message(
+      'CADASTRAR',
+      name: 'telaCadastrarLoginBotao',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get telaLoginFrase {
     return Intl.message(
       'Pensando um futuro mais consciente',

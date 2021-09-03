@@ -68,6 +68,16 @@ class _ForecastScreenState extends State<ForecastScreen> {
     this.codigo = '8508113bd018ec7a9708de6d57d2de9c';
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(_id_user == null){
+      String parametros = "?email="+prefs.getString('email')+"&senha="+prefs.getString('senha');
+      http.Response url_teste = await http.get(
+          "https://future-snowfall-319523.uc.r.appspot.com/read-one"+parametros);
+      var response_login1 = jsonDecode(url_teste.body)[0].asMap();
+      print(response_login1);
+      if(response_login1.length > 1){
+        prefs.setString('id_user', response_login1[0].toString());
+      }
+    }
     _id_user = (prefs.getString('id_user'));
     String parametros = "?&id_usuario="+_id_user;
     http.Response latlng = await http.get(

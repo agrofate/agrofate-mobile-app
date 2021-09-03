@@ -24,6 +24,7 @@ class DadosScreen extends StatefulWidget {
 class _DadosScreenState extends State<DadosScreen> {
   String _id_user = '';
   var loading_dados = true;
+  var loading_registro = false;
   var sensor_umidade;
   var sensor_ph;
   var data_ultima;
@@ -44,9 +45,15 @@ class _DadosScreenState extends State<DadosScreen> {
     print(response_login[0]);
     if (response_login.length > 0) {
       if (response_login[0][0] == 0) {
-        loading_dados = true;
+        setState(() {   
+          loading_dados = false;
+          loading_registro = false;
+        });
       } else {
-        loading_dados = false;
+        setState(() {   
+          loading_dados = false;
+          loading_registro = true;
+        });
         prefs.setString('id_sensor', response_login[0][0].toString());
         setState(() {
           sensor_umidade = response_login[0][1];
@@ -55,6 +62,11 @@ class _DadosScreenState extends State<DadosScreen> {
         });
         print(data_ultima);
       }
+    }else{   
+      setState(() {   
+        loading_dados = false;
+        loading_registro = false;
+      });
     }
   }
 
@@ -163,281 +175,308 @@ class _DadosScreenState extends State<DadosScreen> {
               ),
             );
           } else {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: Column(
-                children: [
-                  Visibility(
-                    // TODO: personalizar notifications de acordo com informações do BD
-                    visible: true,
-                    child: 
-                    FutureBuilder(builder: (context, text) {                                    
-                      if(double.parse(sensor_ph)>6 && double.parse(sensor_ph)<=7.5){
-                        /*return Text(
-                          // TODO: recuperar status do pH do solo do BD
-                          "Status: " + S.of(context).telaDadosStatusPH2,
-                          style: TextStyle(
-                            fontSize: 12,
-                          ),
-                        );*/
-
-                        return NotificationDadosWidget(
-                          message: S.of(context).telaDadosNotificationMessage2,
-                          
-                          // vermelho
-                          colorNotification: 0xff4b9100,
-                          iconNotification: Icons.check_outlined,
-                        );
-                      }else{
-                        /*return Text(
-                          // TODO: recuperar status do pH do solo do BD
-                          "Status: " + S.of(context).telaDadosStatusPH1,
-                          style: TextStyle(
-                            fontSize: 12,
-                          ),
-                        );*/
-                        return NotificationDadosWidget(
-                          message:S.of(context).telaDadosNotificationMessage1,
-                          
-                          // vermelho
-                          colorNotification: 0xFFF44336,
-                          iconNotification: Icons.warning,
-                        );
-                      }
-                    }),
-                    /*NotificationDadosWidget(
-                      message:
-                          "O nível de pH está fora do intervalo certo. \nÉ indicado acrescentar mais fertilizante.",
-                      
-                      // vermelho
-                      colorNotification: 0xFFF44336,
-                      iconNotification: Icons.warning,
-
-                      // verde
-                      // colorNotification: 0xff4b9100,
-                      // iconNotification: Icons.check_outlined,
-
-                      // azul
-                      // colorNotification: 0xFF2196F3,
-                      // iconNotification: Icons.info,
-                    ),*/
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    // height: MediaQuery.of(context).size.height / 5,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(15),
+            if (!loading_registro) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 20,
                     ),
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: size.height * 0.025,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    "assets/images/water-drop.png",
-                                    width:
-                                        MediaQuery.of(context).size.height / 8,
-                                    height:
-                                        MediaQuery.of(context).size.height / 8,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    sensor_umidade + "%",
-                                    style: TextStyle(
-                                      fontSize: 40,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 7,
-                                  ),
-                                  Text(
-                                    S.of(context).telaDadosUmidade,
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 3,
-                                  ),
-                                  Text(
-                                    S.of(context).telaDadosUmidadeDescricao,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  Text(
-                                    S.of(context).telaDadosUmidadeDescricao2,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: size.height * 0.025,
-                          ),
-                        ],
+                    ButtonWidget(
+                      title: S.of(context).telaDadosBotaoNovoEquipamento,
+                      hasBorder: true,
+                      onClicked: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(S.of(context).telaPerfilDesenvolvimento )));
+                      },
+                    ),
+                  ]                  
+                )
+              );
+            } else{
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                child: Column(
+                  children: [
+                    Visibility(
+                      // TODO: personalizar notifications de acordo com informações do BD
+                      visible: true,
+                      child: 
+                      FutureBuilder(builder: (context, text) {                                    
+                        if(double.parse(sensor_ph)>6 && double.parse(sensor_ph)<=7.5){
+                          /*return Text(
+                            // TODO: recuperar status do pH do solo do BD
+                            "Status: " + S.of(context).telaDadosStatusPH2,
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
+                          );*/
+
+                          return NotificationDadosWidget(
+                            message: S.of(context).telaDadosNotificationMessage2,
+                            
+                            // vermelho
+                            colorNotification: 0xff4b9100,
+                            iconNotification: Icons.check_outlined,
+                          );
+                        }else{
+                          /*return Text(
+                            // TODO: recuperar status do pH do solo do BD
+                            "Status: " + S.of(context).telaDadosStatusPH1,
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
+                          );*/
+                          return NotificationDadosWidget(
+                            message:S.of(context).telaDadosNotificationMessage1,
+                            
+                            // vermelho
+                            colorNotification: 0xFFF44336,
+                            iconNotification: Icons.warning,
+                          );
+                        }
+                      }),
+                      /*NotificationDadosWidget(
+                        message:
+                            "O nível de pH está fora do intervalo certo. \nÉ indicado acrescentar mais fertilizante.",
+                        
+                        // vermelho
+                        colorNotification: 0xFFF44336,
+                        iconNotification: Icons.warning,
+
+                        // verde
+                        // colorNotification: 0xff4b9100,
+                        // iconNotification: Icons.check_outlined,
+
+                        // azul
+                        // colorNotification: 0xFF2196F3,
+                        // iconNotification: Icons.info,
+                      ),*/
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      // height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    // height: MediaQuery.of(context).size.height / 5,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    decoration: BoxDecoration(
-                      color: boxPhColor(sensor_ph),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: size.height * 0.025,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    "assets/images/ph-meter_1.png",
-                                    width:
-                                        MediaQuery.of(context).size.height / 8,
-                                    height:
-                                        MediaQuery.of(context).size.height / 8,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    sensor_ph,
-                                    style: TextStyle(
-                                      fontSize: 40,
-                                      fontWeight: FontWeight.bold,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: size.height * 0.025,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/water-drop.png",
+                                      width:
+                                          MediaQuery.of(context).size.height / 8,
+                                      height:
+                                          MediaQuery.of(context).size.height / 8,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 7,
-                                  ),
-                                  Text(
-                                    S.of(context).telaDadosPH,
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      sensor_umidade + "%",
+                                      style: TextStyle(
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 3,
-                                  ),
-                                  FutureBuilder(builder: (context, text) {                                    
-                                    if(double.parse(sensor_ph)>7){
-                                      return Text(
-                                        // TODO: recuperar status do pH do solo do BD
-                                        "Status: " + S.of(context).telaDadosStatusPH2,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                        ),
-                                      );
-                                    }else{
-                                      return Text(
-                                        // TODO: recuperar status do pH do solo do BD
-                                        "Status: " + S.of(context).telaDadosStatusPH1,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                        ),
-                                      );
-                                    }
-                                  }),
-                                  
-                                  Text(
-                                    S.of(context).telaDadosPHDescricao,
-                                    style: TextStyle(
-                                      fontSize: 12,
+                                    const SizedBox(
+                                      height: 7,
                                     ),
-                                  ),
-                                  // Text(
-                                  //   "Faixa de pH ideal: 5,5 e 6,5",
-                                  //   style: TextStyle(
-                                  //     fontSize: 12,
-                                  //   ),
-                                  // ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: size.height * 0.025,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                            S.of(context).telaDetalheCanteiroUltimaAtualizacao +
-                            data_ultima.split(" ")[1]+"/"+data_ultima.split(" ")[2]+"/"+data_ultima.split(" ")[3]+
-                            //"22/07/2021" +
-                            S.of(context).telaDadosAs +                          
-                            data_ultima.split(" ")[4],
-                            //"18:00",
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.5),
-                          fontSize: 11,
+                                    Text(
+                                      S.of(context).telaDadosUmidade,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      S.of(context).telaDadosUmidadeDescricao,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    Text(
+                                      S.of(context).telaDadosUmidadeDescricao2,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: size.height * 0.025,
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ButtonWidget(
-                    title: S.of(context).telaDadosBotaoNovoEquipamento,
-                    hasBorder: true,
-                    onClicked: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(S.of(context).telaPerfilDesenvolvimento )));
-                    },
-                  ),
-                ],
-              ),
-            );
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      // height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      decoration: BoxDecoration(
+                        color: boxPhColor(sensor_ph),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: size.height * 0.025,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/ph-meter_1.png",
+                                      width:
+                                          MediaQuery.of(context).size.height / 8,
+                                      height:
+                                          MediaQuery.of(context).size.height / 8,
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      sensor_ph,
+                                      style: TextStyle(
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 7,
+                                    ),
+                                    Text(
+                                      S.of(context).telaDadosPH,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 3,
+                                    ),
+                                    FutureBuilder(builder: (context, text) {                                    
+                                      if(double.parse(sensor_ph)>7){
+                                        return Text(
+                                          // TODO: recuperar status do pH do solo do BD
+                                          "Status: " + S.of(context).telaDadosStatusPH2,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                        );
+                                      }else{
+                                        return Text(
+                                          // TODO: recuperar status do pH do solo do BD
+                                          "Status: " + S.of(context).telaDadosStatusPH1,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                                    
+                                    Text(
+                                      S.of(context).telaDadosPHDescricao,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    // Text(
+                                    //   "Faixa de pH ideal: 5,5 e 6,5",
+                                    //   style: TextStyle(
+                                    //     fontSize: 12,
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: size.height * 0.025,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          icon: new Icon(Icons.refresh),
+                          onPressed: () {
+                            _procuraSensor();
+                          },
+                        ),
+                        Text(
+                              S.of(context).telaDetalheCanteiroUltimaAtualizacao +
+                              data_ultima.split(" ")[1]+"/"+data_ultima.split(" ")[2]+"/"+data_ultima.split(" ")[3]+
+                              //"22/07/2021" +
+                              S.of(context).telaDadosAs +                          
+                              data_ultima.split(" ")[4],
+                              //"18:00",
+                          style: TextStyle(
+                            color: Colors.black.withOpacity(0.5),
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ButtonWidget(
+                      title: S.of(context).telaDadosBotaoNovoEquipamento,
+                      hasBorder: true,
+                      onClicked: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(S.of(context).telaPerfilDesenvolvimento )));
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }
           }
         }),
       ),
