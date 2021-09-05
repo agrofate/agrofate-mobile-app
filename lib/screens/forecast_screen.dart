@@ -101,7 +101,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
     }else{
       visibility_forecast=true;
       http.Response response = await http.get(
-        "https://api.openweathermap.org/data/2.5/weather?lat=${response_latlng[0][2]}&lon=${response_latlng[0][3]}&lang=pt_br&units=metric&appid=${codigo}");
+        "https://api.openweathermap.org/data/2.5/weather?lat=${response_latlng[(response_latlng.length-1)][2]}&lon=${response_latlng[(response_latlng.length-1)][3]}&lang=pt_br&units=metric&appid=${codigo}");
       var results = jsonDecode(response.body);
 
       /*http.Response forecast = await http.get(
@@ -109,19 +109,19 @@ class _ForecastScreenState extends State<ForecastScreen> {
       forecast_data = jsonDecode(forecast.body);*/
 
       http.Response forecast = await http.get(
-          "https://api.openweathermap.org/data/2.5/onecall?lat=${response_latlng[0][2]}&lon=${response_latlng[0][3]}&exclude={current,minutely,hourly,alerts}&appid=${codigo}&lang=pt_br&units=metric");
+          "https://api.openweathermap.org/data/2.5/onecall?lat=${response_latlng[(response_latlng.length-1)][2]}&lon=${response_latlng[(response_latlng.length-1)][3]}&exclude={current,minutely,hourly,alerts}&appid=${codigo}&lang=pt_br&units=metric");
       forecast_data = jsonDecode(forecast.body);
       print(forecast_data);
 
-      final coordinates = new Coordinates(response_latlng[0][2], response_latlng[0][3]);
+      final coordinates = new Coordinates(response_latlng[(response_latlng.length-1)][2], response_latlng[(response_latlng.length-1)][3]);
       adresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
       first = adresses.first;
       print("${first.featureName} : ${first.addressLine}");
       print(first.addressLine.split(',')[0]);
 
       setState(() {
-        prefs.setString('latitude_escolhida', response_latlng[0][2].toString());
-        prefs.setString('longitude_escolhida', response_latlng[0][3].toString());
+        prefs.setString('latitude_escolhida', response_latlng[(response_latlng.length-1)][2].toString());
+        prefs.setString('longitude_escolhida', response_latlng[(response_latlng.length-1)][3].toString());
         this.temp = results['main']['temp'];
         this.description = results['weather'][0]['description'];
         this.currently = results['weather'][0]['main'];
