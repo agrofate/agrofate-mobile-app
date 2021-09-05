@@ -117,6 +117,15 @@ class S {
     );
   }
 
+  String get telaNovoCanteiroAdicionar {
+    return Intl.message(
+      'ADICIONAR',
+      name: 'telaNovoCanteiroAdicionar',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get telaNovoDefensivoDataAplicacaoSelecao {
     return Intl.message(
       'Selecione a data de aplicação',
@@ -274,6 +283,42 @@ class S {
     return Intl.message(
       'Tipo de fertilizante',
       name: 'telaNovoFertilizanteTFMarca',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovaSafraTitulo {
+    return Intl.message(
+      'Adicione uma safra no \n',
+      name: 'telaNovaSafraTitulo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovaSafraDescricao {
+    return Intl.message(
+      'Preencha os campos abaixo e adicione uma nova safra ao seu canteiro.',
+      name: 'telaNovaSafraDescricao',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovaSafraTFNome {
+    return Intl.message(
+      'Nome da Safra',
+      name: 'telaNovaSafraTFNome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telaNovaSafraBotaoAdicionar {
+    return Intl.message(
+      'ADICIONAR SAFRA',
+      name: 'telaNovaSafraBotaoAdicionar',
       desc: '',
       args: [],
     );

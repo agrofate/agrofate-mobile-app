@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/screens/canteiros_screen.dart';
+import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/datepicker_widget.dart';
 import 'package:agrofate_mobile_app/widgets/description_forms_widget.dart';
@@ -33,6 +36,7 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
   List data_cultura = List.empty();
   String countryid; 
   var _mySelection;
+  int _state = 0;
 
   String dropdownValue = '';
   String _id_canteiro_escolhido = '';
@@ -55,6 +59,9 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
     if(nome_safra != ''){
       if(data_safra.toString().split('-')[0] != '1521'){
         if(tipo_cultura != null){
+          setState(() {
+            _state = 1;
+          });
           SharedPreferences prefs = await SharedPreferences.getInstance();             
           _id_canteiro_escolhido =  (prefs.getString('id_canteiro_escolhido') ?? ''); 
           print(_id_canteiro_escolhido);
@@ -66,6 +73,9 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
               "https://future-snowfall-319523.uc.r.appspot.com/insert-nova-safra"+parametros);
           var response_login = url_teste.body;
           print(response_login);
+          setState(() {
+            _state = 2;
+          });
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -361,7 +371,7 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          ButtonWidget(
+                          /*ButtonWidget(
                             title: 'ADICIONAR SAFRA',
                             hasBorder: false,
                             onClicked: () {
@@ -376,6 +386,30 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
                                 ),
                               );*/
                             },
+                          ),*/
+
+                          Padding(                  
+                            padding: const EdgeInsets.all(0.0),                        
+                            child: new MaterialButton(
+                              child: setUpButtonChild(),                    
+                              onPressed: () {
+                                setState(() {
+                                  if (_state == 0) {
+                                    adicionarSafra(_nameSafraController.text, date, countryid);
+                                  }
+                                });
+                              },
+                              shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(10.0),
+                              ),
+                              elevation: 0,
+                              hoverElevation: 0,
+                              focusElevation: 0,
+                              highlightElevation: 0,
+                              minWidth: double.infinity,
+                              height: 58.0,
+                              color: kGreenColor,
+                            ),
                           ),
                         ],
                       ),
@@ -388,5 +422,35 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
         ),
       ),
     );
+  }
+
+  Widget setUpButtonChild() {
+    if (_state == 0) {
+      return new Text(
+        S.of(context).telaNovaSafraBotaoAdicionar,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16.0,
+        ),
+      );
+    } else if (_state == 1) {
+      return CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+      );
+    } else {
+      return Icon(Icons.check, color: Colors.white);
+    }
+  }
+
+  void animateButton() {
+    setState(() {
+      _state = 1;
+    });
+
+    Timer(Duration(milliseconds: 3300), () {
+      setState(() {
+        _state = 2;
+      });
+    });
   }
 }

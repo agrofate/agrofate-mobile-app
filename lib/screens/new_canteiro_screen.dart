@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:agrofate_mobile_app/classes/language.dart';
+import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/screens/canteiros_screen.dart';
 import 'package:agrofate_mobile_app/screens/main_screens.dart';
 import 'package:agrofate_mobile_app/services/api.dart';
+import 'package:agrofate_mobile_app/utilities/constants.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/description_forms_widget.dart';
 import 'package:agrofate_mobile_app/widgets/imagefield_widget.dart';
@@ -40,6 +43,7 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
   final nameCanteiroController = TextEditingController();
   String _id_canteiro_escolhido = '';
   String _id_user = '';
+  int _state = 0;
 
   void _getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -75,6 +79,7 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _id_user = (prefs.getString('id_user') ?? '');
+      _state = 1;
     });
     if(nome_cant != ''){   
       final response = await api.save(_imageName, _imageBytes);
@@ -90,7 +95,9 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
           "https://future-snowfall-319523.uc.r.appspot.com/insert-novo-canteiro"+parametros);
       var response_login = url_teste.body;
       print(response_login);
-
+      setState(() {
+        _state = 2;
+      });
       /*Navigator.of(context).pop();
                 Navigator.pushReplacement(
                   context,
@@ -224,7 +231,7 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    ButtonWidget(
+                    /*ButtonWidget(
                       title: 'ADICIONAR',
                       hasBorder: false,
                       onClicked: () {
@@ -239,6 +246,29 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
                           ),
                         );*/
                       },
+                    ),*/
+                    Padding(                  
+                      padding: const EdgeInsets.all(0.0),                        
+                      child: new MaterialButton(
+                        child: setUpButtonChild(),                    
+                        onPressed: () {
+                          setState(() {
+                            if (_state == 0) {
+                              adicionarCanteiro(nameCanteiroController.text);
+                            }
+                          });
+                        },
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(10.0),
+                        ),
+                        elevation: 0,
+                        hoverElevation: 0,
+                        focusElevation: 0,
+                        highlightElevation: 0,
+                        minWidth: double.infinity,
+                        height: 58.0,
+                        color: kGreenColor,
+                      ),
                     ),
                   ],
                 ),
@@ -262,6 +292,36 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
       loading = true; // TODO: essa imagem irá subir para o servidor - var _imageFile declarada lá encima
     });
     
+  }
+
+  Widget setUpButtonChild() {
+    if (_state == 0) {
+      return new Text(
+        S.of(context).telaNovoCanteiroAdicionar,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16.0,
+        ),
+      );
+    } else if (_state == 1) {
+      return CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+      );
+    } else {
+      return Icon(Icons.check, color: Colors.white);
+    }
+  }
+
+  void animateButton() {
+    setState(() {
+      _state = 1;
+    });
+
+    Timer(Duration(milliseconds: 3300), () {
+      setState(() {
+        _state = 2;
+      });
+    });
   }
 
   Widget bottomSheet() {
