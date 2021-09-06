@@ -304,7 +304,6 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
             ),
             tooltip: 'Show Snackbar',
             onPressed: () {
-              // TODO: enviar com informações do canteiro para editar
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -365,7 +364,6 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                             children: [
                               Text(
                                 _nome_canteiro_escolhido,
-                                // TODO: nome do canteiro
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 22,
@@ -380,7 +378,6 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                   ),
                 ),
                 Visibility(
-                  //TODO: adicionar lógica de safra ativa ou inativa para exibir botão de nova safra e histórico
                   visible: loading_safra,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -408,7 +405,6 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                           title: S.of(context).telaDetalheCanteiroTituloSafra,
                           hasBorder: false,
                           onClicked: () {
-                            // TODO: enviar informação de qual canteiro terá uma nova safra
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -446,7 +442,6 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                   ),
                 ),
                 Visibility(
-                    //TODO: adicionar lógica de safra ativa para exibir fertilizantes e defensivos
                     visible: loading_safra_detalhe,
                     child: FutureBuilder(builder: (context, text) {
                       if (!loading_safra_detalhe) {
@@ -463,7 +458,6 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                 children: [
                                   Text(
                                     nome_safra,
-                                    // TODO: recuperar nome da safra do BD
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 22,
@@ -490,7 +484,6 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                 children: [
                                   Text(
                                     S.of(context).telaDetalheCanteiroDataPlantacao + data_plantacao.split(" ")[1]+"/"+data.indexWhere((f) => f['name'] == data_plantacao.split(" ")[2]).toString()+"/"+data_plantacao.split(" ")[3], //data_plantacao,
-                                    // TODO: recuperar data de plantação da safra do BD
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 14,
@@ -522,7 +515,6 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                 children: [
                                   Text(
                                     S.of(context).telaDetalheCanteiroCultura + nome_cultura,
-                                    // TODO: recuperar cultura da safra ativa do BD
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 14,
@@ -544,22 +536,8 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                   // give the tab bar a height [can change hheight to preferred height]
                                   Container(
                                     height: 35,
-                                    // height: 45,
-                                    // decoration: BoxDecoration(
-                                    //   color: Colors.grey.withOpacity(0.1),
-                                    //   borderRadius: BorderRadius.circular(
-                                    //     10.0,
-                                    //   ),
-                                    // ),
                                     child: TabBar(
                                       controller: _tabController,
-                                      // give the indicator a decoration (color and border radius)
-                                      // indicator: BoxDecoration(
-                                      //   borderRadius: BorderRadius.circular(
-                                      //     10.0,
-                                      //   ),
-                                      //   color: kGreenColor,
-                                      // ),
                                       labelColor: Colors.black,
                                       unselectedLabelColor: Colors.black,
                                       tabs: [
@@ -592,7 +570,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                             if (!loading_fertilizante_detalhe) {
                                               return Column(
                                                 children: [
-                                                  Container(                                                    
+                                                  Container(
                                                     height: (size.height * 0.42) - 70,
                                                   ),
                                                   const SizedBox(
@@ -959,7 +937,6 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                                   title: S.of(context).telaDetalheCanteiroTituloFinalizarSafra,
                                   hasBorder: false,
                                   onClicked: () {
-                                    // todo: finalizar safra botao
                                     showAlertDialog(context);
                                     print("finalizar safra botao");
                                   },

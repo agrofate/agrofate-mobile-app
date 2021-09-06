@@ -222,7 +222,6 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
-                                // TODO: enviar para página de detalhes do canteiro selecionado
                                 _canteiroEscolhido(canteiro_data[index][0],
                                     canteiro_data[index][2], canteiro_data[index][3], canteiro_data[index][6]);
                                 /*Navigator.push(

@@ -266,7 +266,6 @@ class _ForecastScreenState extends State<ForecastScreen> {
             return Column(
               children: [
                 Visibility(
-                  // TODO: ativar visualização qdo tiver local adicionado - se n tiver local, desativa a vis. e deixa só o botão
                   visible: visibility_forecast,
                   child: Column(
                     children: [

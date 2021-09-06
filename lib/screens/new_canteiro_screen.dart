@@ -3,11 +3,9 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:agrofate_mobile_app/classes/language.dart';
 import 'package:agrofate_mobile_app/generated/l10n.dart';
-import 'package:agrofate_mobile_app/screens/canteiros_screen.dart';
 import 'package:agrofate_mobile_app/screens/main_screens.dart';
 import 'package:agrofate_mobile_app/services/api.dart';
 import 'package:agrofate_mobile_app/utilities/constants.dart';
-import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/description_forms_widget.dart';
 import 'package:agrofate_mobile_app/widgets/imagefield_widget.dart';
 import 'package:agrofate_mobile_app/widgets/textfield_widget.dart';
@@ -231,22 +229,6 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    /*ButtonWidget(
-                      title: 'ADICIONAR',
-                      hasBorder: false,
-                      onClicked: () {
-                        // TODO: subir informações do canteiro para nuvem
-                        
-                        adicionarCanteiro(nameCanteiroController.text);
-                        /*print('Nome: ${nameCanteiroController.text}');
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CanteirosScreen(),
-                          ),
-                        );*/
-                      },
-                    ),*/
                     Padding(                  
                       padding: const EdgeInsets.all(0.0),                        
                       child: new MaterialButton(
@@ -289,7 +271,7 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
     print(pickedFile.path);
     setState(() {
       _imageFile = pickedFile;
-      loading = true; // TODO: essa imagem irá subir para o servidor - var _imageFile declarada lá encima
+      loading = true;
     });
     
   }
