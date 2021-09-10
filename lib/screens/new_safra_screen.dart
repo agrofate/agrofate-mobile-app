@@ -76,12 +76,17 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
           setState(() {
             _state = 2;
           });
-          Navigator.push(
+          /*Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) =>
                   CanteirosScreen(), // TODO: enviar para canteiro que a safra foi adc
             ),
+          );*/
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => CanteirosScreen()),
+            (Route<dynamic> route) => false,
           );
         }else{
           ScaffoldMessenger.of(context).showSnackBar(

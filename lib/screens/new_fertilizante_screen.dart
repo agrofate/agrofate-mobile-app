@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../LanguageChangeProvider.dart';
+import 'main_screens.dart';
 
 class NewFertilizanteScreen extends StatefulWidget {
   const NewFertilizanteScreen({Key key}) : super(key: key);
@@ -62,13 +63,18 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
           setState(() {
             _state = 2;
           });
-          Navigator.push(
+          /*Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) =>
                   DetailCanteiroScreen(), // TODO: enviar para canteiro que a safra foi adc
             ),
-          );
+          );*/
+          Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => DetailCanteiroScreen()),
+                  (Route<dynamic> route) => false,
+                );
         }else{
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(S.of(context).telaNovoFertilizanteDataAplicacaoInsercao))

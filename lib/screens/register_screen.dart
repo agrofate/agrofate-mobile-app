@@ -22,7 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../LanguageChangeProvider.dart';
 
 import 'package:flutter_string_encryption/flutter_string_encryption.dart';
-
+import 'package:steel_crypt/steel_crypt.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key key}) : super(key: key);
@@ -45,11 +45,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     cryptor = PlatformStringCryptor();
     final salt = await cryptor.generateSalt();
     key = await cryptor.generateKeyFromPassword(password, salt);
-  // here pass the password entered by user and the key
+    // here pass the password entered by user and the key
     encryptedS = await cryptor.encrypt(password, key);
     return encryptedS;
   }
-// method to decrypt String Password
+  
+  // method to decrypt String Password
   Decrypt(password) async{
     try{
       //here pass encrypted string and the key to decrypt it 
@@ -66,9 +67,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _state = 1;
       });
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String parametros = "?nome="+nome+"&email="+email+"&senha="+senha;
+
+      var fortunaKey = CryptKey().genFortuna(); //generate 32 byte key with Fortuna; you can also enter your own
+      var nonce = CryptKey().genDart(len: 12); //generate IV for AES with Dart Random.secure(); you can also enter your own
+      var aesEncrypter = AesCrypt(key: fortunaKey, padding: PaddingAES.pkcs7); //generate AES encrypter with key and PKCS7 padding
+      String encrypted = aesEncrypter.gcm.encrypt(inp: senha, iv: nonce); //encrypt using GCM
+      String decrypted = aesEncrypter.gcm.decrypt(enc: encrypted, iv: nonce); //decrypt
+      print(encrypted);
+      print(decrypted);
+      setState(() {
+        _state = 0;
+      });
+      
+      String parametros = "?nome="+nome+"&email="+email+"&senha='"+encrypted.toString()+"'&chave='"+nonce.toString()+"'&fortuna='"+fortunaKey.toString()+"'";
+      print(parametros);
       http.Response url_teste = await http.post(
-          "https://future-snowfall-319523.uc.r.appspot.com/create-login"+parametros);
+          "https://future-snowfall-319523.uc.r.appspot.com/create-login-chave"+parametros);
       var response_login = url_teste.body;
       print(response_login);
       if(response_login == "Login cadastrado"){        
@@ -151,7 +165,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     void _changeLanguage(Language language) async {
       //Locale _locale = await setLocale(language.languageCode);
       print(language.languageCode);

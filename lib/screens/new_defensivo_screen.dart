@@ -61,13 +61,19 @@ class _NewDefensivoScreenState extends State<NewDefensivoScreen> {
           setState(() {
             _state = 2;
           });
-          Navigator.push(
+          /*Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) =>
                   DetailCanteiroScreen(), // TODO: enviar para canteiro que a safra foi adc
             ),
-          );
+          );*/
+
+          Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => DetailCanteiroScreen()),
+                  (Route<dynamic> route) => false,
+                );
         }else{
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(S.of(context).telaNovoDefensivoDataAplicacaoInsercao))

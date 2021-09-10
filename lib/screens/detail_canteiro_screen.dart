@@ -21,6 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../LanguageChangeProvider.dart';
+import 'main_screens.dart';
 
 class DetailCanteiroScreen extends StatefulWidget {
   const DetailCanteiroScreen({Key key}) : super(key: key);
@@ -50,6 +51,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
   var nome_cultura;
   var fert_data;
   var def_data;
+  var id_safra_atual;
 
   var months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; 
   List data = [
@@ -165,6 +167,17 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
     }
   }
 
+  Future _finalizarSafra() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      id_safra_atual = (prefs.getString('id_safra_atual') ?? '');
+    });
+    String parametros = "?id_safra="+id_safra_atual;
+    http.Response url_teste = await http.post(
+        "https://future-snowfall-319523.uc.r.appspot.com/update-safra-finalizar"+parametros);
+    var response_login = url_teste.body;
+  }
+
 
   showAlertDialog(BuildContext context) {
     // set up the buttons
@@ -176,7 +189,15 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
     );
     Widget continueButton = TextButton(
       child: Text(S.of(context).telaDetalheCanteiroAlertEscolha2),
-      onPressed:  () {},
+      onPressed:  () {
+        _finalizarSafra();
+        Navigator.of(context).pop();
+        Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainScreens(myInt:1)),
+                  (Route<dynamic> route) => false,
+                );
+      },
     );
 
     // set up the AlertDialog
@@ -264,7 +285,14 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
         brightness: Brightness.dark,
         leading: IconButton(
           icon: const Icon(CupertinoIcons.back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => //Navigator.of(context).pop(),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  MainScreens(myInt:1), // TODO: enviar para canteiro que a safra foi adc
+            ),
+          ),
         ),
         actions: [
           Padding(

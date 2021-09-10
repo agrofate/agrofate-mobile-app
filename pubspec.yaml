@@ -38,6 +38,8 @@ dependencies:
   flutter_session: ^0.1.1
 
   flutter_string_encryption: ^0.3.1
+  encrypt: ^5.0.1
+  steel_crypt: ^3.0.0+1
 
   # Format date time
   intl: ^0.17.0

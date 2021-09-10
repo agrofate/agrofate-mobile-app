@@ -20,6 +20,7 @@ import 'package:provider/src/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../LanguageChangeProvider.dart';
+import 'package:steel_crypt/steel_crypt.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -76,29 +77,47 @@ class _LoginScreenState extends State<LoginScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();    
     print(email);
     print(senha);
-    String parametros = "?email="+email+"&senha="+senha;
+    
+    //String parametros = "?email="+email+"&senha="+decrypted;
+    String parametros = "?email="+email;
     http.Response url_teste = await http.get(
-        "https://future-snowfall-319523.uc.r.appspot.com/read-one"+parametros);
+        "https://future-snowfall-319523.uc.r.appspot.com/read-one-email"+parametros);
     var response_login = jsonDecode(url_teste.body)[0].asMap();
     print(response_login);
     if(response_login.length > 1){
-      setState(() {
-        _state = 2;
-      });
-      prefs.setString('id_user', response_login[0].toString());
-      prefs.setString('email', email);
-      prefs.setString('senha', senha);
-      await FlutterSession().set('token', email);
-      String parametros_sessao = "?id_usuario="+response_login[0].toString();
-      http.Response url_teste_sessao = await http.post(
-          "https://future-snowfall-319523.uc.r.appspot.com/update-user-sessao"+parametros_sessao);
-      var response_login_sessao = jsonDecode(url_teste_sessao.body)[0].asMap();
-      print(response_login_sessao);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MainScreens(myInt:0)),
-        //MaterialPageRoute(builder: (context) => CanteirosScreen()),
-      );
+      var fortunaKey = CryptKey().genFortuna(); //generate 32 byte key with Fortuna; you can also enter your own
+      var nonce = CryptKey().genDart(len: 12); //generate IV for AES with Dart Random.secure(); you can also enter your own
+      var aesEncrypter = AesCrypt(key: response_login[5].replaceAll(" ", '+').replaceAll("'", '').toString(), padding: PaddingAES.pkcs7); //generate AES encrypter with key and PKCS7 padding
+      print(response_login[3].replaceAll(" ", '+').replaceAll("'", '').toString());
+      print(response_login[4].replaceAll(" ", '+').replaceAll("'", '').toString());
+      String decrypted = aesEncrypter.gcm.decrypt(enc: response_login[3].replaceAll(" ", '+').replaceAll("'", '').toString(), iv: response_login[4].replaceAll(" ", '+').replaceAll("'", '').toString()); //decrypt
+      print(decrypted);
+
+      if(senha == decrypted){
+        print("Mesma senha");
+        setState(() {
+          _state = 2;
+        });
+        prefs.setString('id_user', response_login[0].toString());
+        prefs.setString('email', email);
+        prefs.setString('senha', senha);
+        await FlutterSession().set('token', email);
+        String parametros_sessao = "?id_usuario="+response_login[0].toString();
+        http.Response url_teste_sessao = await http.post(
+            "https://future-snowfall-319523.uc.r.appspot.com/update-user-sessao"+parametros_sessao);
+        var response_login_sessao = jsonDecode(url_teste_sessao.body)[0].asMap();
+        print(response_login_sessao);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainScreens(myInt:0)),
+          //MaterialPageRoute(builder: (context) => CanteirosScreen()),
+        );
+      }else{
+        setState(() {
+          _state = 0;
+        });
+        _exibirDialogo("Senha Incorreta!");
+      }
     }else{
       setState(() {
         _state = 0;
