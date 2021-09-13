@@ -46,7 +46,7 @@ class _EditDefensivoScreenState extends State<EditDefensivoScreen> {
       _marca_defensivo_escolhido = (prefs.getString('marca_defensivo_escolhido') ?? '');
       _data_defensivo_escolhido = (prefs.getString('data_defensivo_escolhido') ?? '');
     });
-    // TODO: puxar nome, marca e data do defensivo do BD
+
     _nameDefController.text = _nome_defensivo_escolhido;
     _marcaDefController.text = _marca_defensivo_escolhido;
     print(new DateTime.now());

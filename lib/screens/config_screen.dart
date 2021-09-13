@@ -287,7 +287,6 @@ class _ConfigScreenState extends State<ConfigScreen> {
                   // Sair
                   GestureDetector(
                     onTap: () {
-                      // TODO: Logout function
                       _Logout();
                     },
                     child: Container(

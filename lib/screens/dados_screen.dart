@@ -205,29 +205,14 @@ class _DadosScreenState extends State<DadosScreen> {
                       child: 
                       FutureBuilder(builder: (context, text) {                                    
                         if(double.parse(sensor_ph)>6 && double.parse(sensor_ph)<=7.5){
-                          /*return Text(
-                            // TODO: recuperar status do pH do solo do BD
-                            "Status: " + S.of(context).telaDadosStatusPH2,
-                            style: TextStyle(
-                              fontSize: 12,
-                            ),
-                          );*/
-
                           return NotificationDadosWidget(
                             message: S.of(context).telaDadosNotificationMessage2,
                             
-                            // vermelho
+                            // verde
                             colorNotification: 0xff4b9100,
                             iconNotification: Icons.check_outlined,
                           );
                         }else{
-                          /*return Text(
-                            // TODO: recuperar status do pH do solo do BD
-                            "Status: " + S.of(context).telaDadosStatusPH1,
-                            style: TextStyle(
-                              fontSize: 12,
-                            ),
-                          );*/
                           return NotificationDadosWidget(
                             message:S.of(context).telaDadosNotificationMessage1,
                             
@@ -258,7 +243,6 @@ class _DadosScreenState extends State<DadosScreen> {
                       height: 10,
                     ),
                     Container(
-                      // height: MediaQuery.of(context).size.height / 5,
                       width: MediaQuery.of(context).size.width * 0.9,
                       decoration: BoxDecoration(
                         color: Colors.grey.withOpacity(0.1),
@@ -396,7 +380,6 @@ class _DadosScreenState extends State<DadosScreen> {
                                     FutureBuilder(builder: (context, text) {                                    
                                       if(double.parse(sensor_ph)>7){
                                         return Text(
-                                          // TODO: recuperar status do pH do solo do BD
                                           "Status: " + S.of(context).telaDadosStatusPH2,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -404,7 +387,6 @@ class _DadosScreenState extends State<DadosScreen> {
                                         );
                                       }else{
                                         return Text(
-                                          // TODO: recuperar status do pH do solo do BD
                                           "Status: " + S.of(context).telaDadosStatusPH1,
                                           style: TextStyle(
                                             fontSize: 12,

@@ -267,7 +267,6 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
                       return Column(
                         children: [
                           Container(
-                            // height: MediaQuery.of(context).size.height / 5,
                             width: MediaQuery.of(context).size.width * 0.9,
                             // todo: personalizar box de acordo com previsao no momento
                             decoration: BoxDecoration(

@@ -41,10 +41,6 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
   String dropdownValue = '';
   String _id_canteiro_escolhido = '';
   String hintValue = 'Selecione a cultura';
-  List<String> culturasItems = [
-    "Couve",
-    "Alface"
-  ]; // TODO: puxar lista de culturas do banco?
 
   DateTime date = DateTime(DateTime.now().year - 500);
 
@@ -80,7 +76,7 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  CanteirosScreen(), // TODO: enviar para canteiro que a safra foi adc
+                  CanteirosScreen(),
             ),
           );*/
           Navigator.pushAndRemoveUntil(
@@ -166,7 +162,6 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
       if (newDate == null) return;
 
       setState(() {
-        // TODO: enviar date para BD
         date = newDate;
       });
     }
@@ -231,7 +226,6 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
                               Wrap(
                                 children: [
                                   TitleFormsWidget(
-                                    // TODO: recuperar nome do canteiro na base
                                     titleText:
                                         'Adicione uma safra no \n' + nome_canteiro,
                                   ),
@@ -376,23 +370,6 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          /*ButtonWidget(
-                            title: 'ADICIONAR SAFRA',
-                            hasBorder: false,
-                            onClicked: () {
-                              // TODO: subir informações da safra para nuvem (nome; date; dropdownValue)
-                              print('Safra: ${_nameSafraController.text}');
-                              adicionarSafra(_nameSafraController.text, date, countryid);
-                              /*Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      CanteirosScreen(), // TODO: enviar para canteiro que a safra foi adc
-                                ),
-                              );*/
-                            },
-                          ),*/
-
                           Padding(                  
                             padding: const EdgeInsets.all(0.0),                        
                             child: new MaterialButton(
