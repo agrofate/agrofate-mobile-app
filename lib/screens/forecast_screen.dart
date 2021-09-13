@@ -12,6 +12,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:page_view_indicators/circle_page_indicator.dart';
 import 'package:provider/src/provider.dart';
 import 'package:weather_icons/weather_icons.dart';
 import 'package:basic_utils/basic_utils.dart';
@@ -40,16 +41,35 @@ class _ForecastScreenState extends State<ForecastScreen> {
   var teste_link;
   var hora_atual;
   var visibility_forecast=false;
+  var visibility_forecast_plus=false;
   var adresses;
   var first;
   String _id_user;
   bool loading = true;
 
-  _dataEscolhida(data_atual) async {
+  List _items = [
+    Colors.blue,
+    Colors.orange,
+    Colors.green,
+    Colors.pink,
+    Colors.red,
+    Colors.amber,
+    Colors.brown,
+    Colors.yellow,
+    Colors.blue,
+  ];
+  final _pageController = PageController();
+  final _currentPageNotifier = ValueNotifier<int>(0);
+  final _boxHeight = 150.0;
+
+  _dataEscolhida(data_atual, indice) async {
+    print(data_atual);
+    print(indice);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       prefs.setString('data_escolhida', data_atual.toString());
       prefs.setString('nome_local', nome_local.toString());
+      prefs.setString('indice_local', indice.toString());
     });
     Navigator.push(
       context,
@@ -85,6 +105,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
     var response_latlng = json.decode(latlng.body);
     print("LatLong: ");
     print(response_latlng);
+    this._items = response_latlng;
 
     if(response_latlng[0][0] == 0){
       setState(() {
@@ -98,8 +119,11 @@ class _ForecastScreenState extends State<ForecastScreen> {
         this.cidade_local =  '';
         this.loading = false;
       });
-    }else{
+    }else{      
       visibility_forecast=true;
+      if(response_latlng.length > 1){
+        visibility_forecast_plus=true;
+      }
       http.Response response = await http.get(
         "https://api.openweathermap.org/data/2.5/weather?lat=${response_latlng[(response_latlng.length-1)][2]}&lon=${response_latlng[(response_latlng.length-1)][3]}&lang=pt_br&units=metric&appid=${codigo}");
       var results = jsonDecode(response.body);
@@ -263,355 +287,453 @@ class _ForecastScreenState extends State<ForecastScreen> {
                 );
           }
           else {
-            return Column(
-              children: [
-                Visibility(
-                  // TODO: ativar visualização qdo tiver local adicionado - se n tiver local, desativa a vis. e deixa só o botão
-                  visible: visibility_forecast,
-                  child: Column(
+            if(visibility_forecast_plus){
+              return Column(
+                children: [
+                  Stack(
                     children: [
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // todo: trocar icon de acordo com dia/noite
-                            // ignore: prefer_const_constructors
-                            Icon(
-                              Icons.wb_sunny,
-                              size: 32,
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Center(
-                              child: Text(
-                              nome_local + ", " + cidade_local,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 14.0,
-                              ),
-                            )),
-                            Text(
-                              temp != null
-                                  ? temp.toStringAsFixed(1) + "\u00B0"
-                                  : "Carregando",
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 40.0,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Column(
-                        children: List.generate(forecast_data["daily"].length,
-                            (index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 6,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      // decoration: const BoxDecoration(color: Colors.black12),
-                                      width: (size.width - 40),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 50,
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  Colors.grey.withOpacity(0.1),
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Center(
-                                              child: Image.asset(
-                                                /*"assets/images/weather/" +
-                                                    forecast_data["daily"]
-                                                            [index]["weather"]
-                                                        [0]["icon"] +
-                                                    ".png",*/
-                                                _setImage(forecast_data["daily"]
-                                                            [index]["weather"]
-                                                        [0]["icon"]),
-                                                width: 30,
-                                                height: 30,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: size.width * 0.045),
-                                          Container(
-                                            // decoration:
-                                            //     const BoxDecoration(color: Colors.black26),
-                                            width: (size.width) * 0.1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  StringUtils.capitalize(DateFormat(
-                                                          'EEEE', S.of(context).telaForecastDiadaSemana)
-                                                      .format(DateTime.parse(new DateFormat(
-                                                              'yyyy-MM-dd hh:mm:ss')
-                                                          .format(new DateTime
-                                                                  .fromMillisecondsSinceEpoch(
-                                                              forecast_data["daily"]
-                                                                          [index]
-                                                                      ["dt"] *
-                                                                  1000))))
-                                                      .substring(0, 3)),
-                                                  style: TextStyle(
-                                                    fontSize: 15,
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                Text(new DateFormat('dd/MM')
-                                                    .format(new DateTime
-                                                            .fromMillisecondsSinceEpoch(
-                                                        forecast_data["daily"]
-                                                                [index]["dt"] *
-                                                            1000))),
-                                                /*Text(
-                                                forecast_data["list"][index]
-                                                            ["dt_txt"]
-                                                        .split(" ")[0]
-                                                        .split("-")[2]
-                                                        .toString() +
-                                                    '/' +
-                                                    forecast_data["list"][index]
-                                                            ["dt_txt"]
-                                                        .split(" ")[0]
-                                                        .split("-")[1]
-                                                        .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),*/
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            // decoration:
-                                            //     const BoxDecoration(color: Colors.black38),
-                                            width: (size.width) * 0.24,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                RichText(
-                                                  text: TextSpan(
-                                                    style: DefaultTextStyle.of(
-                                                            context)
-                                                        .style,
-                                                    children: <TextSpan>[
-                                                      TextSpan(
-                                                        text: forecast_data["daily"]
-                                                                            [
-                                                                            index]
-                                                                        ["temp"]
-                                                                    ["max"]
-                                                                .toStringAsFixed(0) +
-                                                            'º',
-                                                        style: TextStyle(
-                                                          color: kGreenColor,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 17,
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: "/" +
-                                                            forecast_data["daily"]
-                                                                            [
-                                                                            index]
-                                                                        ["temp"]
-                                                                    ["min"]
-                                                                .toStringAsFixed(
-                                                                    0) +
-                                                            'º',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          color: Colors.black
-                                                              .withOpacity(0.6),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            // decoration:
-                                            //     const BoxDecoration(color: Colors.black26),
-                                            width: (size.width) * 0.24,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    const SizedBox(
-                                                      width: 9,
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        Icon(
-                                                          WeatherIcons.raindrop,
-                                                          size: 14,
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 5,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 7,
-                                                    ),
-                                                    Text(
-                                                      forecast_data["daily"]
-                                                                      [index]
-                                                                  ["humidity"]
-                                                              .toString() +
-                                                          '%',
-                                                      style: const TextStyle(
-                                                        fontSize: 13,
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    const SizedBox(
-                                                      width: 9,
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        Icon(
-                                                          WeatherIcons
-                                                              .strong_wind,
-                                                          size: 14,
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 5,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 7,
-                                                    ),
-                                                    Text(
-                                                      (forecast_data["daily"][
-                                                                          index]
-                                                                      [
-                                                                      "wind_speed"] *
-                                                                  3.6)
-                                                              .toStringAsFixed(
-                                                                  1) +
-                                                          ' km/h',
-                                                      style: const TextStyle(
-                                                        fontSize: 13,
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            // decoration:
-                                            //     const BoxDecoration(color: Colors.black38),
-                                            width: (size.width) * 0.09,
-                                            child: IconButton(
-                                              onPressed: () {
-                                                _dataEscolhida(new DateFormat(
-                                                    'dd/MM')
-                                                    .format(new DateTime
-                                                    .fromMillisecondsSinceEpoch(
-                                                    forecast_data["daily"]
-                                                    [index]
-                                                    ["dt"] *
-                                                        1000))
-                                                    .toString());
-                                              },
-                                              icon: Icon(
-                                                Icons.arrow_forward_ios,
-                                                size: 18,
-                                                color: Colors.black
-                                                    .withOpacity(0.7),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(left: (55 + (size.width * 0.045)), top: 6),
-                                  child: Divider(
-                                    thickness: 0.8,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                      ),
+                      _buildPageView(),
+                      //_buildCircleIndicator(),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: ButtonWidget(
-                    title: S.of(context).telaForecastBotaoNovoLocal,
-                    hasBorder: true,
-                    onClicked: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => NewLocalScreen(),
-                        ),
-                      );
-                    },
+                  SizedBox(
+                    height: 200, 
+                    child: ListView(
+                      children: <Widget>[
+                        _buildCircleIndicator2(),
+                      ]
+                          .map((item) => Padding(
+                                child: item,
+                                padding: EdgeInsets.all(8.0),
+                              ))
+                          .toList(),
+                    ),
                   ),
-                ),
-              ],
-            );
+                ],
+              );
+            }else{
+              return Column(
+                children: [
+                  Visibility(
+                    // TODO: ativar visualização qdo tiver local adicionado - se n tiver local, desativa a vis. e deixa só o botão
+                    visible: visibility_forecast,
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // todo: trocar icon de acordo com dia/noite
+                              // ignore: prefer_const_constructors
+                              Icon(
+                                Icons.wb_sunny,
+                                size: 32,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Center(
+                                child: Text(
+                                nome_local + ", " + cidade_local,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14.0,
+                                ),
+                              )),
+                              Text(
+                                temp != null
+                                    ? temp.toStringAsFixed(1) + "\u00B0"
+                                    : "Carregando",
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 40.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Column(
+                          children: List.generate(forecast_data["daily"].length,
+                              (index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 20, right: 20),
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        // decoration: const BoxDecoration(color: Colors.black12),
+                                        width: (size.width - 40),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 50,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    Colors.grey.withOpacity(0.1),
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Center(
+                                                child: Image.asset(
+                                                  /*"assets/images/weather/" +
+                                                      forecast_data["daily"]
+                                                              [index]["weather"]
+                                                          [0]["icon"] +
+                                                      ".png",*/
+                                                  _setImage(forecast_data["daily"]
+                                                              [index]["weather"]
+                                                          [0]["icon"]),
+                                                  width: 30,
+                                                  height: 30,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: size.width * 0.045),
+                                            Container(
+                                              // decoration:
+                                              //     const BoxDecoration(color: Colors.black26),
+                                              width: (size.width) * 0.1,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    StringUtils.capitalize(DateFormat(
+                                                            'EEEE', S.of(context).telaForecastDiadaSemana)
+                                                        .format(DateTime.parse(new DateFormat(
+                                                                'yyyy-MM-dd hh:mm:ss')
+                                                            .format(new DateTime
+                                                                    .fromMillisecondsSinceEpoch(
+                                                                forecast_data["daily"]
+                                                                            [index]
+                                                                        ["dt"] *
+                                                                    1000))))
+                                                        .substring(0, 3)),
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  Text(new DateFormat('dd/MM')
+                                                      .format(new DateTime
+                                                              .fromMillisecondsSinceEpoch(
+                                                          forecast_data["daily"]
+                                                                  [index]["dt"] *
+                                                              1000))),
+                                                  /*Text(
+                                                  forecast_data["list"][index]
+                                                              ["dt_txt"]
+                                                          .split(" ")[0]
+                                                          .split("-")[2]
+                                                          .toString() +
+                                                      '/' +
+                                                      forecast_data["list"][index]
+                                                              ["dt_txt"]
+                                                          .split(" ")[0]
+                                                          .split("-")[1]
+                                                          .toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),*/
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              // decoration:
+                                              //     const BoxDecoration(color: Colors.black38),
+                                              width: (size.width) * 0.24,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      style: DefaultTextStyle.of(
+                                                              context)
+                                                          .style,
+                                                      children: <TextSpan>[
+                                                        TextSpan(
+                                                          text: forecast_data["daily"]
+                                                                              [
+                                                                              index]
+                                                                          ["temp"]
+                                                                      ["max"]
+                                                                  .toStringAsFixed(0) +
+                                                              'º',
+                                                          style: TextStyle(
+                                                            color: kGreenColor,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 17,
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                          text: "/" +
+                                                              forecast_data["daily"]
+                                                                              [
+                                                                              index]
+                                                                          ["temp"]
+                                                                      ["min"]
+                                                                  .toStringAsFixed(
+                                                                      0) +
+                                                              'º',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            color: Colors.black
+                                                                .withOpacity(0.6),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              // decoration:
+                                              //     const BoxDecoration(color: Colors.black26),
+                                              width: (size.width) * 0.24,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      const SizedBox(
+                                                        width: 9,
+                                                      ),
+                                                      Column(
+                                                        children: [
+                                                          Icon(
+                                                            WeatherIcons.raindrop,
+                                                            size: 14,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 7,
+                                                      ),
+                                                      Text(
+                                                        forecast_data["daily"]
+                                                                        [index]
+                                                                    ["humidity"]
+                                                                .toString() +
+                                                            '%',
+                                                        style: const TextStyle(
+                                                          fontSize: 13,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      const SizedBox(
+                                                        width: 9,
+                                                      ),
+                                                      Column(
+                                                        children: [
+                                                          Icon(
+                                                            WeatherIcons
+                                                                .strong_wind,
+                                                            size: 14,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 7,
+                                                      ),
+                                                      Text(
+                                                        (forecast_data["daily"][
+                                                                            index]
+                                                                        [
+                                                                        "wind_speed"] *
+                                                                    3.6)
+                                                                .toStringAsFixed(
+                                                                    1) +
+                                                            ' km/h',
+                                                        style: const TextStyle(
+                                                          fontSize: 13,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              // decoration:
+                                              //     const BoxDecoration(color: Colors.black38),
+                                              width: (size.width) * 0.09,
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  _dataEscolhida(new DateFormat(
+                                                      'dd/MM')
+                                                      .format(new DateTime
+                                                      .fromMillisecondsSinceEpoch(
+                                                      forecast_data["daily"]
+                                                      [index]
+                                                      ["dt"] *
+                                                          1000))
+                                                      .toString(), index);
+                                                },
+                                                icon: Icon(
+                                                  Icons.arrow_forward_ios,
+                                                  size: 18,
+                                                  color: Colors.black
+                                                      .withOpacity(0.7),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: (55 + (size.width * 0.045)), top: 6),
+                                    child: Divider(
+                                      thickness: 0.8,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: ButtonWidget(
+                      title: S.of(context).telaForecastBotaoNovoLocal,
+                      hasBorder: true,
+                      onClicked: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewLocalScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            }
           }
         }),
       ),
+    );
+  }
+
+  _buildBody() {
+    return Column(
+      children: <Widget>[
+        Stack(
+          children: <Widget>[
+            _buildPageView(),
+            _buildCircleIndicator(),
+          ],
+        ),
+        Expanded(
+          child: ListView(
+            children: <Widget>[
+              Text('size: 12.0, selectedSize: 16.0'),
+              _buildCircleIndicator2(),
+              Text('selectedDotColor: Colors.green'),
+            ]
+                .map((item) => Padding(
+                      child: item,
+                      padding: EdgeInsets.all(8.0),
+                    ))
+                .toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _buildPageView() {
+    return Container(
+      color: Colors.white10,
+      height: _boxHeight,
+      child: PageView.builder(
+          itemCount: _items.length,
+          controller: _pageController,
+          itemBuilder: (BuildContext context, int index) {
+            return Center(
+              child: FlutterLogo(
+                size: 50.0,
+              ),
+            );
+          },
+          onPageChanged: (int index) {
+            _currentPageNotifier.value = index;
+            print(index);
+          }),
+    );
+  }
+
+  _buildCircleIndicator() {
+    return Positioned(
+      left: 0.0,
+      right: 0.0,
+      bottom: 0.0,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CirclePageIndicator(
+          itemCount: _items.length,
+          currentPageNotifier: _currentPageNotifier,
+        ),
+      ),
+    );
+  }
+
+  _buildCircleIndicator2() {
+    return CirclePageIndicator(
+      size: 16.0,
+      selectedSize: 18.0,
+      itemCount: _items.length,
+      currentPageNotifier: _currentPageNotifier,
     );
   }
 }

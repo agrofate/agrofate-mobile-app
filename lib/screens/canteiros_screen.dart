@@ -10,6 +10,7 @@ import 'package:agrofate_mobile_app/localization/language_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:agrofate_mobile_app/LanguageChangeProvider.dart';
+import 'package:page_view_indicators/circle_page_indicator.dart';
 import 'package:provider/src/provider.dart';
 
 import 'new_canteiro_screen.dart';
@@ -30,6 +31,21 @@ class _CanteirosScreenState extends State<CanteirosScreen> {
   var canteiro_data;
   bool loading = true;
   bool loading_canteiro = true;
+
+  final _items = [
+    Colors.blue,
+    Colors.orange,
+    Colors.green,
+    Colors.pink,
+    Colors.red,
+    Colors.amber,
+    Colors.brown,
+    Colors.yellow,
+    Colors.blue,
+  ];
+  final _pageController = PageController();
+  final _currentPageNotifier = ValueNotifier<int>(0);
+  final _boxHeight = 150.0;
 
   @override
   void initState() {

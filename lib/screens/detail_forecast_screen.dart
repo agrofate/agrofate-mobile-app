@@ -41,6 +41,7 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
   var hora_atual;
   var latitude_escolhida;
   var longitude_escolhida;
+  var indice_escolhido;
   bool loading = true;
 
   Future getWeatherHourly(data_atual) async {
@@ -52,40 +53,83 @@ class _DetailForecastScreenState extends State<DetailForecastScreen> {
     setState(() {
       latitude_escolhida = (prefs.getString('latitude_escolhida') ?? '');
       longitude_escolhida = (prefs.getString('longitude_escolhida') ?? '');
+      indice_escolhido = (prefs.getString('indice_local') ?? '');
     });
-    
-    http.Response response = await http.get(
-        "https://api.openweathermap.org/data/2.5/onecall?lat=${latitude_escolhida}&lon=${longitude_escolhida}&exclude={current,minutely,alerts}&appid=${codigo}&lang=pt_br&units=metric");
-    var results = jsonDecode(response.body);
+
     var dia = [];
     var dia_espec = [];
-    print(data_atual);
-    for (var i = 0; i < results["hourly"].length; i++) {
-      //print(data_atual);
-      //print(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["hourly"][i]["dt"]*1000)).toString());
-      if (DateFormat('dd/MM')
-              .format(new DateTime.fromMillisecondsSinceEpoch(
-                  results["hourly"][i]["dt"] * 1000))
-              .toString() ==
-          data_atual) {
-        dia.add(results["hourly"][i]);
-      }
-    }
 
-    for (var i = 0; i < results["daily"].length; i++) {
-      //print(data_atual);
-      //print(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["hourly"][i]["dt"]*1000)).toString());
-      if (DateFormat('dd/MM')
-              .format(new DateTime.fromMillisecondsSinceEpoch(
-                  results["daily"][i]["dt"] * 1000))
-              .toString() ==
-          data_atual) {
-        add_dia.add(results["daily"][i]["temp"]["min"].toStringAsFixed(0));
-        add_dia.add(results["daily"][i]["temp"]["max"].toStringAsFixed(0));
-        add_dia.add(results["daily"][i]["humidity"].toString());
-        add_dia.add(results["daily"][i]["wind_speed"].toStringAsFixed(1));
-        add_dia.add(results["daily"][i]["weather"][0]["icon"].toString());
-        add_dia.add(results["daily"][i]["dt"]);
+    if(int.parse(indice_escolhido) <= 2 || int.parse(indice_escolhido) > 4){
+      http.Response response = await http.get(
+        "https://api.openweathermap.org/data/2.5/onecall?lat=${latitude_escolhida}&lon=${longitude_escolhida}&exclude={current,minutely,alerts}&appid=${codigo}&lang=pt_br&units=metric");
+      var results = jsonDecode(response.body);
+      
+      print(data_atual);
+      for (var i = 0; i < results["hourly"].length; i++) {
+        //print(data_atual);
+        //print(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["hourly"][i]["dt"]*1000)).toString());
+        if (DateFormat('dd/MM')
+                .format(new DateTime.fromMillisecondsSinceEpoch(
+                    results["hourly"][i]["dt"] * 1000))
+                .toString() ==
+            data_atual) {
+          dia.add(results["hourly"][i]);
+        }
+      }
+
+      for (var i = 0; i < results["daily"].length; i++) {
+        //print(data_atual);
+        //print(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["hourly"][i]["dt"]*1000)).toString());
+        if (DateFormat('dd/MM')
+                .format(new DateTime.fromMillisecondsSinceEpoch(
+                    results["daily"][i]["dt"] * 1000))
+                .toString() ==
+            data_atual) {
+          add_dia.add(results["daily"][i]["temp"]["min"].toStringAsFixed(0));
+          add_dia.add(results["daily"][i]["temp"]["max"].toStringAsFixed(0));
+          add_dia.add(results["daily"][i]["humidity"].toString());
+          add_dia.add(results["daily"][i]["wind_speed"].toStringAsFixed(1));
+          add_dia.add(results["daily"][i]["weather"][0]["icon"].toString());
+          add_dia.add(results["daily"][i]["dt"]);
+        }
+      }
+    }else{
+      http.Response response = await http.get(
+        "https://api.openweathermap.org/data/2.5/forecast?lat=${latitude_escolhida}&lon=${longitude_escolhida}&exclude={current,minutely,alerts}&appid=${codigo}&lang=pt_br&units=metric");
+      var results = jsonDecode(response.body);
+
+      print(data_atual);
+      for (var i = 0; i < results["list"].length; i++) {
+        //print(data_atual);
+        //print(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["hourly"][i]["dt"]*1000)).toString());
+        if (DateFormat('dd/MM')
+                .format(new DateTime.fromMillisecondsSinceEpoch(
+                    results["list"][i]["dt"] * 1000))
+                .toString() ==
+            data_atual) {
+          results["list"][i]["temp"] = results["list"][i]["main"]["temp"];
+          results["list"][i]["clouds"] = results["list"][i]["clouds"]["all"];
+          results["list"][i]["wind_speed"] = results["list"][i]["wind"]["speed"];
+          results["list"][i]["humidity"] = results["list"][i]["main"]["humidity"];
+          dia.add(results["list"][i]);
+        }
+      }
+
+      for (var i = 0; i < results["list"].length; i++) {
+        //print(data_atual);
+        //print(DateFormat('dd/MM').format(new DateTime.fromMillisecondsSinceEpoch(results["hourly"][i]["dt"]*1000)).toString());
+        if (DateFormat('dd/MM')
+                .format(new DateTime.fromMillisecondsSinceEpoch(
+                    results["list"][i]["dt"] * 1000))
+                .toString() ==
+            data_atual) {
+          add_dia.add(results["list"][i]["main"]["temp_min"].toStringAsFixed(0));
+          add_dia.add(results["list"][i]["main"]["temp_max"].toStringAsFixed(0));
+          add_dia.add(results["list"][i]["main"]["humidity"].toString());
+          add_dia.add(results["list"][i]["wind"]["speed"].toStringAsFixed(1));
+          add_dia.add(results["list"][i]["weather"][0]["icon"].toString());
+          add_dia.add(results["list"][i]["dt"]);
+        }
       }
     }
 
