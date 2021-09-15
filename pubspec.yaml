@@ -37,6 +37,8 @@ dependencies:
   basic_utils: ^1.2.0
   flutter_session: ^0.1.1
 
+  charts_flutter: ^0.10.0
+
   flutter_string_encryption: ^0.3.1
   encrypt: ^5.0.1
   steel_crypt: ^3.0.0+1

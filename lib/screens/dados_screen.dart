@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:agrofate_mobile_app/classes/language.dart';
 import 'package:agrofate_mobile_app/generated/l10n.dart';
+import 'package:agrofate_mobile_app/screens/grafico_sensor_umidade.dart';
 import 'package:agrofate_mobile_app/widgets/button_widget.dart';
 import 'package:agrofate_mobile_app/widgets/notification_dados_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ import 'package:http/http.dart' as http;
 
 import '../LanguageChangeProvider.dart';
 import 'config_screen.dart';
+import 'grafico_sensor_ph.dart';
 
 class DadosScreen extends StatefulWidget {
   const DadosScreen({Key key}) : super(key: key);
@@ -96,7 +98,21 @@ class _DadosScreenState extends State<DadosScreen> {
       //MyHomePage.setLocale(context, _locale);
     }
 
-    
+    showGraficoPH(BuildContext context) {      
+      Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => GraficoSensorPh()),
+                (Route<dynamic> route) => false,
+              );      
+    }
+
+    showGraficoUmidade(BuildContext context) {      
+      Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => GraficoSensorUmidade()),
+                (Route<dynamic> route) => false,
+              );      
+    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -242,179 +258,191 @@ class _DadosScreenState extends State<DadosScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: size.height * 0.025,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/water-drop.png",
-                                      width:
-                                          MediaQuery.of(context).size.height / 8,
-                                      height:
-                                          MediaQuery.of(context).size.height / 8,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      sensor_umidade + "%",
-                                      style: TextStyle(
-                                        fontSize: 40,
-                                        fontWeight: FontWeight.bold,
+                    GestureDetector(
+                      onTap: (){
+                        print("Container clicked");
+                        showGraficoUmidade(context);
+                      },
+                      child: new Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height * 0.025,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        "assets/images/water-drop.png",
+                                        width:
+                                            MediaQuery.of(context).size.height / 8,
+                                        height:
+                                            MediaQuery.of(context).size.height / 8,
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 7,
-                                    ),
-                                    Text(
-                                      S.of(context).telaDadosUmidade,
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold,
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        sensor_umidade + "%",
+                                        style: TextStyle(
+                                          fontSize: 40,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
-                                    Text(
-                                      S.of(context).telaDadosUmidadeDescricao,
-                                      style: TextStyle(
-                                        fontSize: 12,
+                                      const SizedBox(
+                                        height: 7,
                                       ),
-                                    ),
-                                    Text(
-                                      S.of(context).telaDadosUmidadeDescricao2,
-                                      style: TextStyle(
-                                        fontSize: 12,
+                                      Text(
+                                        S.of(context).telaDadosUmidade,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.025,
-                            ),
-                          ],
+                                      const SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        S.of(context).telaDadosUmidadeDescricao,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      Text(
+                                        S.of(context).telaDadosUmidadeDescricao2,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: size.height * 0.025,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      // height: MediaQuery.of(context).size.height / 5,
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      decoration: BoxDecoration(
-                        color: boxPhColor(sensor_ph),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: size.height * 0.025,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/ph-meter_1.png",
-                                      width:
-                                          MediaQuery.of(context).size.height / 8,
-                                      height:
-                                          MediaQuery.of(context).size.height / 8,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      sensor_ph,
-                                      style: TextStyle(
-                                        fontSize: 40,
-                                        fontWeight: FontWeight.bold,
+                    GestureDetector(
+                      onTap: (){
+                        print("Container clicked");
+                        showGraficoPH(context);
+                      },
+                      child: new Container(
+                        // height: MediaQuery.of(context).size.height / 5,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        decoration: BoxDecoration(
+                          color: boxPhColor(sensor_ph),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height * 0.025,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        "assets/images/ph-meter_1.png",
+                                        width:
+                                            MediaQuery.of(context).size.height / 8,
+                                        height:
+                                            MediaQuery.of(context).size.height / 8,
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 7,
-                                    ),
-                                    Text(
-                                      S.of(context).telaDadosPH,
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold,
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        sensor_ph,
+                                        style: TextStyle(
+                                          fontSize: 40,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
-                                    FutureBuilder(builder: (context, text) {                                    
-                                      if(double.parse(sensor_ph)>7){
-                                        return Text(
-                                          "Status: " + S.of(context).telaDadosStatusPH2,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                          ),
-                                        );
-                                      }else{
-                                        return Text(
-                                          "Status: " + S.of(context).telaDadosStatusPH1,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                          ),
-                                        );
-                                      }
-                                    }),
-                                    
-                                    Text(
-                                      S.of(context).telaDadosPHDescricao,
-                                      style: TextStyle(
-                                        fontSize: 12,
+                                      const SizedBox(
+                                        height: 7,
                                       ),
-                                    ),
-                                    // Text(
-                                    //   "Faixa de pH ideal: 5,5 e 6,5",
-                                    //   style: TextStyle(
-                                    //     fontSize: 12,
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.025,
-                            ),
-                          ],
+                                      Text(
+                                        S.of(context).telaDadosPH,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 3,
+                                      ),
+                                      FutureBuilder(builder: (context, text) {                                    
+                                        if(double.parse(sensor_ph)>7){
+                                          return Text(
+                                            "Status: " + S.of(context).telaDadosStatusPH2,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          );
+                                        }else{
+                                          return Text(
+                                            "Status: " + S.of(context).telaDadosStatusPH1,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          );
+                                        }
+                                      }),
+                                      
+                                      Text(
+                                        S.of(context).telaDadosPHDescricao,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      // Text(
+                                      //   "Faixa de pH ideal: 5,5 e 6,5",
+                                      //   style: TextStyle(
+                                      //     fontSize: 12,
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: size.height * 0.025,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
