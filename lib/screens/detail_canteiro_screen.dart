@@ -357,7 +357,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
                 Container(
                   width: size.width,
                   // TODO: se tiver safra altura menor - se nao tiver safra altura maior / recuperar do BD
-                  height: true ? (size.height) * 0.23 : (size.height) * 0.33,
+                  height: !loading_safra ? (size.height) * 0.23 : (size.height) * 0.33,
                   decoration: BoxDecoration(
                     image: _condicao_imagem_escolhido == "true" ? DecorationImage(image: NetworkImage(_imagem_canteiro_escolhido),fit: BoxFit.cover,):DecorationImage(image: AssetImage(_imagem_canteiro_escolhido),fit: BoxFit.cover),
                     /*image: DecorationImage(
