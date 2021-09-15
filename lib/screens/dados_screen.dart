@@ -47,12 +47,12 @@ class _DadosScreenState extends State<DadosScreen> {
     print(response_login[0]);
     if (response_login.length > 0) {
       if (response_login[0][0] == 0) {
-        setState(() {   
+        setState(() {
           loading_dados = false;
           loading_registro = false;
         });
       } else {
-        setState(() {   
+        setState(() {
           loading_dados = false;
           loading_registro = true;
         });
@@ -64,8 +64,8 @@ class _DadosScreenState extends State<DadosScreen> {
         });
         print(data_ultima);
       }
-    }else{   
-      setState(() {   
+    }else{
+      setState(() {
         loading_dados = false;
         loading_registro = false;
       });
@@ -93,25 +93,25 @@ class _DadosScreenState extends State<DadosScreen> {
       //Locale _locale = await setLocale(language.languageCode);
       print(language.languageCode);
       setState(() {
-        context.read<LanguageChangeProvider>().changeLocale(language.languageCode);      
+        context.read<LanguageChangeProvider>().changeLocale(language.languageCode);
       });
       //MyHomePage.setLocale(context, _locale);
     }
 
-    showGraficoPH(BuildContext context) {      
+    showGraficoPH(BuildContext context) {
       Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => GraficoSensorPh()),
                 (Route<dynamic> route) => false,
-              );      
+              );
     }
 
-    showGraficoUmidade(BuildContext context) {      
+    showGraficoUmidade(BuildContext context) {
       Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => GraficoSensorUmidade()),
                 (Route<dynamic> route) => false,
-              );      
+              );
     }
 
     return Scaffold(
@@ -207,7 +207,7 @@ class _DadosScreenState extends State<DadosScreen> {
                             SnackBar(content: Text(S.of(context).telaPerfilDesenvolvimento )));
                       },
                     ),
-                  ]                  
+                  ]
                 )
               );
             } else{
@@ -218,12 +218,12 @@ class _DadosScreenState extends State<DadosScreen> {
                     Visibility(
                       // TODO: personalizar notifications de acordo com informações do BD
                       visible: true,
-                      child: 
-                      FutureBuilder(builder: (context, text) {                                    
+                      child:
+                      FutureBuilder(builder: (context, text) {
                         if(double.parse(sensor_ph)>6 && double.parse(sensor_ph)<=7.5){
                           return NotificationDadosWidget(
                             message: S.of(context).telaDadosNotificationMessage2,
-                            
+
                             // verde
                             colorNotification: 0xff4b9100,
                             iconNotification: Icons.check_outlined,
@@ -231,7 +231,7 @@ class _DadosScreenState extends State<DadosScreen> {
                         }else{
                           return NotificationDadosWidget(
                             message:S.of(context).telaDadosNotificationMessage1,
-                            
+
                             // vermelho
                             colorNotification: 0xFFF44336,
                             iconNotification: Icons.warning,
@@ -241,7 +241,7 @@ class _DadosScreenState extends State<DadosScreen> {
                       /*NotificationDadosWidget(
                         message:
                             "O nível de pH está fora do intervalo certo. \nÉ indicado acrescentar mais fertilizante.",
-                        
+
                         // vermelho
                         colorNotification: 0xFFF44336,
                         iconNotification: Icons.warning,
@@ -288,9 +288,9 @@ class _DadosScreenState extends State<DadosScreen> {
                                       Image.asset(
                                         "assets/images/water-drop.png",
                                         width:
-                                            MediaQuery.of(context).size.height / 8,
+                                            MediaQuery.of(context).size.height / 12,
                                         height:
-                                            MediaQuery.of(context).size.height / 8,
+                                            MediaQuery.of(context).size.height / 12,
                                       ),
                                     ],
                                   ),
@@ -300,12 +300,12 @@ class _DadosScreenState extends State<DadosScreen> {
                                       Text(
                                         sensor_umidade + "%",
                                         style: TextStyle(
-                                          fontSize: 40,
+                                          fontSize: 24,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       const SizedBox(
-                                        height: 7,
+                                        height: 5,
                                       ),
                                       Text(
                                         S.of(context).telaDadosUmidade,
@@ -375,9 +375,9 @@ class _DadosScreenState extends State<DadosScreen> {
                                       Image.asset(
                                         "assets/images/ph-meter_1.png",
                                         width:
-                                            MediaQuery.of(context).size.height / 8,
+                                            MediaQuery.of(context).size.height / 12,
                                         height:
-                                            MediaQuery.of(context).size.height / 8,
+                                            MediaQuery.of(context).size.height / 12,
                                       ),
                                     ],
                                   ),
@@ -387,12 +387,12 @@ class _DadosScreenState extends State<DadosScreen> {
                                       Text(
                                         sensor_ph,
                                         style: TextStyle(
-                                          fontSize: 40,
+                                          fontSize: 24,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       const SizedBox(
-                                        height: 7,
+                                        height: 5,
                                       ),
                                       Text(
                                         S.of(context).telaDadosPH,
@@ -404,7 +404,7 @@ class _DadosScreenState extends State<DadosScreen> {
                                       const SizedBox(
                                         height: 3,
                                       ),
-                                      FutureBuilder(builder: (context, text) {                                    
+                                      FutureBuilder(builder: (context, text) {
                                         if(double.parse(sensor_ph)>7){
                                           return Text(
                                             "Status: " + S.of(context).telaDadosStatusPH2,
@@ -421,7 +421,7 @@ class _DadosScreenState extends State<DadosScreen> {
                                           );
                                         }
                                       }),
-                                      
+
                                       Text(
                                         S.of(context).telaDadosPHDescricao,
                                         style: TextStyle(
@@ -451,9 +451,10 @@ class _DadosScreenState extends State<DadosScreen> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         IconButton(
-                          icon: new Icon(Icons.refresh),
+                          icon: new Icon(Icons.refresh, size: 18, color: Colors.black.withOpacity(0.7),),
                           onPressed: () {
                             _procuraSensor();
                           },
@@ -462,7 +463,7 @@ class _DadosScreenState extends State<DadosScreen> {
                               S.of(context).telaDetalheCanteiroUltimaAtualizacao +
                               data_ultima.split(" ")[1]+"/"+data_ultima.split(" ")[2]+"/"+data_ultima.split(" ")[3]+
                               //"22/07/2021" +
-                              S.of(context).telaDadosAs +                          
+                              S.of(context).telaDadosAs +
                               data_ultima.split(" ")[4],
                               //"18:00",
                           style: TextStyle(
@@ -470,6 +471,7 @@ class _DadosScreenState extends State<DadosScreen> {
                             fontSize: 11,
                           ),
                         ),
+
                       ],
                     ),
                     const SizedBox(
