@@ -20,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../LanguageChangeProvider.dart';
+import 'detail_canteiro_screen.dart';
 
 class NewSafraScreen extends StatefulWidget {
   const NewSafraScreen({Key key}) : super(key: key);
@@ -81,7 +82,7 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
           );*/
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => CanteirosScreen()),
+            MaterialPageRoute(builder: (context) => DetailCanteiroScreen()),
             (Route<dynamic> route) => false,
           );
         }else{
