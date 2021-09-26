@@ -28,13 +28,30 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
   String _id_canteiro_escolhido = '';
+  String _nome_canteiro_escolhido = '';
+  String _imagem_canteiro_escolhido = '';
+  String _condicao_imagem_escolhido = '';
 
   final _nameCanteiroController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _nameCanteiroController.text = "Canteiro Sul"; // TODO: puxar nome do canteiro do BD
+    iniciaCampos();
+    //_nameCanteiroController.text = "Canteiro Sul"; // TODO: puxar nome do canteiro do BD
+  }
+
+  iniciaCampos() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _id_canteiro_escolhido = (prefs.getString('id_canteiro_escolhido') ?? '');
+      _nome_canteiro_escolhido = (prefs.getString('nome_canteiro_escolhido') ?? '');
+      _imagem_canteiro_escolhido = (prefs.getString('imagem_canteiro_escolhido') ?? '');
+      _condicao_imagem_escolhido = (prefs.getString('condicao_imagem_escolhido') ?? '');
+    });
+    // TODO: puxar nome, marca e data do defensivo do BD
+    _nameCanteiroController.text = _nome_canteiro_escolhido;
   }
 
   showAlertDialog(BuildContext context) {

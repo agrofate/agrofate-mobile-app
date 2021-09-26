@@ -157,7 +157,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
         this.currently = results['weather'][0]['main'];
         this.humidity = results['main']['humidity'];
         this.windSpeed = results['wind']['speed'];
-        this.nome_local = first.addressLine.split(',')[0];
+        this.nome_local = first.addressLine.split(',')[0] + ",";
         this.cidade_local = first.addressLine.split(',')[2];
         this.loading = false;
         this.loading_dias = false;
@@ -207,7 +207,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
       this.currently = results['weather'][0]['main'];
       this.humidity = results['main']['humidity'];
       this.windSpeed = results['wind']['speed'];
-      this.nome_local = first.addressLine.split(',')[0];
+      this.nome_local = first.addressLine.split(',')[0]+",";
       this.cidade_local = first.addressLine.split(',')[2];
       this.loading = false;
       this.loading_dias = false;
@@ -347,7 +347,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
               return Column(
                 children: [
                   SizedBox(
-                    height: 25, 
+                    height: 30, 
                     child: ListView(
                       children: <Widget>[
                         _buildCircleIndicator2(),
@@ -396,7 +396,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                               ),
                               Center(
                                 child: Text(
-                                nome_local + ", " + cidade_local,
+                                nome_local + " " + cidade_local,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   color: Colors.black,
@@ -763,7 +763,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
 
     return Container(
       color: Colors.white10,
-      height: MediaQuery.of(context).size.height * 0.75,
+      height: MediaQuery.of(context).size.height * 0.8,
       child: PageView.builder(
           itemCount: _items.length,
           controller: _pageController,
@@ -773,9 +773,9 @@ class _ForecastScreenState extends State<ForecastScreen> {
                 child:*/ SingleChildScrollView(
                   child: Column(
                     children: [
-                      const SizedBox(
-                        height: 15,
-                      ),
+                      /*const SizedBox(
+                        height: 5,
+                      ),*/
                       Container(
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: MediaQuery.of(context).size.height * 0.2,
@@ -794,7 +794,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                             ),
                             Center(
                               child: Text(
-                              nome_local + ", " + cidade_local,
+                              nome_local + " " + cidade_local,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Colors.black,
@@ -1132,7 +1132,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                             ),
                             Center(
                               child: Text(
-                              nome_local + ", " + cidade_local,
+                              nome_local + " " + cidade_local,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Colors.black,

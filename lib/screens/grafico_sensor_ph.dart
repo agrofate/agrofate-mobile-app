@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../LanguageChangeProvider.dart';
+import 'main_screens.dart';
 
 class GraficoSensorPh extends StatefulWidget {
   const GraficoSensorPh({Key key}) : super(key: key);
@@ -58,13 +59,15 @@ class _GraficoSensorPhState extends State<GraficoSensorPh> {
     http.Response url_teste = await http.get(
         "https://future-snowfall-319523.uc.r.appspot.com/read-one-media-ph-historico-sensor"+parametros);
     var response_login1 = jsonDecode(url_teste.body).asMap();
-
-    for(int i = 0; i < response_login1.length; i++){
+    print(response_login1.length);
+    for(int i = response_login1.length-1; i > (response_login1.length-10); i--){
+      print(i);
       var a =response_login1[i][0].split(" ")[1]+"/"+(months.indexOf(response_login1[i][0].split(" ")[2])+1).toString();
-      _data.add(new SensorPH(a.toString(), response_login1[i][2]));
+      _data.add(new SensorPH(a.toString(), num.parse(response_login1[i][2].toStringAsFixed(1))));
       /*print(a);
       print(response_login1[i][2]);*/
     }
+    print(_data);
 
     /*final rnd = new Random();
     for(int i = 2010; i < 2019; i++){
@@ -78,13 +81,16 @@ class _GraficoSensorPhState extends State<GraficoSensorPh> {
           this.loading = true;
         });
         _chartdata.add(new charts.Series(
-          id: 'Sensor PH', 
-          colorFn: (_,__) => charts.MaterialPalette.green.shadeDefault,
-          data: _data, 
-          domainFn: (SensorPH sensorPh, _) => sensorPh.data, 
-          measureFn: (SensorPH sensorPh, _) => sensorPh.ph,
-          fillPatternFn: (_,__) => charts.FillPatternType.solid,
-          displayName: 'PH'
+            id: 'Sensor PH', 
+            colorFn: (_,__) => charts.MaterialPalette.green.shadeDefault,
+            data: _data, 
+            //legend: Legend(isVisible: true),
+            domainFn: (SensorPH sensorPh, _) => sensorPh.data, 
+            measureFn: (SensorPH sensorPh, _) => sensorPh.ph,
+            fillPatternFn: (_,__) => charts.FillPatternType.solid,
+            labelAccessorFn: (SensorPH sensorPh, _) =>
+              '${sensorPh.ph.toString()}',
+            displayName: 'PH'
           )
         );
       } else {
@@ -117,12 +123,18 @@ class _GraficoSensorPhState extends State<GraficoSensorPh> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(CupertinoIcons.back, color: Colors.black),
-          onPressed: () => Navigator.push(
+          onPressed: () => /*Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => new DadosScreen(),
             ),
-          ),
+          ),*/
+
+          Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainScreens(myInt:2)),
+                  (Route<dynamic> route) => false,
+                ),
         ),
         actions: [
           Padding(
@@ -165,13 +177,17 @@ class _GraficoSensorPhState extends State<GraficoSensorPh> {
           child: new Column(
             children: <Widget>[
               new Text('Sensor PH'),
-              if(loading) new Expanded(child: new charts.BarChart(_chartdata)),
+              if(loading) new Expanded(child: 
+                new charts.BarChart(
+                  _chartdata,
+                  vertical: false,
+                  barRendererDecorator: new charts.BarLabelDecorator<String>(),
+                )
+              ),
             ],
           ),
         ),
-      ),
-
-      
+      ),      
     );
   }
 }
