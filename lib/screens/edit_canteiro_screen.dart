@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:agrofate_mobile_app/classes/language.dart';
 import 'package:agrofate_mobile_app/generated/l10n.dart';
 import 'package:agrofate_mobile_app/screens/canteiros_screen.dart';
@@ -30,6 +32,7 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
   String _id_canteiro_escolhido = '';
   String _nome_canteiro_escolhido = '';
   String _imagem_canteiro_escolhido = '';
+  File _imagem_canteiro_escolhido_file;
   String _condicao_imagem_escolhido = '';
 
   final _nameCanteiroController = TextEditingController();
@@ -48,6 +51,7 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
       _id_canteiro_escolhido = (prefs.getString('id_canteiro_escolhido') ?? '');
       _nome_canteiro_escolhido = (prefs.getString('nome_canteiro_escolhido') ?? '');
       _imagem_canteiro_escolhido = (prefs.getString('imagem_canteiro_escolhido') ?? '');
+      //_imagem_canteiro_escolhido_file = prefs.getString('imagem_canteiro_escolhido');
       _condicao_imagem_escolhido = (prefs.getString('condicao_imagem_escolhido') ?? '');
     });
     // TODO: puxar nome, marca e data do defensivo do BD
@@ -210,6 +214,29 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
                             context: context,
                             builder: ((builder) => bottomSheet()));
                       },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    /*Row(
+                      mainAxisAlignment : MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child:Image.file(_imagem_canteiro_escolhido, height: 200),
+                      )],
+                    ),*/
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.1),
+                        shape: BoxShape.rectangle,
+                        borderRadius:
+                            BorderRadius.circular(10),
+                        image: DecorationImage(image: NetworkImage(_imagem_canteiro_escolhido.toString()),fit: BoxFit.fill,)
+                      ),
                     ),
                     const SizedBox(
                       height: 20,

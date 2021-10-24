@@ -30,6 +30,7 @@ class NewCanteiroScreen extends StatefulWidget {
 
 class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
   PickedFile _imageFile;
+  File _image_escolhida;
   final ImagePicker _picker = ImagePicker();
   final picker = ImagePicker();
   CloudApi api;
@@ -229,6 +230,31 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
                     const SizedBox(
                       height: 20,
                     ),
+                    /*Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.1),
+                        shape: BoxShape.rectangle,
+                        borderRadius:
+                            BorderRadius.circular(10),
+                        //image: loading ? DecorationImage(image: NetworkImage(_image_escolhida.toString()),fit: BoxFit.fill,):DecorationImage(image: AssetImage(_image_escolhida.toString()),fit: BoxFit.fill),
+                        image: loading ? Image.file(_image_escolhida):''
+                      ),
+                    ),*/
+                    if(loading) Row(
+                      mainAxisAlignment : MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child:Image.file(_image_escolhida, height: 200),
+                      )],
+                    ),
+                    //if(loading) Image(image: ResizeImage(Image.file(_image_escolhida), width: 50, height: 100)),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     Padding(                  
                       padding: const EdgeInsets.all(0.0),                        
                       child: new MaterialButton(
@@ -251,7 +277,7 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
                         height: 58.0,
                         color: kGreenColor,
                       ),
-                    ),
+                    ),                                       
                   ],
                 ),
               )
@@ -268,10 +294,13 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
     _imageBytes = _image.readAsBytesSync();
     _imageName = _image.path.split('/').last;
     isUploaded = false;
+    print(_image);
     print(pickedFile.path);
     setState(() {
       _imageFile = pickedFile;
+      _image_escolhida = _image;
       loading = true;
+      Navigator.pop(context);
     });
     
   }
@@ -346,7 +375,7 @@ class _NewCanteiroScreenState extends State<NewCanteiroScreen> {
                 label: Text("Galeria"),
               ),
             ],
-          ),
+          ),    
         ],
       ),
     );
