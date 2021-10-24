@@ -228,7 +228,7 @@ class _NewSafraScreenState extends State<NewSafraScreen> {
                                 children: [
                                   TitleFormsWidget(
                                     titleText:
-                                        'Adicione uma safra no \n' + nome_canteiro,
+                                        'Adicione uma safra \nno ' + nome_canteiro,
                                   ),
                                 ],
                               ),

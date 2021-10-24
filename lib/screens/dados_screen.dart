@@ -99,18 +99,32 @@ class _DadosScreenState extends State<DadosScreen> {
     }
 
     showGraficoPH(BuildContext context) {
-      Navigator.pushAndRemoveUntil(
+      /*Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => GraficoSensorPh()),
                 (Route<dynamic> route) => false,
+              );*/
+
+      Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GraficoSensorPh(),
+                ),
               );
     }
 
     showGraficoUmidade(BuildContext context) {
-      Navigator.pushAndRemoveUntil(
+      /*Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => GraficoSensorUmidade()),
                 (Route<dynamic> route) => false,
+              );*/
+
+      Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GraficoSensorUmidade(),
+                ),
               );
     }
 

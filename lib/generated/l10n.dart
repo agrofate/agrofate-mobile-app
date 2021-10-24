@@ -290,7 +290,7 @@ class S {
 
   String get telaNovaSafraTitulo {
     return Intl.message(
-      'Adicione uma safra no \n',
+      'Adicione uma \n safra no \n',
       name: 'telaNovaSafraTitulo',
       desc: '',
       args: [],

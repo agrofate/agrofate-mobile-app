@@ -62,7 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "telaNovoFertilizanteTFNome" : MessageLookupByLibrary.simpleMessage("Nome do fertilizante"),
     "telaNovoFertilizanteTFMarca" : MessageLookupByLibrary.simpleMessage("Tipo de fertilizante"),
     "telaNovoFertilizanteBotaoAdicionar" : MessageLookupByLibrary.simpleMessage("ADICIONAR FERTILIZANTE"), 
-    "telaNovaSafraTitulo" : MessageLookupByLibrary.simpleMessage("Adicione uma safra no \n"),
+    "telaNovaSafraTitulo" : MessageLookupByLibrary.simpleMessage("Adicione uma \n safra no \n"),
     "telaNovaSafraDescricao" : MessageLookupByLibrary.simpleMessage("Preencha os campos abaixo e adicione uma nova safra ao seu canteiro."),
     "telaNovaSafraTFNome" : MessageLookupByLibrary.simpleMessage("Nome da Safra"),
     "telaNovaSafraBotaoAdicionar" : MessageLookupByLibrary.simpleMessage("ADICIONAR SAFRA"), 
