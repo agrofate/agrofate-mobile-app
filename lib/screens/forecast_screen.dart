@@ -92,7 +92,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
     if(_id_user == null){
       String parametros = "?email="+prefs.getString('email')+"&senha="+prefs.getString('senha');
       http.Response url_teste = await http.get(
-          "https://future-snowfall-319523.uc.r.appspot.com/read-one"+parametros);
+          "https://intrepid-pager-329723.uc.r.appspot.com/read-one"+parametros);
       var response_login1 = jsonDecode(url_teste.body)[0].asMap();
       print(response_login1);
       if(response_login1.length > 1){
@@ -102,7 +102,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
     _id_user = (prefs.getString('id_user'));
     String parametros = "?&id_usuario="+_id_user;
     http.Response latlng = await http.get(
-          "https://future-snowfall-319523.uc.r.appspot.com/read-one-locais"+parametros);
+          "https://intrepid-pager-329723.uc.r.appspot.com/read-one-locais"+parametros);
     var response_latlng = json.decode(latlng.body);
     print("LatLong: ");
     print(response_latlng);

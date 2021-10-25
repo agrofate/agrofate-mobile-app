@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
     //String parametros = "?email="+email+"&senha="+decrypted;
     String parametros = "?email="+email;
     http.Response url_teste = await http.get(
-        "https://future-snowfall-319523.uc.r.appspot.com/read-one-email"+parametros);
+        "https://intrepid-pager-329723.uc.r.appspot.com/read-one-email"+parametros);
     var response_login = jsonDecode(url_teste.body)[0].asMap();
     print(response_login);
     if(response_login.length > 1){
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await FlutterSession().set('token', email);
         String parametros_sessao = "?id_usuario="+response_login[0].toString();
         http.Response url_teste_sessao = await http.post(
-            "https://future-snowfall-319523.uc.r.appspot.com/update-user-sessao"+parametros_sessao);
+            "https://intrepid-pager-329723.uc.r.appspot.com/update-user-sessao"+parametros_sessao);
         var response_login_sessao = jsonDecode(url_teste_sessao.body)[0].asMap();
         print(response_login_sessao);
         Navigator.push(

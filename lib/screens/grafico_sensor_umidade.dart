@@ -57,7 +57,7 @@ class _GraficoSensorUmidadeState extends State<GraficoSensorUmidade> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String parametros = "?id_sensor="+prefs.getString('id_sensor');
     http.Response url_teste = await http.get(
-        "https://future-snowfall-319523.uc.r.appspot.com/read-one-media-ph-historico-sensor"+parametros);
+        "https://intrepid-pager-329723.uc.r.appspot.com/read-one-media-ph-historico-sensor"+parametros);
     var response_login1 = jsonDecode(url_teste.body).asMap();
 
     for(int i = response_login1.length-1; i > (response_login1.length-10); i--){  

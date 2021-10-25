@@ -41,7 +41,7 @@ class _DadosScreenState extends State<DadosScreen> {
 
     String parametros = "?id_usuario=" + _id_user;
     http.Response url_teste = await http.get(
-        "https://future-snowfall-319523.uc.r.appspot.com/read-one-historico-sensor" +
+        "https://intrepid-pager-329723.uc.r.appspot.com/read-one-historico-sensor" +
             parametros);
     var response_login = jsonDecode(url_teste.body).asMap();
     print(response_login[0]);

@@ -72,7 +72,7 @@ class _EditDefensivoScreenState extends State<EditDefensivoScreen> {
         print(_id_defensivo_escolhido);
         String parametros = "?id_defensivo="+_id_defensivo_escolhido;
         http.Response url_teste = await http.post(
-            "https://future-snowfall-319523.uc.r.appspot.com/delete-defensivo"+parametros);
+            "https://intrepid-pager-329723.uc.r.appspot.com/delete-defensivo"+parametros);
         var response_login = url_teste.body;
         print(response_login);
         Navigator.push(

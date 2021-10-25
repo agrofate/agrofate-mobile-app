@@ -57,7 +57,7 @@ class _NewFertilizanteScreenState extends State<NewFertilizanteScreen> {
           _id_safra_escolhida = (prefs.getString('id_safra_atual') ?? ''); 
           String parametros = "?id_safra="+_id_safra_escolhida+"&nome_fert="+nome_fert+"&data_fert="+data_fert.toString()+"&marca_fert="+tipo_fert;
           http.Response url_teste = await http.post(
-              "https://future-snowfall-319523.uc.r.appspot.com/insert-novo-fertilizante"+parametros);
+              "https://intrepid-pager-329723.uc.r.appspot.com/insert-novo-fertilizante"+parametros);
           var response_login = url_teste.body;
           print(response_login);
           setState(() {

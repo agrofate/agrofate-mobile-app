@@ -80,7 +80,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
 
     String parametros = "?id_canteiro=" + _id_canteiro_escolhido;
     http.Response url_teste = await http.get(
-        "https://future-snowfall-319523.uc.r.appspot.com/read-one-safra" +
+        "https://intrepid-pager-329723.uc.r.appspot.com/read-one-safra" +
             parametros);
     var response_login = jsonDecode(url_teste.body).asMap();
     safra_data = response_login;
@@ -115,7 +115,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
         String parametros_fert = "?id_safra=" + response_login[0][0].toString();
         print(parametros_fert);
         http.Response url_teste_fert = await http.get(
-            "https://future-snowfall-319523.uc.r.appspot.com/read-one-fertilizante" +
+            "https://intrepid-pager-329723.uc.r.appspot.com/read-one-fertilizante" +
                 parametros_fert);
         var response_login_fert = jsonDecode(url_teste_fert.body).asMap();
         print("Linha 95: ");
@@ -143,7 +143,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
         String parametros_def = "?id_safra=" + response_login[0][0].toString();
         print(parametros_def);
         http.Response url_teste_def = await http.get(
-            "https://future-snowfall-319523.uc.r.appspot.com/read-one-defensivo" +
+            "https://intrepid-pager-329723.uc.r.appspot.com/read-one-defensivo" +
                 parametros_def);
         var response_login_def = jsonDecode(url_teste_def.body).asMap();
         print("Linha 95: ");
@@ -174,7 +174,7 @@ class _DetailCanteiroScreenState extends State<DetailCanteiroScreen>
     });
     String parametros = "?id_safra="+id_safra_atual;
     http.Response url_teste = await http.post(
-        "https://future-snowfall-319523.uc.r.appspot.com/update-safra-finalizar"+parametros);
+        "https://intrepid-pager-329723.uc.r.appspot.com/update-safra-finalizar"+parametros);
     var response_login = url_teste.body;
   }
 

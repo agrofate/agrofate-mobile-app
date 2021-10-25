@@ -82,7 +82,7 @@ class _EditFertilizanteScreenState extends State<EditFertilizanteScreen> {
         print(_id_fertilizante_escolhido);
         String parametros = "?id_fertilizante="+_id_fertilizante_escolhido;
         http.Response url_teste = await http.post(
-            "https://future-snowfall-319523.uc.r.appspot.com/delete-fertilizante"+parametros);
+            "https://intrepid-pager-329723.uc.r.appspot.com/delete-fertilizante"+parametros);
         var response_login = url_teste.body;
         print(response_login);
         Navigator.push(

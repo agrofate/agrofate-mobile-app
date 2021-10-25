@@ -77,7 +77,7 @@ class _EditCanteiroScreenState extends State<EditCanteiroScreen> {
 
         String parametros = "?id_canteiro="+_id_canteiro_escolhido;
         http.Response url_teste = await http.post(
-            "https://future-snowfall-319523.uc.r.appspot.com/delete-canteiro"+parametros);
+            "https://intrepid-pager-329723.uc.r.appspot.com/delete-canteiro"+parametros);
         var response_login = url_teste.body;
         print(response_login);
         Navigator.push(
